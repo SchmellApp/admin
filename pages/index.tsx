@@ -1,10 +1,84 @@
 import React from "react";
 import { Wrapper } from "../src/components/Wrappers";
+import { MediaQuery, SimpleGrid, Title } from "@mantine/core";
+import { dayStatistics, tasksForToday } from "../src/lib/demo/home/statistics";
+import { ActionCard, TableCard, TextCard } from "../src/components/Cards";
+import {
+  DAY_STATISTICS_CARDS,
+  DAY_STATISTICS_HEADER
+} from "../src/constants/table";
+import {
+  buildDayStatisticsRows,
+  buildTasksByCategoryActions,
+  buildTasksForTodayActions
+} from "../src/utils/statistics";
 
 export default function Home(): JSX.Element {
+  const statistics = dayStatistics;
+
   return (
     <Wrapper>
-      <h1>Home</h1>
+      <MediaQuery styles={{ display: "none" }} largerThan="sm">
+        <Title order={2} mb="sm">
+          Oversikt
+        </Title>
+      </MediaQuery>
+      <SimpleGrid
+        cols={4}
+        spacing="lg"
+        breakpoints={[
+          { maxWidth: 600, cols: 1, spacing: "sm" },
+          { maxWidth: 755, cols: 2, spacing: "sm" },
+          { maxWidth: 980, cols: 2, spacing: "sm" }
+        ]}
+      >
+        <TextCard
+          title={"Uløste oppgaver"}
+          description={statistics.taskCount.unsolved}
+        />
+        <TextCard
+          title={"Oppgaver over frist"}
+          description={statistics.taskCount.overdue}
+        />
+        <TextCard
+          title={"Antall spill"}
+          description={statistics.gameCount.count}
+        />
+        <TextCard
+          title={"Antall spørsmål"}
+          description={statistics.questionsCount.totalCount}
+        />
+      </SimpleGrid>
+      <TableCard
+        title={"Dagens statistikk"}
+        description={new Date().toDateString()}
+        headers={DAY_STATISTICS_HEADER}
+        rows={buildDayStatisticsRows(statistics.questionsCount.countByGame)}
+        rightCards={DAY_STATISTICS_CARDS}
+      />
+      <SimpleGrid
+        cols={2}
+        spacing="lg"
+        breakpoints={[
+          { maxWidth: 600, cols: 1, spacing: "sm" },
+          { maxWidth: 755, cols: 2, spacing: "sm" },
+          { maxWidth: 980, cols: 2, spacing: "sm" }
+        ]}
+        mt="xl"
+      >
+        <ActionCard
+          actionElements={buildTasksByCategoryActions(
+            statistics.taskCount.countByCategory
+          )}
+          title={"Oppgaver per kategori"}
+          description={"Gruppe: Schmell"}
+        />
+        <ActionCard
+          actionElements={buildTasksForTodayActions(tasksForToday)}
+          title={"Oppgaver"}
+          description={"Dagens"}
+        />
+      </SimpleGrid>
     </Wrapper>
   );
 }
