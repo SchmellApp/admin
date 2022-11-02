@@ -1,7 +1,6 @@
 import { StatisticsResponse } from "../../../types/api";
-import { TaskCategory } from "../../../types/task/category";
+import { TaskCategory, TaskPriority } from "../../../enums/task";
 import { TasksForToday } from "../../../types/statistics";
-import { TaskPriority } from "../../../types/task/priority";
 
 export const dayStatistics: StatisticsResponse = {
   userCount: {

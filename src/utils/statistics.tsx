@@ -1,10 +1,11 @@
 import { StatisticsResponse } from "../types/api";
 import { ActionElement, DayStatisticsRows } from "../types/ui/statistics";
 import { TasksForToday } from "../types/statistics";
-import { parseCategoryToUnderstandable } from "./category";
-import { parsePriorityToBadge } from "./priority";
+import { Badge } from "@mantine/core";
+import React from "react";
+import { getColor } from "./color";
 
-export const buildDayStatisticsRows = (
+export const toDayStatisticsRow = (
   countByGame: StatisticsResponse["questionsCount"]["countByGame"]
 ): DayStatisticsRows[] =>
   countByGame.map((obj) => ({
@@ -14,20 +15,24 @@ export const buildDayStatisticsRows = (
     userCount: obj.count * 5
   }));
 
-export const buildTasksByCategoryActions = (
+export const toCategoryActions = (
   countByCategory: StatisticsResponse["taskCount"]["countByCategory"]
 ): ActionElement[] =>
   countByCategory.map((obj) => ({
-    name: parseCategoryToUnderstandable(obj.category).name,
+    name: obj.category,
     right: obj.count,
     href: `/tasks?category=${obj.category}`
   }));
 
-export const buildTasksForTodayActions = (
+export const toTodayActions = (
   tasksForToday: TasksForToday[]
 ): ActionElement[] =>
   tasksForToday.map((obj) => ({
     name: obj.title,
-    right: parsePriorityToBadge(obj.priority),
+    right: (
+      <Badge color={getColor(obj.priority)} size="lg">
+        {obj.priority}
+      </Badge>
+    ),
     href: `/tasks/${obj.id}`
   }));

@@ -1,4 +1,4 @@
-export const getParsedTitle = (path: string) => {
+export const toPageTitle = (path: string): string => {
   if (path === "/") {
     return "Oversikt";
   } else if (path.includes("tasks")) {

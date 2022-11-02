@@ -4,21 +4,20 @@ import {
   Group,
   MediaQuery,
   Title,
-  Button,
   useMantineColorScheme,
   Badge,
   ActionIcon
 } from "@mantine/core";
-import { IconPlus, IconX } from "@tabler/icons";
+import { IconX } from "@tabler/icons";
 import { FilterMenu } from "../../src/components/Menus";
-import { parseFilterValue } from "../../src/types/task/common";
-import { getFullName } from "../../src/utils/user";
+import { getFullName, getUser } from "../../src/utils/user";
 import { AddTask } from "../../src/modals";
 import { DataTable } from "../../src/components/Table";
 import { TASKS_HEADER } from "../../src/constants/table";
 import { tasks } from "../../src/lib/demo/tasks/task";
 import { useMediaQuery } from "@mantine/hooks";
 import { CardList } from "../../src/components/List";
+import { SchmellButton } from "../../src/components/Buttons";
 
 export default function Tasks(): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
@@ -26,11 +25,12 @@ export default function Tasks(): JSX.Element {
 
   const [showModal, setShowModal] = useState(false);
   const [filters, setFilters] = useState<string[]>([]);
-  const [responsible, setResponsible] = useState<string>("1");
+  const [responsible, setResponsible] = useState<string>("1"); // TODO: Update with user id
   const [sort, setSort] = useState<string>("");
 
   const isDarkScheme = colorScheme === "dark";
   const isEmptyFilters = filters.length > 0 || responsible.length > 0;
+  const activeUser = getUser(Number(responsible));
 
   const handleFilter = (values: string[]): void => {
     values.forEach((value) => {
@@ -64,16 +64,7 @@ export default function Tasks(): JSX.Element {
         </Title>
       </MediaQuery>
       <Group position="left" mt="lg">
-        <Button
-          onClick={handleShowModal}
-          color={isDarkScheme ? "yellow" : "dark"}
-          rightIcon={<IconPlus />}
-          variant="light"
-          radius="md"
-          size="lg"
-        >
-          Ny oppgave
-        </Button>
+        <SchmellButton onClick={handleShowModal} label={"Ny oppgave"} />
       </Group>
       <Group position={isEmptyFilters ? "apart" : "right"} mt="md">
         <Group position="left" style={{ gap: 8 }}>
@@ -86,7 +77,7 @@ export default function Tasks(): JSX.Element {
                 rightSection={RemoveButton(() => handleRemoveFilter(filter))}
                 color={isDarkScheme ? "yellow" : "white"}
               >
-                {parseFilterValue(filter)}
+                {filter}
               </Badge>
             ))}
           {responsible.length > 0 && (
@@ -96,7 +87,7 @@ export default function Tasks(): JSX.Element {
               rightSection={RemoveButton(() => setResponsible(""))}
               color={isDarkScheme ? "yellow" : "white"}
             >
-              {getFullName(Number(responsible))}
+              {activeUser != null ? getFullName(activeUser) : ""}
             </Badge>
           )}
         </Group>

@@ -4,9 +4,9 @@ import { useForm } from "@mantine/form";
 import { Select } from "@mantine/core";
 import { TASK_STATUS } from "../../constants/task";
 import { DatePicker } from "@mantine/dates";
-import { TaskCategory } from "../../types/task/category";
-import { buildGameOptions } from "../../utils/game";
+import { TaskCategory } from "../../enums/task";
 import { games } from "../../lib/demo/games/game";
+import { toOptions } from "../../utils/common";
 
 interface EditTaskProps {
   task: Task;
@@ -43,7 +43,7 @@ const EditTask: FC<EditTaskProps> = ({ task }) => {
       />
       {isTaskCategoryGame && (
         <Select
-          data={buildGameOptions(games)}
+          data={toOptions(games)}
           label="Relatert spill"
           size="md"
           mt="sm"

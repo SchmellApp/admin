@@ -9,9 +9,7 @@ export const users: User[] = [
     firstName: "Kaviesen",
     lastName: "Kathir",
     alertsForTasks: true,
-    alertsForDeadlines: true,
-    profilePicture: null,
-    profilePictureUrl: null
+    alertsForDeadlines: true
   },
   {
     id: 1,

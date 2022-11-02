@@ -8,9 +8,9 @@ import {
   DAY_STATISTICS_HEADER
 } from "../src/constants/table";
 import {
-  buildDayStatisticsRows,
-  buildTasksByCategoryActions,
-  buildTasksForTodayActions
+  toCategoryActions,
+  toDayStatisticsRow,
+  toTodayActions
 } from "../src/utils/statistics";
 
 export default function Home(): JSX.Element {
@@ -53,7 +53,7 @@ export default function Home(): JSX.Element {
         title={"Dagens statistikk"}
         description={new Date().toDateString()}
         headers={DAY_STATISTICS_HEADER}
-        rows={buildDayStatisticsRows(statistics.questionsCount.countByGame)}
+        rows={toDayStatisticsRow(statistics.questionsCount.countByGame)}
         rightCards={DAY_STATISTICS_CARDS}
       />
       <SimpleGrid
@@ -67,14 +67,14 @@ export default function Home(): JSX.Element {
         mt="xl"
       >
         <ActionCard
-          actionElements={buildTasksByCategoryActions(
+          actionElements={toCategoryActions(
             statistics.taskCount.countByCategory
           )}
           title={"Oppgaver per kategori"}
           description={"Gruppe: Schmell"}
         />
         <ActionCard
-          actionElements={buildTasksForTodayActions(tasksForToday)}
+          actionElements={toTodayActions(tasksForToday)}
           title={"Oppgaver"}
           description={"Dagens"}
         />

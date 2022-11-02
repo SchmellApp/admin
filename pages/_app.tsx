@@ -7,7 +7,7 @@ import {
   MantineProvider
 } from "@mantine/core";
 import React, { useEffect, useState } from "react";
-import { getParsedTitle } from "../src/utils/path";
+import { toPageTitle } from "../src/utils/path";
 import { useRouter } from "next/router";
 import "dayjs/locale/nb";
 import { useColorScheme } from "@mantine/hooks";
@@ -29,7 +29,7 @@ export default function App(props: AppProps): JSX.Element {
     <>
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <title>Schmell - {getParsedTitle(pathname)}</title>
+        <title>Schmell - {toPageTitle(pathname)}</title>
       </Head>
 
       <ColorSchemeProvider

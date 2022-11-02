@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { IconMoonStars, IconSun } from "@tabler/icons";
 import { useRouter } from "next/router";
-import { getParsedTitle } from "../../utils/path";
+import { toPageTitle } from "../../utils/path";
 
 interface HeaderProps {
   opened: boolean;
@@ -38,7 +38,7 @@ const Header: FC<HeaderProps> = ({
         </MediaQuery>
         <Image src="/logo.png" height={40} width={200} />
         <MediaQuery styles={{ display: "none" }} smallerThan={"sm"}>
-          <Title order={2}>{getParsedTitle(pathname)}</Title>
+          <Title order={2}>{toPageTitle(pathname)}</Title>
         </MediaQuery>
         <ActionIcon
           variant="default"
