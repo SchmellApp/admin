@@ -9,6 +9,7 @@ import {
 import React, { useState } from "react";
 import { getParsedTitle } from "../src/utils/path";
 import { useRouter } from "next/router";
+import "dayjs/locale/nb";
 
 export default function App(props: AppProps): JSX.Element {
   const { Component, pageProps } = props;
@@ -36,6 +37,17 @@ export default function App(props: AppProps): JSX.Element {
             fontFamily: "Montserrat, sans-serif",
             headings: {
               fontFamily: "Montserrat, sans-serif"
+            },
+            colors: {
+              white: [
+                "#FFFFFF",
+                "#E6E6E6",
+                "#CFCFCF",
+                "#BABABA",
+                "#A7A7A7",
+                "#979797",
+                "#888888"
+              ]
             }
           }}
         >

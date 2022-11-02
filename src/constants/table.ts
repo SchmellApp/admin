@@ -1,4 +1,5 @@
 import packageJson from "../../package.json";
+import { DataTableHeader } from "../types/ui/table";
 
 export const DAY_STATISTICS_HEADER = [
   "Spill",
@@ -24,5 +25,36 @@ export const DAY_STATISTICS_CARDS = [
   {
     title: "Versjon",
     description: packageJson.version
+  }
+];
+
+export const TASKS_HEADER: DataTableHeader[] = [
+  {
+    name: "Oppgave detaljer",
+    isSortable: false
+  },
+  {
+    name: "Kategori",
+    isSortable: true,
+    sortKeys: {
+      ASC: "CATEGORY_ASC",
+      DESC: "CATEGORY_DESC"
+    }
+  },
+  {
+    name: "Frist",
+    isSortable: true,
+    sortKeys: {
+      ASC: "DEADLINE_ASC",
+      DESC: "DEADLINE_DESC"
+    }
+  },
+  {
+    name: "Prioritet",
+    isSortable: true,
+    sortKeys: {
+      ASC: "PRIORITY_ASC",
+      DESC: "PRIORITY_DESC"
+    }
   }
 ];
