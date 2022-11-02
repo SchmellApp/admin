@@ -1,6 +1,4 @@
-import { TaskStatus } from "./task/status";
-import { TaskCategory } from "./task/category";
-import { TaskPriority } from "./task/priority";
+import { TaskCategory, TaskPriority, TaskStatus } from "../enums/task";
 import { User } from "./user";
 import { Game } from "./game";
 

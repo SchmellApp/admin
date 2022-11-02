@@ -1,7 +1,5 @@
 import { Task } from "../../../types/task";
-import { TaskStatus } from "../../../types/task/status";
-import { TaskCategory } from "../../../types/task/category";
-import { TaskPriority } from "../../../types/task/priority";
+import { TaskCategory, TaskPriority, TaskStatus } from "../../../enums/task";
 import { users } from "../users/user";
 import { games } from "../games/game";
 

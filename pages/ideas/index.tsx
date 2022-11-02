@@ -4,24 +4,19 @@ import {
   Group,
   MediaQuery,
   Title,
-  Button,
-  useMantineColorScheme,
   Collapse,
   SimpleGrid,
   useMantineTheme
 } from "@mantine/core";
-import { IconPlus } from "@tabler/icons";
 import { IdeaForm } from "../../src/components/Forms";
 import { ListElements } from "../../src/components/List";
 import { ideas } from "../../src/lib/demo/ideas/ideas";
-import { buildListElements, filterByCategory } from "../../src/utils/idea";
-import { IdeaCategory } from "../../src/types/ideas/category";
+import { filterByCategory, toListElements } from "../../src/utils/idea";
 import { ActionDialog } from "../../src/components/Modals";
+import { SchmellButton } from "../../src/components/Buttons";
+import { IDEA_CATEGORIES_ELEMENTS } from "../../src/constants/idea";
 
 export default function Ideas(): JSX.Element {
-  const isDarkMode = useMantineColorScheme().colorScheme === "dark";
-  const theme = useMantineTheme();
-
   const [openMenu, setOpenMenu] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState({
     isOpen: false,
@@ -48,16 +43,7 @@ export default function Ideas(): JSX.Element {
         </Title>
       </MediaQuery>
       <Group position="right">
-        <Button
-          variant="light"
-          color={isDarkMode ? "yellow" : "dark"}
-          onClick={handleOpenMenu}
-          rightIcon={<IconPlus />}
-          radius="md"
-          size="lg"
-        >
-          Jeg har en ny idé!
-        </Button>
+        <SchmellButton onClick={handleOpenMenu} label={"Jeg har en ny idé!"} />
       </Group>
       <Collapse in={openMenu}>
         <IdeaForm />
@@ -79,38 +65,17 @@ export default function Ideas(): JSX.Element {
           }
         ]}
       >
-        <ListElements
-          title="Spill"
-          color={theme.colors.yellow[2]}
-          elements={buildListElements(
-            filterByCategory(ideas, IdeaCategory.GAMES)
-          )}
-          handleClick={handleDeleteClick}
-        />
-        <ListElements
-          title="Utvikling"
-          color={theme.colors.green[2]}
-          elements={buildListElements(
-            filterByCategory(ideas, IdeaCategory.DEVELOPMENT)
-          )}
-          handleClick={handleDeleteClick}
-        />
-        <ListElements
-          title="Design"
-          color={theme.colors.blue[2]}
-          elements={buildListElements(
-            filterByCategory(ideas, IdeaCategory.DESIGN)
-          )}
-          handleClick={handleDeleteClick}
-        />
-        <ListElements
-          title="Diverse"
-          color={theme.colors.orange[2]}
-          elements={buildListElements(
-            filterByCategory(ideas, IdeaCategory.VARIOUS)
-          )}
-          handleClick={handleDeleteClick}
-        />
+        {IDEA_CATEGORIES_ELEMENTS.map((category) => (
+          <ListElements
+            key={category.title}
+            title={category.title}
+            color={category.color}
+            elements={toListElements(
+              filterByCategory(ideas, category.category)
+            )}
+            handleClick={handleDeleteClick}
+          />
+        ))}
       </SimpleGrid>
       <ActionDialog
         title="Er du sikker på at du ønsker å slette?"

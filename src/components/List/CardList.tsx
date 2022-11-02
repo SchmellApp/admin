@@ -7,12 +7,12 @@ import {
   Group,
   Pagination,
   Text,
+  Badge,
   useMantineColorScheme
 } from "@mantine/core";
 import Link from "next/link";
 import { getDifferenceInDays, toDateString } from "../../utils/date";
-import { parseCategoryToUnderstandable } from "../../utils/category";
-import { parsePriorityToBadge } from "../../utils/priority";
+import { getColor } from "../../utils/color";
 
 interface CardListProps {
   tableData: Task[];
@@ -45,7 +45,7 @@ const CardList: FC<CardListProps> = ({ tableData }): JSX.Element => {
           <Divider mt="sm" mb="sm" />
           <Group position="left">
             <Text weight="bolder">Kategori:</Text>
-            <Text>{parseCategoryToUnderstandable(task.category).name}</Text>
+            <Text>{task.category}</Text>
           </Group>
           <Group position="left" my="xs">
             <Text weight="bolder">Frist:</Text>
@@ -53,7 +53,9 @@ const CardList: FC<CardListProps> = ({ tableData }): JSX.Element => {
           </Group>
           <Group position="left" my="xs">
             <Text weight="bolder">Prioritet:</Text>
-            <Text>{parsePriorityToBadge(task.priority, true)}</Text>
+            <Badge color={getColor(task.priority)} size="lg" fullWidth>
+              {task.priority}
+            </Badge>
           </Group>
         </Card>
       ))}

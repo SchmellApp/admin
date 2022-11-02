@@ -12,11 +12,11 @@ import {
   Text
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { TaskStatus } from "../types/task/status";
+import { TaskStatus } from "../enums/task";
 import { TASK_CATEGORY, TASK_PRIORITY, TASK_STATUS } from "../constants/task";
 import { DatePicker } from "@mantine/dates";
 import { users } from "../lib/demo/users/user";
-import { parseUserToFilter } from "../utils/task/user";
+import { toUserControls } from "../utils/user";
 import { IconCirclePlus } from "@tabler/icons";
 
 interface AddTaskProps {
@@ -108,7 +108,7 @@ const AddTask: FC<AddTaskProps> = ({ isOpen, onClose }): JSX.Element => {
             Velg ansvarlig
           </Text>
           <SegmentedControl
-            data={parseUserToFilter(users)}
+            data={toUserControls(users)}
             fullWidth
             color={isDarkScheme ? "yellow" : "dark"}
             sx={{

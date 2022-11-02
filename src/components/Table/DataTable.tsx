@@ -2,6 +2,7 @@ import { DataTableHeader } from "../../types/ui/table";
 import React, { Dispatch, FC, ReactNode, SetStateAction } from "react";
 import {
   Avatar,
+  Badge,
   Button,
   Group,
   Pagination,
@@ -13,11 +14,10 @@ import {
 } from "@mantine/core";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons";
 import { Task } from "../../types/task";
-import { TaskStatus } from "../../types/task/status";
-import { parsePriorityToBadge } from "../../utils/priority";
-import { parseCategoryToUnderstandable } from "../../utils/category";
+import { TaskStatus } from "../../enums/task";
 import { getDifferenceInDays, toDateString } from "../../utils/date";
 import { useRouter } from "next/router";
+import { getColor } from "../../utils/color";
 
 interface DataTableProps {
   headers: DataTableHeader[];
@@ -108,9 +108,13 @@ const DataTable: FC<DataTableProps> = ({
                   </div>
                 </Group>
               </td>
-              <td>{parseCategoryToUnderstandable(task.category).name}</td>
+              <td>{task.category}</td>
               <td>{toDateString(task.deadline)}</td>
-              <td>{parsePriorityToBadge(task.priority, true)}</td>
+              <td>
+                <Badge color={getColor(task.priority)} size="lg" fullWidth>
+                  {task.priority}
+                </Badge>
+              </td>
             </tr>
           ))}
         </tbody>

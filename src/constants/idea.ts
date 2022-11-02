@@ -1,4 +1,4 @@
-import { IdeaCategory } from "../types/ideas/category";
+import { IdeaCategory } from "../enums/idea";
 
 export const IDEA_CATEGORIES = [
   {
@@ -16,5 +16,28 @@ export const IDEA_CATEGORIES = [
   {
     label: "Diverse",
     value: IdeaCategory.VARIOUS
+  }
+];
+
+export const IDEA_CATEGORIES_ELEMENTS = [
+  {
+    title: "Spill",
+    color: "#FFEC99",
+    category: IdeaCategory.GAMES
+  },
+  {
+    title: "Utviling",
+    color: "#B2F2BB",
+    category: IdeaCategory.DEVELOPMENT
+  },
+  {
+    title: "Design",
+    color: "#A5D8FF",
+    category: IdeaCategory.DESIGN
+  },
+  {
+    title: "Diverse",
+    color: "#FFD8A8",
+    category: IdeaCategory.VARIOUS
   }
 ];

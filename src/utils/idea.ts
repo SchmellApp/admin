@@ -1,4 +1,4 @@
-import { IdeaCategory } from "../types/ideas/category";
+import { IdeaCategory } from "../enums/idea";
 import { Idea } from "../types/idea";
 import { ListElement } from "../types/ui/list";
 
@@ -7,7 +7,7 @@ export const filterByCategory = (
   category: IdeaCategory
 ): Idea[] => ideas.filter((idea) => idea.category === category);
 
-export const buildListElements = (ideas: Idea[]): ListElement[] =>
+export const toListElements = (ideas: Idea[]): ListElement[] =>
   ideas.map((idea) => ({
     text: idea.ideaText,
     id: idea.id,

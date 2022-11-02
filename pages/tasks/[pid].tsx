@@ -16,11 +16,11 @@ import {
 } from "@mantine/core";
 import { tasks } from "../../src/lib/demo/tasks/task";
 import { EditTask, CommentForm } from "../../src/components/Forms";
-import { parseCategoryToUnderstandable } from "../../src/utils/category";
-import { parsePriorityToBadge } from "../../src/utils/priority";
 import { getFullName } from "../../src/utils/user";
 import { comments } from "../../src/lib/demo/tasks/comments";
 import { Comment } from "../../src/components/Comment/";
+import { getColor } from "../../src/utils/color";
+import { getIcon } from "../../src/utils/task";
 
 const Task = (): JSX.Element => {
   const router = useRouter();
@@ -71,23 +71,20 @@ const Task = (): JSX.Element => {
               <EditTask task={task} />
               <Group mt="md" position="apart">
                 <Text>Kategori:</Text>
-                <Badge
-                  size="lg"
-                  rightSection={
-                    parseCategoryToUnderstandable(task.category).icon
-                  }
-                >
-                  {parseCategoryToUnderstandable(task.category).name}
+                <Badge size="lg" rightSection={getIcon(task.category)}>
+                  {task.category}
                 </Badge>
               </Group>
               <Group mt="md" position="apart">
                 <Text>Prioritet:</Text>
-                <Text>{parsePriorityToBadge(task.priority)}</Text>
+                <Badge size="lg" color={getColor(task.priority)}>
+                  {task.priority}
+                </Badge>
               </Group>
               <Group mt={80} position="apart">
                 <div>
                   <Text weight="bolder">Ansvarlig:</Text>
-                  <Text>{getFullName(task.responsibleUser.id)}</Text>
+                  <Text>{getFullName(task.responsibleUser)}</Text>
                 </div>
                 <Avatar
                   src={task.responsibleUser.profilePictureUrl}

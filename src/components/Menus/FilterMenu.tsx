@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { IconFilter } from "@tabler/icons";
 import React, { FC } from "react";
-import { parseUserToFilter } from "../../utils/task/user";
+import { toUserControls } from "../../utils/user";
 import { users } from "../../lib/demo/users/user";
 import {
   TASK_CATEGORY,
@@ -96,7 +96,7 @@ const FilterMenu: FC<FilterMenuProps> = ({
           </Text>
           <Center>
             <SegmentedControl
-              data={parseUserToFilter(users)}
+              data={toUserControls(users)}
               radius="lg"
               mt="sm"
               onChange={setResponsible}

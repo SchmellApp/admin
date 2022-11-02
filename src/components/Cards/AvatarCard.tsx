@@ -21,12 +21,12 @@ const AvatarCard: FC<AvatarCardProps> = ({
     <Card
       shadow="sm"
       radius="md"
-      sx={{
+      sx={(theme) => ({
         backgroundColor: color,
         color: "black",
         position: "relative",
         minHeight: 100
-      }}
+      })}
       mx="md"
     >
       {handleClick != null && (

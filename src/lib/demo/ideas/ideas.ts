@@ -1,5 +1,5 @@
 import { Idea } from "../../../types/idea";
-import { IdeaCategory } from "../../../types/ideas/category";
+import { IdeaCategory } from "../../../enums/idea";
 import { users } from "../users/user";
 
 export const ideas: Idea[] = [
