@@ -7,8 +7,8 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import User from "./User";
 import React, { FC, RefObject, useEffect, useState } from "react";
+import { UserSection } from "./index";
 
 interface NavbarProps {
   opened: boolean;
@@ -67,7 +67,7 @@ const Navbar: FC<NavbarProps> = ({ opened, wrapperRef }) => {
         </Stack>
       </MantineNavbar.Section>
       <MantineNavbar.Section>
-        <User
+        <UserSection
           userFullName={"Francin Vincent"}
           userAvatarUrl={""}
           userEmailAddress={"francin.vinc@gmail.com"}
