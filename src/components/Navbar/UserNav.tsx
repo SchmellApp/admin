@@ -10,13 +10,13 @@ import {
 import { IconChevronRight } from "@tabler/icons";
 import Link from "next/link";
 
-interface UserProps {
+interface UserNavProps {
   userFullName: string;
   userAvatarUrl: string;
   userEmailAddress: string;
 }
 
-const User: FC<UserProps> = ({
+const UserNav: FC<UserNavProps> = ({
   userAvatarUrl,
   userEmailAddress,
   userFullName
@@ -70,4 +70,4 @@ const User: FC<UserProps> = ({
   );
 };
 
-export default User;
+export default UserNav;

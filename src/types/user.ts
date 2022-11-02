@@ -7,6 +7,6 @@ export interface User {
   lastName: string;
   alertsForTasks: boolean;
   alertsForDeadlines: boolean;
-  profilePicture: string | null;
-  profilePictureUrl: string | null;
+  profilePicture?: string;
+  profilePictureUrl?: string;
 }
