@@ -18,9 +18,12 @@ import { AddTask } from "../../src/modals";
 import { DataTable } from "../../src/components/Table";
 import { TASKS_HEADER } from "../../src/constants/table";
 import { tasks } from "../../src/lib/demo/tasks/task";
+import { useMediaQuery } from "@mantine/hooks";
+import { CardList } from "../../src/components/List";
 
 export default function Tasks(): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
+  const isMobileScreen = useMediaQuery("(max-width: 768px)");
 
   const [showModal, setShowModal] = useState(false);
   const [filters, setFilters] = useState<string[]>([]);
@@ -106,12 +109,16 @@ export default function Tasks(): JSX.Element {
         />
       </Group>
       <Container>
-        <DataTable
-          headers={TASKS_HEADER}
-          sort={sort}
-          setSort={setSort}
-          tableData={tasks}
-        />
+        {isMobileScreen ? (
+          <CardList tableData={tasks} />
+        ) : (
+          <DataTable
+            headers={TASKS_HEADER}
+            sort={sort}
+            setSort={setSort}
+            tableData={tasks}
+          />
+        )}
       </Container>
       <AddTask isOpen={showModal} onClose={handleShowModal} />
     </Wrapper>
