@@ -8,28 +8,39 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import User from "./User";
-import React, { FC } from "react";
+import React, { FC, RefObject, useEffect, useState } from "react";
 
 interface NavbarProps {
   opened: boolean;
+  wrapperRef: RefObject<HTMLDivElement>;
 }
 
-const Navbar: FC<NavbarProps> = ({ opened }) => {
+const Navbar: FC<NavbarProps> = ({ opened, wrapperRef }) => {
   const { pathname } = useRouter();
-  const isActive = (href: string) => pathname === href;
+  const isActive = (href: string): boolean => pathname === href;
+
+  const [height, setHeight] = useState<number>(0);
 
   const { colorScheme } = useMantineColorScheme();
 
   const isDark = colorScheme === "dark";
 
+  useEffect(() => {
+    if (wrapperRef.current != null) {
+      setHeight(
+        wrapperRef.current?.children[1].querySelector("main")?.offsetHeight ?? 0
+      );
+    }
+  }, [wrapperRef.current?.children[1].querySelector("main")?.offsetHeight]);
+
   return (
     <MantineNavbar
       width={{ base: 300 }}
-      sx={{ justifyContent: "space-between" }}
+      height={height}
       hiddenBreakpoint="sm"
       hidden={!opened}
     >
-      <MantineNavbar.Section mt="xl">
+      <MantineNavbar.Section mt="xl" grow>
         <Stack>
           {nav.map((item) => (
             <Link href={item.href} key={item.href} passHref>

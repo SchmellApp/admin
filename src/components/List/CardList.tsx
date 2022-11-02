@@ -1,12 +1,16 @@
 import { Task } from "../../types/task";
 import React, { FC } from "react";
-import { Avatar, Card, Divider, Group, Pagination, Text } from "@mantine/core";
-import Link from "next/link";
 import {
-  getDifferenceInDays,
-  parseDateToUnderstandable
-} from "../../utils/date";
-import { useColorScheme } from "@mantine/hooks";
+  Avatar,
+  Card,
+  Divider,
+  Group,
+  Pagination,
+  Text,
+  useMantineColorScheme
+} from "@mantine/core";
+import Link from "next/link";
+import { getDifferenceInDays, toDateString } from "../../utils/date";
 import { parseCategoryToUnderstandable } from "../../utils/category";
 import { parsePriorityToBadge } from "../../utils/priority";
 
@@ -15,7 +19,7 @@ interface CardListProps {
 }
 
 const CardList: FC<CardListProps> = ({ tableData }): JSX.Element => {
-  const isDarkScheme = useColorScheme() === "dark";
+  const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
 
   return (
     <div>
@@ -41,11 +45,11 @@ const CardList: FC<CardListProps> = ({ tableData }): JSX.Element => {
           <Divider mt="sm" mb="sm" />
           <Group position="left">
             <Text weight="bolder">Kategori:</Text>
-            <Text>{parseCategoryToUnderstandable(task.category)}</Text>
+            <Text>{parseCategoryToUnderstandable(task.category).name}</Text>
           </Group>
           <Group position="left" my="xs">
             <Text weight="bolder">Frist:</Text>
-            <Text>{parseDateToUnderstandable(task.deadline)}</Text>
+            <Text>{toDateString(task.deadline)}</Text>
           </Group>
           <Group position="left" my="xs">
             <Text weight="bolder">Prioritet:</Text>

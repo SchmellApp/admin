@@ -7,8 +7,7 @@ import {
   Button,
   useMantineColorScheme,
   Badge,
-  ActionIcon,
-  Container
+  ActionIcon
 } from "@mantine/core";
 import { IconPlus, IconX } from "@tabler/icons";
 import { FilterMenu } from "../../src/components/Menus";
@@ -108,7 +107,7 @@ export default function Tasks(): JSX.Element {
           setResponsible={setResponsible}
         />
       </Group>
-      <Container>
+      <div>
         {isMobileScreen ? (
           <CardList tableData={tasks} />
         ) : (
@@ -119,7 +118,7 @@ export default function Tasks(): JSX.Element {
             tableData={tasks}
           />
         )}
-      </Container>
+      </div>
       <AddTask isOpen={showModal} onClose={handleShowModal} />
     </Wrapper>
   );

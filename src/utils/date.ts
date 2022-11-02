@@ -1,14 +1,17 @@
-export const parseDateToUnderstandable = (date: Date): string =>
+export const toDateString = (date: Date): string =>
   date.toLocaleString("no-NO", {
     month: "long",
     day: "numeric",
     year: "numeric"
   });
 
-export const parseDateToHour = (date: Date): string =>
+export const toDateTimeString = (date: Date): string =>
   date.toLocaleString("no-NO", {
-    hour: "2-digit",
-    minute: "2-digit"
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric"
   });
 
 export const getDifferenceInDays = (date: Date): string => {

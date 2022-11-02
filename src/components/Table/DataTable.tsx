@@ -8,19 +8,16 @@ import {
   Table,
   Text,
   Title,
-  Tooltip
+  Tooltip,
+  useMantineColorScheme
 } from "@mantine/core";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons";
 import { Task } from "../../types/task";
 import { TaskStatus } from "../../types/task/status";
 import { parsePriorityToBadge } from "../../utils/priority";
 import { parseCategoryToUnderstandable } from "../../utils/category";
-import {
-  getDifferenceInDays,
-  parseDateToUnderstandable
-} from "../../utils/date";
+import { getDifferenceInDays, toDateString } from "../../utils/date";
 import { useRouter } from "next/router";
-import { useColorScheme } from "@mantine/hooks";
 
 interface DataTableProps {
   headers: DataTableHeader[];
@@ -38,7 +35,7 @@ const DataTable: FC<DataTableProps> = ({
   tableData
 }): JSX.Element => {
   const router = useRouter();
-  const isDarkScheme = useColorScheme() === "dark";
+  const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
 
   const getSortIcon = (header: DataTableHeader): ReactNode | undefined => {
     if (header.isSortable && header.sortKeys != null) {
@@ -111,8 +108,8 @@ const DataTable: FC<DataTableProps> = ({
                   </div>
                 </Group>
               </td>
-              <td>{parseCategoryToUnderstandable(task.category)}</td>
-              <td>{parseDateToUnderstandable(task.deadline)}</td>
+              <td>{parseCategoryToUnderstandable(task.category).name}</td>
+              <td>{toDateString(task.deadline)}</td>
               <td>{parsePriorityToBadge(task.priority, true)}</td>
             </tr>
           ))}

@@ -18,7 +18,7 @@ export const buildTasksByCategoryActions = (
   countByCategory: StatisticsResponse["taskCount"]["countByCategory"]
 ): ActionElement[] =>
   countByCategory.map((obj) => ({
-    name: parseCategoryToUnderstandable(obj.category),
+    name: parseCategoryToUnderstandable(obj.category).name,
     right: obj.count,
     href: `/tasks?category=${obj.category}`
   }));

@@ -6,17 +6,24 @@ import {
   ColorSchemeProvider,
   MantineProvider
 } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getParsedTitle } from "../src/utils/path";
 import { useRouter } from "next/router";
 import "dayjs/locale/nb";
+import { useColorScheme } from "@mantine/hooks";
 
 export default function App(props: AppProps): JSX.Element {
   const { Component, pageProps } = props;
-  const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
+  const computerColorScheme = useColorScheme();
+  const [colorScheme, setColorScheme] =
+    useState<ColorScheme>(computerColorScheme);
   const toggleColorScheme = (): void =>
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
   const { pathname } = useRouter();
+
+  useEffect(() => {
+    setColorScheme(computerColorScheme);
+  }, [computerColorScheme]);
 
   return (
     <>
