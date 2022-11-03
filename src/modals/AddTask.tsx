@@ -55,39 +55,34 @@ const AddTask: FC<AddTaskProps> = ({ isOpen, onClose }): JSX.Element => {
           withAsterisk
           label={"Skriv inn tittel"}
           placeholder={"Fiks bug i appen"}
-          mt="md"
-          mb="md"
+          my="md"
           {...form.getInputProps("title")}
         />
         <Textarea
           withAsterisk
           label={"Skriv inn beskrivelse"}
           placeholder={"Fant en feil med spillere"}
-          mt="md"
-          mb="md"
+          my="md"
           {...form.getInputProps("description")}
         />
         <Select
           label="Velg status"
           data={TASK_STATUS}
-          mt="md"
-          mb="md"
+          my="md"
           color={isDarkScheme ? "yellow" : "dark"}
           {...form.getInputProps("status")}
         />
         <DatePicker
           withAsterisk
           label="Velg frist"
-          mt="md"
-          mb="md"
+          my="md"
           minDate={new Date()}
           locale="nb"
           {...form.getInputProps("deadline")}
         />
         <Select
           data={TASK_CATEGORY}
-          mt="md"
-          mb="md"
+          my="md"
           label="Velg kategori"
           withAsterisk
           {...form.getInputProps("category")}
