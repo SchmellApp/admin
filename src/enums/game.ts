@@ -1,5 +1,5 @@
 export enum GameStatus {
-  DEVELOPMENT = "Utvikling",
+  DEVELOPMENT = "Under arbeid",
   READY = "Klar",
   DEPLOYED = "Publisert"
 }

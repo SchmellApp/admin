@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { Wrapper } from "../../src/components/Wrappers";
-import {
-  Group,
-  MediaQuery,
-  Title,
-  Collapse,
-  SimpleGrid,
-  useMantineTheme
-} from "@mantine/core";
+import { Group, MediaQuery, Title, Collapse, SimpleGrid } from "@mantine/core";
 import { IdeaForm } from "../../src/components/Forms";
 import { ListElements } from "../../src/components/List";
 import { ideas } from "../../src/lib/demo/ideas/ideas";
