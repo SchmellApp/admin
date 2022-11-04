@@ -10,6 +10,9 @@ import {
   TextInput
 } from "@mantine/core";
 import { SubmitButton } from "@/components/Buttons";
+import { editQuestionInitialValues } from "@/lib/forms/initialValues/question";
+import { EditQuestionForm } from "@/types/forms/question";
+import { editQuestionValidator } from "@/lib/forms/validators/question";
 
 interface EditQuestionProps {
   question: Question;
@@ -20,27 +23,14 @@ interface EditQuestionProps {
 const EditQuestion: FC<EditQuestionProps> = (props) => {
   const { isOpen, onClose, question } = props;
 
-  const form = useForm({
-    initialValues: {
-      id: question.id,
-      type: question.type,
-      questionDescription: question.questionDescription,
-      phase: question.phase,
-      function: question.function,
-      punishment: question.punishment,
-      questionPicture: new File([], question.questionPicture ?? "")
-    },
+  const form = useForm<EditQuestionForm>({
+    initialValues: editQuestionInitialValues(question),
     validate: {
-      type: (value) => !(value.length > 0) && "Må skrive inn type",
-      questionDescription: (value) =>
-        !(value.length > 0) && "Må skrive inn spørsmål",
-      phase: (value) => value === 0 && "Må skrive inn fase",
+      ...editQuestionValidator,
       function: (value: string) =>
         !(value.length > 0) &&
-        question.function?.length !== undefined &&
-        "Må skrive inn funksjon",
-      punishment: (value) => value === 0 && "Må skrive inn straff",
-      questionPicture: (value) => value === null && "Må laste opp bilde"
+        question.function !== undefined &&
+        "Må skrive inn funksjon"
     }
   });
 

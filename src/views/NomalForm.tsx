@@ -3,26 +3,17 @@ import { FormProps } from "@/modals/AddQuestion";
 import { useForm } from "@mantine/form";
 import { FileInput, NumberInput, Textarea, TextInput } from "@mantine/core";
 import { SubmitButton } from "@/components/Buttons";
+import { createQuestionInitialValues } from "@/lib/forms/initialValues/question";
+import { createQuestionValidator } from "@/lib/forms/validators/question";
+import { CreateQuestionForm } from "@/types/forms/question";
 
 const NormalForm: FC<FormProps> = ({ onClose, selectedWeek, selectedGame }) => {
-  const form = useForm({
-    initialValues: {
-      type: "",
-      questionDescription: "",
-      phase: 0,
-      function: "",
-      punishment: 0,
-      relatedWeek: selectedWeek.id,
-      relatedGame: selectedGame.id,
-      questionPicture: null
-    },
-    validate: {
-      type: (value) => !(value.length > 0) && "Må skrive inn en type",
-      questionDescription: (value) =>
-        !(value.length > 0) && "Må skrive inn en beskrivelse",
-      phase: (value) => value === 0 && "Må skrive inn en fase",
-      punishment: (value) => value === 0 && "Må skrive inn en straff"
-    }
+  const form = useForm<CreateQuestionForm>({
+    initialValues: createQuestionInitialValues(
+      selectedGame.id,
+      selectedWeek.id
+    ),
+    validate: createQuestionValidator
   });
 
   const handleSubmit = (values: typeof form.values): void => {

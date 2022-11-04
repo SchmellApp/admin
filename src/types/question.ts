@@ -4,9 +4,12 @@ export interface Question {
   type: string;
   questionDescription: string;
   phase: number;
-  function?: string;
+  function?: {};
   punishment: number;
   questionPicture?: string;
   relatedGame: number;
   questionPictureUrl?: string;
 }
+
+export interface EmptyQuestionJson
+  extends Omit<Question, "id" | "questionPicture" | "questionPictureUrl"> {}

@@ -10,17 +10,15 @@ import {
 } from "@mantine/core";
 import { IDEA_CATEGORIES } from "@/constants/idea";
 import { IconBulb } from "@tabler/icons";
+import { IdeaForm } from "@/types/forms/idea";
+import { users } from "@/lib/demo/users/user";
+import { createIdeaFormInitialValues } from "@/lib/forms/initialValues/idea";
+import { createIdeaFormValidationSchema } from "@/lib/forms/validators/idea";
 
 const CreateIdea = (): JSX.Element => {
-  const form = useForm({
-    initialValues: {
-      category: "",
-      ideaText: ""
-    },
-    validate: {
-      category: (value) => !(value.length > 0) && "Må velge en kategori",
-      ideaText: (value) => !(value.length > 0) && "Må skrive en idé😜"
-    }
+  const form = useForm<IdeaForm>({
+    initialValues: createIdeaFormInitialValues(users[0]),
+    validate: createIdeaFormValidationSchema
   });
   const isDarkMode = useMantineColorScheme().colorScheme === "dark";
 

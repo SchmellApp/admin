@@ -7,19 +7,16 @@ import { DatePicker } from "@mantine/dates";
 import { TaskCategory } from "@/enums/task";
 import { games } from "@/lib/demo/games/game";
 import { toOptions } from "@/utils/common";
+import { editTaskInitialValues } from "@/lib/forms/initialValues/task";
+import { EditTaskForm } from "@/types/forms/task";
 
 interface EditTaskProps {
   task: Task;
 }
 
 const EditTask: FC<EditTaskProps> = ({ task }) => {
-  const form = useForm({
-    initialValues: {
-      status: task.status,
-      deadline: task.deadline,
-      relatedGame: String(task.relatedGame?.id) ?? "",
-      priority: task.priority
-    }
+  const form = useForm<EditTaskForm>({
+    initialValues: editTaskInitialValues(task)
   });
 
   const isTaskCategoryGame = task.category === TaskCategory.GAMES;

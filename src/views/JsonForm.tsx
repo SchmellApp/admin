@@ -4,28 +4,20 @@ import { useForm } from "@mantine/form";
 import { Group, JsonInput, Button, useMantineTheme } from "@mantine/core";
 import { SubmitButton } from "@/components/Buttons";
 import { IconCode } from "@tabler/icons";
+import { createQuestionJsonInitialValues } from "@/lib/forms/initialValues/question";
+import { getEmptyJson } from "@/utils/question";
+import { CreateQuestionJsonForm } from "@/types/forms/question";
+import { createQuestionJsonValidator } from "@/lib/forms/validators/question";
 
 const JsonForm: FC<FormProps> = (props) => {
   const { onClose, selectedGame, selectedWeek } = props;
 
-  const emptyJson = [
-    {
-      type: "",
-      questionDescription: "",
-      phase: 0,
-      function: {},
-      punishment: 0,
-      relatedWeek: selectedWeek.id,
-      relatedGame: selectedGame.id
-    }
-  ];
-  const form = useForm({
-    initialValues: {
-      json: JSON.stringify(emptyJson, null, 2)
-    },
-    validate: {
-      json: (value) => !(value.length > 0) && "Må legge til minimum et spørsmål"
-    }
+  const form = useForm<CreateQuestionJsonForm>({
+    initialValues: createQuestionJsonInitialValues(
+      selectedGame.id,
+      selectedWeek.id
+    ),
+    validate: createQuestionJsonValidator
   });
 
   const isDarkScheme = useMantineTheme().colorScheme === "dark";
@@ -35,7 +27,10 @@ const JsonForm: FC<FormProps> = (props) => {
     onClose();
   };
   const handleAdd = (): void => {
-    const addedElement = [...JSON.parse(form.values.json), ...emptyJson];
+    const addedElement = [
+      ...JSON.parse(form.values.json),
+      ...getEmptyJson(selectedWeek.id, selectedGame.id)
+    ];
     form.setFieldValue("json", JSON.stringify(addedElement, null, 2));
   };
 
