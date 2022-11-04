@@ -1,4 +1,4 @@
-import { Task } from "../../types/task";
+import { Task } from "@/types/task";
 import React, { FC } from "react";
 import {
   Avatar,
@@ -11,8 +11,8 @@ import {
   useMantineColorScheme
 } from "@mantine/core";
 import Link from "next/link";
-import { getDifferenceInDays, toDateString } from "../../utils/date";
-import { getColor } from "../../utils/color";
+import { getDifferenceInDays, toDateString } from "@/utils/date";
+import { getColor } from "@/utils/color";
 
 interface CardListProps {
   tableData: Task[];

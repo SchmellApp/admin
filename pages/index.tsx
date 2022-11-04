@@ -1,17 +1,14 @@
 import React from "react";
-import { Wrapper } from "../src/components/Wrappers";
+import { Wrapper } from "@/components/Wrappers";
 import { MediaQuery, SimpleGrid, Title } from "@mantine/core";
-import { dayStatistics, tasksForToday } from "../src/lib/demo/home/statistics";
-import { ActionCard, TableCard, TextCard } from "../src/components/Cards";
-import {
-  DAY_STATISTICS_CARDS,
-  DAY_STATISTICS_HEADER
-} from "../src/constants/table";
+import { dayStatistics, tasksForToday } from "@/lib/demo/home/statistics";
+import { ActionCard, TableCard, TextCard } from "@/components/Cards";
+import { DAY_STATISTICS_CARDS, DAY_STATISTICS_HEADER } from "@/constants/table";
 import {
   toCategoryActions,
   toDayStatisticsRow,
   toTodayActions
-} from "../src/utils/statistics";
+} from "@/utils/statistics";
 
 export default function Home(): JSX.Element {
   const statistics = dayStatistics;

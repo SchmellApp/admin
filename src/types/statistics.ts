@@ -1,4 +1,4 @@
-import { TaskCategory, TaskPriority } from "../enums/task";
+import { TaskCategory, TaskPriority } from "@/enums/task";
 
 export interface UserCount {
   count: number;

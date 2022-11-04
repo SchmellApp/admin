@@ -1,5 +1,5 @@
 import packageJson from "../../package.json";
-import { DataTableHeader } from "../types/ui/table";
+import { DataTableHeader } from "@/types/ui/table";
 
 export const DAY_STATISTICS_HEADER = [
   "Spill",

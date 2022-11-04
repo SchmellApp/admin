@@ -8,7 +8,7 @@ import {
   useMantineColorScheme,
   Stack
 } from "@mantine/core";
-import { IDEA_CATEGORIES } from "../../constants/idea";
+import { IDEA_CATEGORIES } from "@/constants/idea";
 import { IconBulb } from "@tabler/icons";
 
 const CreateIdea = (): JSX.Element => {

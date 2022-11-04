@@ -1,4 +1,4 @@
-import { TaskCategory } from "../enums/task";
+import { TaskCategory } from "@/enums/task";
 import React, { ReactNode } from "react";
 import {
   IconAd,

@@ -1,6 +1,6 @@
-import { IdeaCategory } from "../enums/idea";
-import { Idea } from "../types/idea";
-import { ListElement } from "../types/ui/list";
+import { IdeaCategory } from "@/enums/idea";
+import { Idea } from "@/types/idea";
+import { ListElement } from "@/types/ui/list";
 
 export const filterByCategory = (
   ideas: Idea[],

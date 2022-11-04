@@ -9,15 +9,15 @@ import {
   ActionIcon
 } from "@mantine/core";
 import { IconX } from "@tabler/icons";
-import { FilterMenu } from "../../src/components/Menus";
-import { getFullName, getUser } from "../../src/utils/user";
-import { AddTask } from "../../src/modals";
-import { DataTable } from "../../src/components/Table";
-import { TASKS_HEADER } from "../../src/constants/table";
-import { tasks } from "../../src/lib/demo/tasks/task";
+import { FilterMenu } from "@/components/Menus";
+import { getFullName, getUser } from "@/utils/user";
+import { AddTask } from "@/modals";
+import { DataTable } from "@/components/Table";
+import { TASKS_HEADER } from "@/constants/table";
+import { tasks } from "@/lib/demo/tasks/task";
 import { useMediaQuery } from "@mantine/hooks";
-import { CardList } from "../../src/components/List";
-import { SchmellButton } from "../../src/components/Buttons";
+import { CardList } from "@/components/List";
+import { SchmellButton } from "@/components/Buttons";
 
 export default function Tasks(): JSX.Element {
   const { colorScheme } = useMantineColorScheme();

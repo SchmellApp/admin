@@ -1,4 +1,4 @@
-import { IdeaCategory } from "../enums/idea";
+import { IdeaCategory } from "@/enums/idea";
 import { User } from "./user";
 
 export interface Idea {

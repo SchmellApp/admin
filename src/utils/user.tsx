@@ -1,6 +1,6 @@
 import React from "react";
-import { User } from "../types/user";
-import { users } from "../lib/demo/users/user";
+import { User } from "@/types/user";
+import { users } from "@/lib/demo/users/user";
 import { SegmentedControlItem, Avatar } from "@mantine/core";
 
 export const getUser = (id: User["id"]): User | undefined =>

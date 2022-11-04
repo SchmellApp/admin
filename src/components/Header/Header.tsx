@@ -18,10 +18,9 @@ import {
   IconUserCircle
 } from "@tabler/icons";
 import { useRouter } from "next/router";
-import { toPageTitle } from "../../utils/path";
+import { toPageTitle } from "@/utils/path";
 import UserNav from "./UserNav";
 import { useMediaQuery } from "@mantine/hooks";
-import { NextLink } from "@mantine/next";
 import Link from "next/link";
 
 interface HeaderProps {

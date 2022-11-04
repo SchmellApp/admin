@@ -9,8 +9,8 @@ import {
   useMantineTheme,
   Divider
 } from "@mantine/core";
-import { DayStatisticsRows } from "../../types/ui/statistics";
-import { CardProps } from "../../types/card";
+import { DayStatisticsRows } from "@/types/ui/statistics";
+import { CardProps } from "@/types/card";
 
 interface TableCardProps extends CardProps {
   headers: string[];

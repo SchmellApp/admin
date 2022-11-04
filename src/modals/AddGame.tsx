@@ -1,21 +1,18 @@
 import {
-  Button,
   Checkbox,
   FileInput,
-  Group,
-  Modal,
   SegmentedControl,
   Text,
   Textarea,
   TextInput,
-  Title,
   useMantineTheme
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { GameStatus } from "../enums/game";
+import { GameStatus } from "@/enums/game";
 import React, { FC } from "react";
-import { GAME_STATUS } from "../constants/game";
-import { IconCirclePlus } from "@tabler/icons";
+import { GAME_STATUS } from "@/constants/game";
+import { SubmitButton } from "@/components/Buttons";
+import { ModalBase } from "@/components/Wrappers";
 
 interface AddGameProps {
   isOpen: boolean;
@@ -44,10 +41,7 @@ const AddGame: FC<AddGameProps> = ({ isOpen, onClose }): JSX.Element => {
   });
 
   return (
-    <Modal opened={isOpen} onClose={onClose} centered size="lg" padding="xl">
-      <Title order={3} color={isDarkScheme ? "white" : "dark"}>
-        Legg til spill
-      </Title>
+    <ModalBase isOpen={isOpen} onClose={onClose} title="Legg til nytt spill">
       <form onSubmit={form.onSubmit((values) => console.log(values))}>
         <TextInput
           withAsterisk
@@ -87,18 +81,9 @@ const AddGame: FC<AddGameProps> = ({ isOpen, onClose }): JSX.Element => {
             {...form.getInputProps("confirmWithoutImage")}
           />
         )}
-        <Group position="right" mt="xl">
-          <Button
-            type="submit"
-            color={isDarkScheme ? "yellow" : "dark"}
-            variant="light"
-            rightIcon={<IconCirclePlus />}
-          >
-            Opprett spill
-          </Button>
-        </Group>
+        <SubmitButton label="Opprett spill" />
       </form>
-    </Modal>
+    </ModalBase>
   );
 };
 

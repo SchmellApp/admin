@@ -10,13 +10,9 @@ import {
 } from "@mantine/core";
 import { IconFilter } from "@tabler/icons";
 import React, { FC } from "react";
-import { toUserControls } from "../../utils/user";
-import { users } from "../../lib/demo/users/user";
-import {
-  TASK_CATEGORY,
-  TASK_PRIORITY,
-  TASK_STATUS
-} from "../../constants/task";
+import { toUserControls } from "@/utils/user";
+import { users } from "@/lib/demo/users/user";
+import { TASK_CATEGORY, TASK_PRIORITY, TASK_STATUS } from "@/constants/task";
 
 interface FilterMenuProps {
   filters: string[];

@@ -1,23 +1,20 @@
 import React, { FC } from "react";
 import {
-  Group,
-  Modal,
   TextInput,
-  Button,
   Textarea,
   useMantineTheme,
   Select,
-  Title,
   SegmentedControl,
   Text
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { TaskStatus } from "../enums/task";
-import { TASK_CATEGORY, TASK_PRIORITY, TASK_STATUS } from "../constants/task";
+import { TaskStatus } from "@/enums/task";
+import { TASK_CATEGORY, TASK_PRIORITY, TASK_STATUS } from "@/constants/task";
 import { DatePicker } from "@mantine/dates";
-import { users } from "../lib/demo/users/user";
-import { toUserControls } from "../utils/user";
-import { IconCirclePlus } from "@tabler/icons";
+import { users } from "@/lib/demo/users/user";
+import { toUserControls } from "@/utils/user";
+import { SubmitButton } from "@/components/Buttons";
+import { ModalBase } from "@/components/Wrappers";
 
 interface AddTaskProps {
   isOpen: boolean;
@@ -46,10 +43,7 @@ const AddTask: FC<AddTaskProps> = ({ isOpen, onClose }): JSX.Element => {
     }
   });
   return (
-    <Modal opened={isOpen} onClose={onClose} centered size="lg" padding="xl">
-      <Title order={3} color={isDarkScheme ? "white" : "dark"}>
-        Legg til oppgave
-      </Title>
+    <ModalBase isOpen={isOpen} onClose={onClose} title="Legg til oppgave">
       <form onSubmit={form.onSubmit((values) => console.log(values))}>
         <TextInput
           withAsterisk
@@ -116,18 +110,9 @@ const AddTask: FC<AddTaskProps> = ({ isOpen, onClose }): JSX.Element => {
           />
         </div>
 
-        <Group position="right" mt="xl">
-          <Button
-            type="submit"
-            color={isDarkScheme ? "yellow" : "dark"}
-            variant="light"
-            rightIcon={<IconCirclePlus />}
-          >
-            Opprett oppgave
-          </Button>
-        </Group>
+        <SubmitButton label="Opprett oppgave" />
       </form>
-    </Modal>
+    </ModalBase>
   );
 };
 

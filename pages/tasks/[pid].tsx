@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { Wrapper } from "../../src/components/Wrappers";
+import { Wrapper } from "@/components/Wrappers";
 import {
   Breadcrumbs,
   Title,
@@ -14,13 +14,13 @@ import {
   ScrollArea,
   Stack
 } from "@mantine/core";
-import { tasks } from "../../src/lib/demo/tasks/task";
-import { EditTask, CommentForm } from "../../src/components/Forms";
-import { getFullName } from "../../src/utils/user";
-import { comments } from "../../src/lib/demo/tasks/comments";
-import { Comment } from "../../src/components/Comment/";
-import { getColor } from "../../src/utils/color";
-import { getIcon } from "../../src/utils/task";
+import { tasks } from "@/lib/demo/tasks/task";
+import { EditTask, CommentForm } from "@/components/Forms";
+import { getFullName } from "@/utils/user";
+import { comments } from "@/lib/demo/tasks/comments";
+import { Comment } from "@/components/Comment/";
+import { getColor } from "@/utils/color";
+import { getIcon } from "@/utils/task";
 
 const Task = (): JSX.Element => {
   const router = useRouter();

@@ -1,12 +1,5 @@
 import React, { ComponentPropsWithoutRef, FC, forwardRef } from "react";
-import {
-  useMantineTheme,
-  Box,
-  UnstyledButton,
-  Group,
-  Avatar,
-  Text
-} from "@mantine/core";
+import { Box, UnstyledButton, Group, Avatar, Text } from "@mantine/core";
 
 interface UserNavProps extends ComponentPropsWithoutRef<"button"> {
   userFullName: string;

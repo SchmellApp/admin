@@ -25,11 +25,11 @@ const ActionDialog: FC<ActionDialogProps> = ({
     size="lg"
     radius="lg"
     transition="slide-right"
-    sx={(theme) => ({
+    sx={{
       ".mantine-Modal-header": {
         marginBottom: 0
       }
-    })}
+    }}
   >
     <Title order={3} align="center">
       {title}

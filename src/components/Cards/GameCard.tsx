@@ -1,4 +1,4 @@
-import { Game } from "../../types/game";
+import { Game } from "@/types/game";
 import React, { FC } from "react";
 import {
   Card,
@@ -10,7 +10,7 @@ import {
   Box
 } from "@mantine/core";
 import Link from "next/link";
-import { toDateString } from "../../utils/date";
+import { toDateString } from "@/utils/date";
 import { IconTrash } from "@tabler/icons";
 
 interface GameCardProps {

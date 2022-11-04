@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { Comment } from "../../types/comment";
+import { Comment } from "@/types/comment";
 import { Box, Group, Text, Avatar } from "@mantine/core";
-import { toDateTimeString } from "../../utils/date";
+import { toDateTimeString } from "@/utils/date";
 
 interface CommentProps {
   comment: Comment;
