@@ -1,7 +1,7 @@
 import React, { FC, ReactNode, useRef, useState } from "react";
 import { AppShell } from "@mantine/core";
-import { Navbar } from "../Navbar";
-import { Header } from "../Header";
+import { Navbar } from "@/components/Navbar";
+import { Header } from "@/components/Header";
 
 interface AppWrapperProps {
   children: ReactNode;

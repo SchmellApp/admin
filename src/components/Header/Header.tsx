@@ -7,11 +7,21 @@ import {
   Image,
   Title,
   MediaQuery,
-  Burger
+  Burger,
+  Menu
 } from "@mantine/core";
-import { IconMoonStars, IconSun } from "@tabler/icons";
+import {
+  IconLogout,
+  IconMoonStars,
+  IconSettings,
+  IconSun,
+  IconUserCircle
+} from "@tabler/icons";
 import { useRouter } from "next/router";
-import { toPageTitle } from "../../utils/path";
+import { toPageTitle } from "@/utils/path";
+import UserNav from "./UserNav";
+import { useMediaQuery } from "@mantine/hooks";
+import Link from "next/link";
 
 interface HeaderProps {
   opened: boolean;
@@ -24,9 +34,10 @@ const Header: FC<HeaderProps> = ({
 }): JSX.Element => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { pathname } = useRouter();
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
 
   return (
-    <MantineHeader height={60}>
+    <MantineHeader height={80}>
       <Group sx={{ height: "100%" }} px={20} position="apart">
         <MediaQuery styles={{ display: "none" }} largerThan={"sm"}>
           <Burger
@@ -40,17 +51,47 @@ const Header: FC<HeaderProps> = ({
         <MediaQuery styles={{ display: "none" }} smallerThan={"sm"}>
           <Title order={2}>{toPageTitle(pathname)}</Title>
         </MediaQuery>
-        <ActionIcon
-          variant="default"
-          onClick={() => toggleColorScheme()}
-          size={30}
-        >
-          {colorScheme === "dark" ? (
-            <IconSun size={16} />
-          ) : (
-            <IconMoonStars size={16} />
-          )}
-        </ActionIcon>
+        <Group>
+          <ActionIcon
+            variant="default"
+            onClick={() => toggleColorScheme()}
+            size={30}
+          >
+            {colorScheme === "dark" ? (
+              <IconSun size={16} />
+            ) : (
+              <IconMoonStars size={16} />
+            )}
+          </ActionIcon>
+          <Menu position={isSmallScreen ? "left-start" : "bottom"} withArrow>
+            <Menu.Target>
+              {isSmallScreen ? (
+                <ActionIcon variant="default" size={30}>
+                  <IconUserCircle />
+                </ActionIcon>
+              ) : (
+                <UserNav
+                  userFullName={"Francin Vincent"}
+                  userAvatarUrl={""}
+                  userEmailAddress={"francin.vinc@gmail.com"}
+                />
+              )}
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Label>Bruker</Menu.Label>
+              <Menu.Item
+                icon={<IconSettings size={14} />}
+                component={Link}
+                href={"/settings"}
+              >
+                Innstillinger
+              </Menu.Item>
+              <Menu.Divider />
+              <Menu.Label>Handlinger</Menu.Label>
+              <Menu.Item icon={<IconLogout size={14} />}>Logg ut</Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        </Group>
       </Group>
     </MantineHeader>
   );

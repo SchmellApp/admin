@@ -1,4 +1,4 @@
-import { IdeaCategory } from "../enums/idea";
+import { IdeaCategory } from "@/enums/idea";
 
 export const IDEA_CATEGORIES = [
   {

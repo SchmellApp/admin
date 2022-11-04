@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Card, Text, Title } from "@mantine/core";
-import { CardProps } from "../../types/card";
+import { CardProps } from "@/types/card";
 
 const TextCard: FC<CardProps> = ({
   title,

@@ -1,4 +1,4 @@
-import { Week } from "../../../types/week";
+import { Week } from "@/types/week";
 import { games } from "../games/game";
 
 export const weeks: Week[] = [

@@ -1,12 +1,12 @@
-import { Task } from "../../types/task";
+import { Task } from "@/types/task";
 import React, { FC } from "react";
 import { useForm } from "@mantine/form";
 import { Select } from "@mantine/core";
-import { TASK_STATUS } from "../../constants/task";
+import { TASK_STATUS } from "@/constants/task";
 import { DatePicker } from "@mantine/dates";
-import { TaskCategory } from "../../enums/task";
-import { games } from "../../lib/demo/games/game";
-import { toOptions } from "../../utils/common";
+import { TaskCategory } from "@/enums/task";
+import { games } from "@/lib/demo/games/game";
+import { toOptions } from "@/utils/common";
 
 interface EditTaskProps {
   task: Task;

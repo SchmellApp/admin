@@ -1,4 +1,4 @@
-import { Wrapper } from "../../../../src/components/Wrappers";
+import { Wrapper } from "@/components/Wrappers";
 import {
   MediaQuery,
   SimpleGrid,
@@ -11,9 +11,9 @@ import {
 } from "@mantine/core";
 import React, { FC, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { weeks } from "../../../../src/lib/demo/weeks/week";
+import { weeks } from "@/lib/demo/weeks/week";
 import { IconCirclePlus, IconTrash } from "@tabler/icons";
-import { ActionDialog } from "../../../../src/components/Modals";
+import { ActionDialog } from "@/components/Modals";
 import Link from "next/link";
 
 interface WeekCardProps extends CardProps {
@@ -82,18 +82,38 @@ export default function Weeks(): JSX.Element {
         </Title>
       </MediaQuery>
       <SimpleGrid
-        cols={4}
+        cols={7}
         spacing="sm"
         breakpoints={[
+          { maxWidth: 600, cols: 2, spacing: "lg" },
           {
-            maxWidth: 800,
+            minWidth: 800,
             cols: 2,
             spacing: "xs"
           },
           {
-            maxWidth: 1000,
+            minWidth: 1000,
             cols: 3,
             spacing: "sm"
+          },
+          {
+            minWidth: 1200,
+            cols: 4,
+            spacing: "sm"
+          },
+          {
+            minWidth: 1400,
+            cols: 5,
+            spacing: "sm"
+          },
+          {
+            minWidth: 1600,
+            cols: 6,
+            spacing: "sm"
+          },
+          {
+            minWidth: 1800,
+            cols: 7
           }
         ]}
       >

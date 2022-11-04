@@ -1,4 +1,4 @@
-import { DataTableHeader } from "../../types/ui/table";
+import { DataTableHeader } from "@/types/ui/table";
 import React, { Dispatch, FC, ReactNode, SetStateAction } from "react";
 import {
   Avatar,
@@ -13,11 +13,11 @@ import {
   useMantineColorScheme
 } from "@mantine/core";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons";
-import { Task } from "../../types/task";
-import { TaskStatus } from "../../enums/task";
-import { getDifferenceInDays, toDateString } from "../../utils/date";
+import { Task } from "@/types/task";
+import { TaskStatus } from "@/enums/task";
+import { getDifferenceInDays, toDateString } from "@/utils/date";
 import { useRouter } from "next/router";
-import { getColor } from "../../utils/color";
+import { getColor } from "@/utils/color";
 
 interface DataTableProps {
   headers: DataTableHeader[];

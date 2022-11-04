@@ -1,5 +1,5 @@
-import { CardProps } from "../../types/card";
-import { ActionElement } from "../../types/ui/statistics";
+import { CardProps } from "@/types/card";
+import { ActionElement } from "@/types/ui/statistics";
 import React, { FC } from "react";
 import {
   Card,

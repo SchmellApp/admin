@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Paper, Stack } from "@mantine/core";
 import { AvatarCard, TextCard } from "../Cards";
-import { ListElement } from "../../types/ui/list";
+import { ListElement } from "@/types/ui/list";
 
 interface ListElementsProps {
   title: string;

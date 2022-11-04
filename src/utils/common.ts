@@ -1,4 +1,4 @@
-import { Game } from "../types/game";
+import { Game } from "@/types/game";
 import { SelectItem } from "@mantine/core";
 
 export const toOptions = (games: Game[]): SelectItem[] =>

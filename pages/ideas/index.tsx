@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Wrapper } from "../../src/components/Wrappers";
+import { Wrapper } from "@/components/Wrappers";
 import { Group, MediaQuery, Title, Collapse, SimpleGrid } from "@mantine/core";
-import { IdeaForm } from "../../src/components/Forms";
-import { ListElements } from "../../src/components/List";
-import { ideas } from "../../src/lib/demo/ideas/ideas";
-import { filterByCategory, toListElements } from "../../src/utils/idea";
-import { ActionDialog } from "../../src/components/Modals";
-import { SchmellButton } from "../../src/components/Buttons";
-import { IDEA_CATEGORIES_ELEMENTS } from "../../src/constants/idea";
+import { IdeaForm } from "@/components/Forms";
+import { ListElements } from "@/components/List";
+import { ideas } from "@/lib/demo/ideas/ideas";
+import { filterByCategory, toListElements } from "@/utils/idea";
+import { ActionDialog } from "@/components/Modals";
+import { SchmellButton } from "@/components/Buttons";
+import { IDEA_CATEGORIES_ELEMENTS } from "@/constants/idea";
+import { IconPlus, IconX } from "@tabler/icons";
 
 export default function Ideas(): JSX.Element {
   const [openMenu, setOpenMenu] = useState(false);
@@ -36,7 +37,11 @@ export default function Ideas(): JSX.Element {
         </Title>
       </MediaQuery>
       <Group position="right">
-        <SchmellButton onClick={handleOpenMenu} label={"Jeg har en ny idé!"} />
+        <SchmellButton
+          onClick={handleOpenMenu}
+          label={"Jeg har en ny idé!"}
+          rightIcon={openMenu ? <IconX /> : <IconPlus />}
+        />
       </Group>
       <Collapse in={openMenu}>
         <IdeaForm />

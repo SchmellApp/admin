@@ -1,10 +1,11 @@
 import React from "react";
-import { Wrapper } from "../../src/components/Wrappers";
+import { Wrapper } from "@/components/Wrappers";
+import { Button } from "@mantine/core";
 
 export default function Statistics(): JSX.Element {
   return (
     <Wrapper>
-      <h1>Statistics</h1>
+      <Button>Test</Button>
     </Wrapper>
   );
 }

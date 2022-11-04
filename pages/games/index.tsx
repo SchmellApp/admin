@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Wrapper } from "../../src/components/Wrappers";
+import { Wrapper } from "@/components/Wrappers";
 import {
   MediaQuery,
   SimpleGrid,
@@ -8,11 +8,11 @@ import {
   Center,
   UnstyledButton
 } from "@mantine/core";
-import { games } from "../../src/lib/demo/games/game";
-import { GameCard } from "../../src/components/Cards";
+import { games } from "@/lib/demo/games/game";
+import { GameCard } from "@/components/Cards";
 import { IconCirclePlus } from "@tabler/icons";
-import { ActionDialog } from "../../src/components/Modals";
-import { AddGameModal } from "../../src/modals";
+import { ActionDialog } from "@/components/Modals";
+import { AddGameModal } from "@/modals";
 
 export default function Games(): JSX.Element {
   const [open, setOpen] = useState(false);
@@ -36,12 +36,12 @@ export default function Games(): JSX.Element {
         </Title>
       </MediaQuery>
       <SimpleGrid
-        cols={3}
+        cols={4}
         spacing="md"
         breakpoints={[
           { maxWidth: 600, cols: 1, spacing: "lg" },
           { maxWidth: 900, cols: 2 },
-          { maxWidth: 1200, cols: 3 }
+          { maxWidth: 1700, cols: 3 }
         ]}
       >
         {games.map((game) => (

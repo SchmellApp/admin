@@ -1,6 +1,6 @@
-import { StatisticsResponse } from "../types/api";
-import { ActionElement, DayStatisticsRows } from "../types/ui/statistics";
-import { TasksForToday } from "../types/statistics";
+import { StatisticsResponse } from "@/types/api";
+import { ActionElement, DayStatisticsRows } from "@/types/ui/statistics";
+import { TasksForToday } from "@/types/statistics";
 import { Badge } from "@mantine/core";
 import React from "react";
 import { getColor } from "./color";

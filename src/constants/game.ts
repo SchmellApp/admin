@@ -1,4 +1,4 @@
-import { GameStatus } from "../enums/game";
+import { GameStatus } from "@/enums/game";
 
 export const GAME_STATUS = [
   {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Wrapper } from "../../src/components/Wrappers";
+import { Wrapper } from "@/components/Wrappers";
 
 export default function Settings(): JSX.Element {
   return (

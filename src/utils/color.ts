@@ -1,4 +1,4 @@
-import { TaskPriority } from "../enums/task";
+import { TaskPriority } from "@/enums/task";
 import { MantineColor } from "@mantine/core";
 
 export const getColor = (color: TaskPriority): MantineColor => {

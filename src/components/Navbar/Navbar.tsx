@@ -1,4 +1,4 @@
-import { nav } from "../../constants/nav";
+import { nav } from "@/constants/nav";
 import {
   Button,
   Stack,
@@ -8,7 +8,6 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC, RefObject, useEffect, useState } from "react";
-import { UserSection } from "./index";
 
 interface NavbarProps {
   opened: boolean;
@@ -65,13 +64,6 @@ const Navbar: FC<NavbarProps> = ({ opened, wrapperRef }) => {
             </Link>
           ))}
         </Stack>
-      </MantineNavbar.Section>
-      <MantineNavbar.Section>
-        <UserSection
-          userFullName={"Francin Vincent"}
-          userAvatarUrl={""}
-          userEmailAddress={"francin.vinc@gmail.com"}
-        />
       </MantineNavbar.Section>
     </MantineNavbar>
   );

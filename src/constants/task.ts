@@ -1,4 +1,4 @@
-import { TaskCategory, TaskPriority, TaskStatus } from "../enums/task";
+import { TaskCategory, TaskPriority, TaskStatus } from "@/enums/task";
 
 export const TASK_STATUS = [
   {

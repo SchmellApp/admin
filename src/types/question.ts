@@ -1,8 +1,8 @@
 export interface Question {
   id: number;
   relatedWeek: number;
-  type: String;
-  questionDescription: String;
+  type: string;
+  questionDescription: string;
   phase: number;
   function?: string;
   punishment: number;
