@@ -8,13 +8,15 @@ import {
   Text
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { TaskStatus } from "@/enums/task";
 import { TASK_CATEGORY, TASK_PRIORITY, TASK_STATUS } from "@/constants/task";
 import { DatePicker } from "@mantine/dates";
 import { users } from "@/lib/demo/users/user";
 import { toUserControls } from "@/utils/user";
 import { SubmitButton } from "@/components/Buttons";
 import { ModalBase } from "@/components/Wrappers";
+import { createTaskInitialValues } from "@/lib/forms/initialValues/task";
+import { createTaskValidationSchema } from "@/lib/forms/validators/task";
+import { CreateTaskForm } from "@/types/forms/task";
 
 interface AddTaskProps {
   isOpen: boolean;
@@ -24,23 +26,9 @@ interface AddTaskProps {
 const AddTask: FC<AddTaskProps> = ({ isOpen, onClose }): JSX.Element => {
   const isDarkScheme = useMantineTheme().colorScheme === "dark";
 
-  const form = useForm({
-    initialValues: {
-      title: "",
-      description: "",
-      status: TaskStatus.PENDING,
-      category: "",
-      deadline: new Date(),
-      priority: "",
-      responsible: "1"
-    },
-    validate: {
-      title: (value) => !(value.length > 0) && "Tittel er påkrevd",
-      description: (value) => !(value.length > 0) && "Beskrivelse er påkrevd",
-      category: (value) => !(value.length > 0) && "Kategori er påkrevd",
-      priority: (value) => !(value.length > 0) && "Prioritet er påkrevd",
-      responsible: (value) => !(value.length > 0) && "Ansvarlig er påkrevd"
-    }
+  const form = useForm<CreateTaskForm>({
+    initialValues: createTaskInitialValues,
+    validate: createTaskValidationSchema
   });
   return (
     <ModalBase isOpen={isOpen} onClose={onClose} title="Legg til oppgave">

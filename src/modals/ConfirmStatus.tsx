@@ -10,6 +10,9 @@ import { useForm } from "@mantine/form";
 import { GameStatus } from "@/enums/game";
 import { SubmitButton } from "@/components/Buttons";
 import { ModalBase } from "@/components/Wrappers";
+import { gameStatusValidationSchema } from "@/lib/forms/validators/game";
+import { gameStatusInitialValues } from "@/lib/forms/initialValues/game";
+import { GameStatusForm } from "@/types/forms/game";
 
 interface ConfirmStatusProps {
   isOpen: boolean;
@@ -22,23 +25,9 @@ const ConfirmStatus: FC<ConfirmStatusProps> = (props) => {
   const { isOpen, id, onClose, setStatus } = props;
 
   const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
-  const form = useForm({
-    initialValues: {
-      confirmedInitials: false,
-      correctEndings: false,
-      correctFunctions: false,
-      correctGrammar: false
-    },
-    validate: {
-      confirmedInitials: (value: boolean) =>
-        !value && "Du må bekrefte at du har sjekket forbokstaver",
-      correctEndings: (value: boolean) =>
-        !value && "Du må bekrefte at alle endinger er korrekt",
-      correctFunctions: (value: boolean) =>
-        !value && "Du må bekrefte at alle funksjoner er skrevet inn korrekt",
-      correctGrammar: (value: boolean) =>
-        !value && "Du må bekrefte at grammatikken er korrekt"
-    }
+  const form = useForm<GameStatusForm>({
+    initialValues: gameStatusInitialValues,
+    validate: gameStatusValidationSchema
   });
 
   const color: MantineColor = isDarkScheme ? "yellow" : "dark";

@@ -2,13 +2,15 @@ import React from "react";
 import { useForm } from "@mantine/form";
 import { Textarea, ActionIcon, Box } from "@mantine/core";
 import { IconSend } from "@tabler/icons";
+import { CreateCommentForm } from "@/types/forms/comment";
+import { createCommentFormInitialValues } from "@/lib/forms/initialValues/comment";
+import { users } from "@/lib/demo/users/user";
+import { createCommentFormValidationSchema } from "@/lib/forms/validators/comment";
 
 const CommentForm = (): JSX.Element => {
-  const form = useForm({
-    initialValues: { comment: "" },
-    validate: {
-      comment: (value) => !(value.length > 0) && "Du må skrive en kommentar"
-    }
+  const form = useForm<CreateCommentForm>({
+    initialValues: createCommentFormInitialValues(users[1], 1),
+    validate: createCommentFormValidationSchema
   });
 
   return (

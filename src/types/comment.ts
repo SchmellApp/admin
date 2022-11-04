@@ -3,7 +3,7 @@ import { User } from "./user";
 export interface Comment {
   id: number;
   createdDate: Date;
-  comment: String;
+  comment: string;
   writtenBy: User;
   relatedTask: number;
 }

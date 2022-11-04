@@ -13,6 +13,9 @@ import React, { FC } from "react";
 import { GAME_STATUS } from "@/constants/game";
 import { SubmitButton } from "@/components/Buttons";
 import { ModalBase } from "@/components/Wrappers";
+import { createGameInitialValues } from "@/lib/forms/initialValues/game";
+import { CreateGameForm } from "@/types/forms/game";
+import { createGameValidationSchema } from "@/lib/forms/validators/game";
 
 interface AddGameProps {
   isOpen: boolean;
@@ -22,17 +25,10 @@ interface AddGameProps {
 const AddGame: FC<AddGameProps> = ({ isOpen, onClose }): JSX.Element => {
   const isDarkScheme = useMantineTheme().colorScheme === "dark";
 
-  const form = useForm({
-    initialValues: {
-      name: "",
-      description: "",
-      status: GameStatus.DEVELOPMENT,
-      logo: null,
-      confirmWithoutImage: false
-    },
+  const form = useForm<CreateGameForm>({
+    initialValues: createGameInitialValues,
     validate: {
-      name: (value) => !(value.length > 0) && "Tittel er påkrevd",
-      description: (value) => !(value.length > 0) && "Beskrivelse er påkrevd",
+      ...createGameValidationSchema,
       confirmWithoutImage: (value: boolean): string | null =>
         form.values.logo === null && !value
           ? "Du må bekrefte at du vil legge til spillet uten bilde"

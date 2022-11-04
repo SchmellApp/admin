@@ -4,6 +4,9 @@ import { FileInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { SubmitButton } from "@/components/Buttons";
 import { ModalBase } from "@/components/Wrappers";
+import { EditGameForm } from "@/types/forms/game";
+import { editGameValidationSchema } from "@/lib/forms/validators/game";
+import { editGameInitialValues } from "@/lib/forms/initialValues/game";
 
 interface EditGameDetailsProps {
   game: Game;
@@ -14,15 +17,9 @@ interface EditGameDetailsProps {
 const EditGameDetails: FC<EditGameDetailsProps> = (props) => {
   const { onClose, game, isOpen } = props;
 
-  const form = useForm({
-    initialValues: {
-      description: game.description,
-      logo: new File([], game.logo)
-    },
-    validate: {
-      description: (value) => !(value.length > 0) && "Beskrivelse er påkrevd",
-      logo: (value) => value === null && "Logo er påkrevd"
-    }
+  const form = useForm<EditGameForm>({
+    initialValues: editGameInitialValues(game.description, game.logo),
+    validate: editGameValidationSchema
   });
 
   const handleSubmit = (values: unknown): void => {
