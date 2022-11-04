@@ -9,6 +9,8 @@ export const toPageTitle = (path: string): string => {
     return "Spill";
   } else if (path.includes("stats")) {
     return "Statistikk";
+  } else if (path.includes("settings")) {
+    return "Innstillinger";
   } else {
     return "Oops!";
   }

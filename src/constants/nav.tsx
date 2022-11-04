@@ -3,8 +3,7 @@ import {
   IconHome,
   IconListCheck,
   IconBulb,
-  IconDeviceGamepad2,
-  IconChartAreaLine
+  IconDeviceGamepad2
 } from "@tabler/icons";
 
 export const nav = [
@@ -27,10 +26,11 @@ export const nav = [
     label: "Spill",
     href: "/games",
     icon: <IconDeviceGamepad2 size={20} />
-  },
+  }
+  /*
   {
     label: "Statistikk",
     href: "/stats",
     icon: <IconChartAreaLine size={20} />
-  }
+  } */
 ];

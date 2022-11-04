@@ -16,7 +16,12 @@ interface NavbarProps {
 
 const Navbar: FC<NavbarProps> = ({ opened, wrapperRef }) => {
   const { pathname } = useRouter();
-  const isActive = (href: string): boolean => pathname === href;
+  const isActive = (href: string): boolean => {
+    if (href === pathname) {
+      return true;
+    }
+    return pathname.split("/")[1] === href.split("/")[1];
+  };
 
   const [height, setHeight] = useState<number>(0);
 
