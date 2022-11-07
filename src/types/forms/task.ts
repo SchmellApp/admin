@@ -1,10 +1,7 @@
 import { Task } from "@/types/task";
 
 export interface CreateTaskForm
-  extends Omit<
-    Task,
-    "id" | "createdDateTime" | "lastUpdated" | "responsibleUser" | "category"
-  > {
+  extends Omit<Task, "id" | "createdDateTime" | "lastUpdated" | "responsibleUser" | "category"> {
   title: string;
   description: string;
   category?: Task["category"];

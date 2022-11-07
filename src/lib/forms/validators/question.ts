@@ -3,7 +3,6 @@ import {
   CreateQuestionJsonForm,
   EditQuestionForm
 } from "@/types/forms/question";
-import { Question } from "@/types/question";
 import { FormRulesRecord } from "@mantine/form/lib/types";
 
 export const createQuestionValidator: FormRulesRecord<CreateQuestionForm> = {

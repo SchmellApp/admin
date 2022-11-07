@@ -8,7 +8,6 @@ import {
   useMantineTheme
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { GameStatus } from "@/enums/game";
 import React, { FC } from "react";
 import { GAME_STATUS } from "@/constants/game";
 import { SubmitButton } from "@/components/Buttons";

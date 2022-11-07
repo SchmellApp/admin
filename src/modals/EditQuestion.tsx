@@ -2,13 +2,7 @@ import { Question } from "@/types/question";
 import React, { FC } from "react";
 import { useForm } from "@mantine/form";
 import { ModalBase } from "@/components/Wrappers";
-import {
-  FileInput,
-  Group,
-  NumberInput,
-  Textarea,
-  TextInput
-} from "@mantine/core";
+import { FileInput, NumberInput, Textarea, TextInput } from "@mantine/core";
 import { SubmitButton } from "@/components/Buttons";
 import { editQuestionInitialValues } from "@/lib/forms/initialValues/question";
 import { EditQuestionForm } from "@/types/forms/question";

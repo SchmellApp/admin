@@ -84,7 +84,10 @@ const QuestionCard: FC<QuestionCardProps> = ({ question }) => {
           <TextGroup title="Fase:" text={String(question.phase)} />
           <TextGroup title="Straff:" text={String(question.punishment)} />
           {question.function !== undefined && (
-            <TextGroup title="Funksjon:" text={question.function} />
+            <TextGroup
+              title="Funksjon:"
+              text={JSON.stringify(question.function)}
+            />
           )}
           {question.questionPicture !== undefined && (
             <Group position="right" mb="xs">

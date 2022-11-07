@@ -8,9 +8,6 @@ export interface CreateQuestionJsonForm {
 }
 
 export interface EditQuestionForm
-  extends Omit<
-    Question,
-    "questionPictureUrl" | "relatedGame" | "relatedWeek" | "questionPicture"
-  > {
+  extends Omit<Question, "questionPictureUrl" | "relatedGame" | "relatedWeek" | "questionPicture"> {
   questionPicture: File | undefined;
 }

@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithoutRef, FC, forwardRef } from "react";
+import React, { ComponentPropsWithoutRef, forwardRef } from "react";
 import { Box, UnstyledButton, Group, Avatar, Text } from "@mantine/core";
 
 interface UserNavProps extends ComponentPropsWithoutRef<"button"> {

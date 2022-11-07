@@ -24,6 +24,7 @@ export default function App(props: AppProps): JSX.Element {
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <title>Schmell - {toPageTitle(pathname)}</title>
+        <link rel="shortcut icon" href="/faviconv2.ico" />
       </Head>
 
       <ColorSchemeProvider
