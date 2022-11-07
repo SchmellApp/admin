@@ -38,5 +38,5 @@ export const editQuestionInitialValues = (
   phase: question.phase,
   function: question.function,
   punishment: question.punishment,
-  questionPicture: new File([], question.questionPicture ?? "")
+  questionPicture: undefined
 });

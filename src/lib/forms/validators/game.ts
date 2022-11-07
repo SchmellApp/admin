@@ -12,7 +12,7 @@ export const createGameValidationSchema: FormRulesRecord<CreateGameForm> = {
 
 export const editGameValidationSchema: FormRulesRecord<EditGameForm> = {
   description: (value) => !(value.length > 0) && "Beskrivelse er påkrevd",
-  logo: (value) => !(value.length > 0) && "Logo er påkrevd"
+  logo: (value: File | undefined) => value === undefined && "Logo er påkrevd"
 };
 
 export const gameStatusValidationSchema: FormRulesRecord<GameStatusForm> = {

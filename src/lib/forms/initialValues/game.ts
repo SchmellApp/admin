@@ -10,7 +10,7 @@ export const createGameInitialValues: CreateGameForm = {
   name: "",
   description: "",
   status: GameStatus.DEVELOPMENT,
-  logo: "",
+  logo: undefined,
   confirmWithoutImage: false
 };
 
@@ -19,7 +19,7 @@ export const editGameInitialValues = (
   logo: Game["logo"]
 ): EditGameForm => ({
   description,
-  logo: ""
+  logo: undefined,
 });
 
 export const gameStatusInitialValues: GameStatusForm = {

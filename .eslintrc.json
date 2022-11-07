@@ -4,8 +4,10 @@
         "es2021": true
     },
     "extends": [
+        "eslint:recommended",
         "plugin:react/recommended",
-        "standard-with-typescript"
+        "standard-with-typescript",
+        "plugin:@next/next/recommended"
     ],
     "overrides": [
     ],
@@ -23,5 +25,10 @@
         "@typescript-eslint/space-before-function-paren": "off",
         "@typescript-eslint/member-delimiter-style": "off",
         "multiline-ternary": "off"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

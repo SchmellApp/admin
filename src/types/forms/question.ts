@@ -1,7 +1,9 @@
 import { Question } from "@/types/question";
 
 export interface CreateQuestionForm
-  extends Omit<Question, "questionPictureUrl" | "id"> {}
+  extends Omit<Question, "questionPictureUrl" | "id" | "questionPicture"> {
+  questionPicture?: File;
+}
 
 export interface CreateQuestionJsonForm {
   json: string;
@@ -9,5 +11,5 @@ export interface CreateQuestionJsonForm {
 
 export interface EditQuestionForm
   extends Omit<Question, "questionPictureUrl" | "relatedGame" | "relatedWeek" | "questionPicture"> {
-  questionPicture: File | undefined;
+  questionPicture?: File;
 }
