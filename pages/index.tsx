@@ -9,8 +9,9 @@ import {
   toDayStatisticsRow,
   toTodayActions
 } from "@/utils/statistics";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
-export default function Home(): JSX.Element {
+export default withPageAuthRequired(function Home(): JSX.Element {
   const statistics = dayStatistics;
 
   return (
@@ -78,4 +79,4 @@ export default function Home(): JSX.Element {
       </SimpleGrid>
     </Wrapper>
   );
-}
+});

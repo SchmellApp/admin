@@ -82,9 +82,7 @@ const EditQuestion: FC<EditQuestionProps> = (props) => {
           my="md"
           {...form.getInputProps("questionPicture")}
         />
-        <Group position="right" my="md">
-          <SubmitButton label="Oppdater spørsmål" />
-        </Group>
+        <SubmitButton label="Oppdater spørsmål" />
       </form>
     </ModalBase>
   );

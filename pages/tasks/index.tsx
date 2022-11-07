@@ -18,8 +18,9 @@ import { tasks } from "@/lib/demo/tasks/task";
 import { useMediaQuery } from "@mantine/hooks";
 import { CardList } from "@/components/List";
 import { SchmellButton } from "@/components/Buttons";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
-export default function Tasks(): JSX.Element {
+export default withPageAuthRequired(function Tasks(): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
   const isMobileScreen = useMediaQuery("(max-width: 768px)");
 
@@ -113,4 +114,4 @@ export default function Tasks(): JSX.Element {
       <AddTask isOpen={showModal} onClose={handleShowModal} />
     </Wrapper>
   );
-}
+});

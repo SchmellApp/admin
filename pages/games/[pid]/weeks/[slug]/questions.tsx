@@ -17,8 +17,9 @@ import { AddQuestion } from "@/modals";
 import { SchmellButton } from "@/components/Buttons";
 import { questions } from "@/lib/demo/questions/question";
 import QuestionCard from "@/components/Cards/QuestionCard";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
-export default function Questions(): JSX.Element {
+export default withPageAuthRequired(function Questions(): JSX.Element {
   const route = useRouter();
   const isDarkMode = useMantineTheme().colorScheme === "dark";
 
@@ -113,4 +114,4 @@ export default function Questions(): JSX.Element {
       </SimpleGrid>
     </Wrapper>
   );
-}
+});

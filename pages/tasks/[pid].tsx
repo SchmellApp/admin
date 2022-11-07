@@ -21,8 +21,9 @@ import { comments } from "@/lib/demo/tasks/comments";
 import { Comment } from "@/components/Comment/";
 import { getColor } from "@/utils/color";
 import { getIcon } from "@/utils/task";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
-const Task = (): JSX.Element => {
+export default withPageAuthRequired(function Task(): JSX.Element {
   const router = useRouter();
   const { pid } = router.query;
 
@@ -119,6 +120,4 @@ const Task = (): JSX.Element => {
       )}
     </Wrapper>
   );
-};
-
-export default Task;
+});

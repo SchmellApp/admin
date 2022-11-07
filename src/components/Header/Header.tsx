@@ -88,7 +88,13 @@ const Header: FC<HeaderProps> = ({
               </Menu.Item>
               <Menu.Divider />
               <Menu.Label>Handlinger</Menu.Label>
-              <Menu.Item icon={<IconLogout size={14} />}>Logg ut</Menu.Item>
+              <Menu.Item
+                icon={<IconLogout size={14} />}
+                component={Link}
+                href="api/auth/logout/"
+              >
+                Logg ut
+              </Menu.Item>
             </Menu.Dropdown>
           </Menu>
         </Group>

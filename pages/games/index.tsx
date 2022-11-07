@@ -13,8 +13,9 @@ import { GameCard } from "@/components/Cards";
 import { IconCirclePlus } from "@tabler/icons";
 import { ActionDialog } from "@/components/Modals";
 import { AddGameModal } from "@/modals";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
-export default function Games(): JSX.Element {
+export default withPageAuthRequired(function Games(): JSX.Element {
   const [open, setOpen] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState({
     isOpen: false,
@@ -88,4 +89,4 @@ export default function Games(): JSX.Element {
       <AddGameModal isOpen={open} onClose={handleShow} />
     </Wrapper>
   );
-}
+});

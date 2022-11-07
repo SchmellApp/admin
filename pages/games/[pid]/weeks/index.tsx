@@ -15,13 +15,14 @@ import { weeks } from "@/lib/demo/weeks/week";
 import { IconCirclePlus, IconTrash } from "@tabler/icons";
 import { ActionDialog } from "@/components/Modals";
 import Link from "next/link";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 interface WeekCardProps extends CardProps {
   deleteIcon?: boolean;
   id?: number;
 }
 
-export default function Weeks(): JSX.Element {
+export default withPageAuthRequired(function Weeks(): JSX.Element {
   const route = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [deleteDialog, setDeleteDialog] = useState({
@@ -170,4 +171,4 @@ export default function Weeks(): JSX.Element {
       />
     </Wrapper>
   );
-}
+});

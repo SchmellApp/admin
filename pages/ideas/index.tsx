@@ -9,8 +9,9 @@ import { ActionDialog } from "@/components/Modals";
 import { SchmellButton } from "@/components/Buttons";
 import { IDEA_CATEGORIES_ELEMENTS } from "@/constants/idea";
 import { IconPlus, IconX } from "@tabler/icons";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
-export default function Ideas(): JSX.Element {
+export default withPageAuthRequired(function Ideas(): JSX.Element {
   const [openMenu, setOpenMenu] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState({
     isOpen: false,
@@ -94,4 +95,4 @@ export default function Ideas(): JSX.Element {
       />
     </Wrapper>
   );
-}
+});
