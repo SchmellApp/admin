@@ -1,5 +1,5 @@
 import React from "react";
-import { Wrapper } from "@/components/Wrappers";
+import { Wrapper } from "@app/components";
 import { Button } from "@mantine/core";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 

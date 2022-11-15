@@ -1,18 +1,25 @@
 import React from "react";
-import { Wrapper } from "@/components/Wrappers";
+import { Wrapper, ActionCard, TableCard, TextCard } from "@app/components";
 import { MediaQuery, SimpleGrid, Title } from "@mantine/core";
-import { dayStatistics, tasksForToday } from "@/lib/demo/home/statistics";
-import { ActionCard, TableCard, TextCard } from "@/components/Cards";
-import { DAY_STATISTICS_CARDS, DAY_STATISTICS_HEADER } from "@/constants/table";
+import { DAY_STATISTICS_CARDS, DAY_STATISTICS_HEADER } from "@app/constants";
 import {
   toCategoryActions,
   toDayStatisticsRow,
   toTodayActions
-} from "@/utils/statistics";
+} from "@app/utils";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import {
+  useGetStatisticsQuery,
+  useSelfQuery,
+  useTodaysTasksQuery
+} from "@app/hooks";
 
 export default withPageAuthRequired(function Home(): JSX.Element {
-  const statistics = dayStatistics;
+  const { isLoading, data } = useGetStatisticsQuery();
+  const { data: activeUser } = useSelfQuery();
+  const { data: todaysTasks } = useTodaysTasksQuery(
+    activeUser !== undefined ? String(activeUser.id) : String(0)
+  );
 
   return (
     <Wrapper>
@@ -32,27 +39,36 @@ export default withPageAuthRequired(function Home(): JSX.Element {
       >
         <TextCard
           title={"Uløste oppgaver"}
-          description={statistics.taskCount.unsolved}
+          description={String(data?.taskCount.unsolved)}
+          isLoading={isLoading}
         />
         <TextCard
           title={"Oppgaver over frist"}
-          description={statistics.taskCount.overdue}
+          description={String(data?.taskCount.overdue)}
+          isLoading={isLoading}
         />
         <TextCard
           title={"Antall spill"}
-          description={statistics.gameCount.count}
+          description={String(data?.gameCount.count)}
+          isLoading={isLoading}
         />
         <TextCard
           title={"Antall spørsmål"}
-          description={statistics.questionsCount.totalCount}
+          description={String(data?.questionsCount.totalCount)}
+          isLoading={isLoading}
         />
       </SimpleGrid>
       <TableCard
         title={"Dagens statistikk"}
         description={new Date().toDateString()}
         headers={DAY_STATISTICS_HEADER}
-        rows={toDayStatisticsRow(statistics.questionsCount.countByGame)}
+        rows={
+          data !== undefined
+            ? toDayStatisticsRow(data?.questionsCount.countByGame)
+            : []
+        }
         rightCards={DAY_STATISTICS_CARDS}
+        isLoading={isLoading}
       />
       <SimpleGrid
         cols={2}
@@ -65,16 +81,20 @@ export default withPageAuthRequired(function Home(): JSX.Element {
         mt="xl"
       >
         <ActionCard
-          actionElements={toCategoryActions(
-            statistics.taskCount.countByCategory
-          )}
+          actionElements={
+            data !== undefined
+              ? toCategoryActions(data.taskCount.countByCategory)
+              : []
+          }
           title={"Oppgaver per kategori"}
           description={"Gruppe: Schmell"}
+          isLoading={isLoading}
         />
         <ActionCard
-          actionElements={toTodayActions(tasksForToday)}
+          actionElements={toTodayActions(todaysTasks ?? [])}
           title={"Oppgaver"}
           description={"Dagens"}
+          isLoading={isLoading}
         />
       </SimpleGrid>
     </Wrapper>

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { Wrapper } from "@/components/Wrappers";
+import { Wrapper, EditTask, CommentForm, CommentBox } from "@app/components";
 import {
   Breadcrumbs,
   Title,
@@ -14,24 +14,16 @@ import {
   ScrollArea,
   Stack
 } from "@mantine/core";
-import { tasks } from "@/lib/demo/tasks/task";
-import { EditTask, CommentForm } from "@/components/Forms";
-import { getFullName } from "@/utils/user";
-import { comments } from "@/lib/demo/tasks/comments";
-import { Comment } from "@/components/Comment/";
-import { getColor } from "@/utils/color";
-import { getIcon } from "@/utils/task";
+import { getIcon, getColor } from "@app/utils";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useCommentsQuery, useTaskQuery } from "@app/hooks";
 
 export default withPageAuthRequired(function Task(): JSX.Element {
   const router = useRouter();
   const { pid } = router.query;
 
-  // TODO: Fetch task from database based on pid
-  const task = tasks.find((task) => task.id === Number(pid));
-  const taskComments = comments.filter(
-    (comment) => comment.relatedTask === task?.id
-  );
+  const { data: task } = useTaskQuery(pid as string);
+  const { data: taskComments } = useCommentsQuery(pid as string);
 
   return (
     <Wrapper>
@@ -46,7 +38,7 @@ export default withPageAuthRequired(function Task(): JSX.Element {
                 Oppgaver
               </Anchor>
               <Anchor href={`/tasks/${pid as string}`} color="dimmed" size="sm">
-                {task.id}
+                ID: {task.id}
               </Anchor>
             </Breadcrumbs>
           </div>
@@ -68,7 +60,6 @@ export default withPageAuthRequired(function Task(): JSX.Element {
             </Card>
             <Card p="md" shadow="sm">
               <Title order={3}>Informasjon</Title>
-              {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
               <EditTask task={task} />
               <Group mt="md" position="apart">
                 <Text>Kategori:</Text>
@@ -85,7 +76,7 @@ export default withPageAuthRequired(function Task(): JSX.Element {
               <Group mt={80} position="apart">
                 <div>
                   <Text weight="bolder">Ansvarlig:</Text>
-                  <Text>{getFullName(task.responsibleUser)}</Text>
+                  <Text>{task.responsibleUser.fullName}</Text>
                 </div>
                 <Avatar
                   src={task.responsibleUser.profilePictureUrl}
@@ -109,12 +100,16 @@ export default withPageAuthRequired(function Task(): JSX.Element {
               p="lg"
             >
               <Stack spacing="md">
-                {taskComments.map((comment) => (
-                  <Comment comment={comment} key={comment.id} />
-                ))}
+                {taskComments !== undefined && (
+                  <>
+                    {taskComments.map((comment) => (
+                      <CommentBox comment={comment} key={comment.id} />
+                    ))}
+                  </>
+                )}
               </Stack>
             </ScrollArea>
-            <CommentForm />
+            <CommentForm currentTask={task} />
           </Card>
         </>
       )}

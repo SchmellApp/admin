@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Wrapper } from "@/components/Wrappers";
+import { Wrapper, GameCard, ActionDialog } from "@app/components";
 import {
   MediaQuery,
   SimpleGrid,
@@ -8,14 +8,15 @@ import {
   Center,
   UnstyledButton
 } from "@mantine/core";
-import { games } from "@/lib/demo/games/game";
-import { GameCard } from "@/components/Cards";
 import { IconCirclePlus } from "@tabler/icons";
-import { ActionDialog } from "@/components/Modals";
-import { AddGameModal } from "@/modals";
+import { AddGameModal } from "@app/modals";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useDeleteGameMutation, useGamesQuery } from "@app/hooks";
 
 export default withPageAuthRequired(function Games(): JSX.Element {
+  const { data: games, isLoading } = useGamesQuery();
+  const deleteGameMutation = useDeleteGameMutation();
+
   const [open, setOpen] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState({
     isOpen: false,
@@ -26,8 +27,10 @@ export default withPageAuthRequired(function Games(): JSX.Element {
   const handleClose = (): void => setDeleteDialog({ isOpen: false, id: 0 });
   const handleClick = (id: number): void =>
     setDeleteDialog({ isOpen: true, id });
-  const handleDelete = (): void =>
-    console.log("Not implemented yet", deleteDialog.id);
+  const handleDelete = (): void => {
+    deleteGameMutation.mutate(deleteDialog.id);
+    handleClose();
+  };
 
   return (
     <Wrapper>
@@ -45,8 +48,13 @@ export default withPageAuthRequired(function Games(): JSX.Element {
           { maxWidth: 1700, cols: 3 }
         ]}
       >
-        {games.map((game) => (
-          <GameCard game={game} key={game.id} handleClick={handleClick} />
+        {games?.map((game) => (
+          <GameCard
+            game={game}
+            key={game.id}
+            handleClick={handleClick}
+            isLoading={isLoading}
+          />
         ))}
         <UnstyledButton onClick={handleShow}>
           <Card

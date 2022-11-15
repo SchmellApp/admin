@@ -1,5 +1,11 @@
-import React, { ReactNode, useState } from "react";
-import { Wrapper } from "../../src/components/Wrappers";
+import React, { ReactNode, useEffect, useState } from "react";
+import {
+  Wrapper,
+  FilterMenu,
+  DataTable,
+  CardList,
+  SchmellButton
+} from "@app/components";
 import {
   Group,
   MediaQuery,
@@ -9,40 +15,81 @@ import {
   ActionIcon
 } from "@mantine/core";
 import { IconX } from "@tabler/icons";
-import { FilterMenu } from "@/components/Menus";
-import { getFullName, getUser } from "@/utils/user";
-import { AddTask } from "@/modals";
-import { DataTable } from "@/components/Table";
-import { TASKS_HEADER } from "@/constants/table";
-import { tasks } from "@/lib/demo/tasks/task";
+import { AddTask } from "@app/modals";
+import { TASKS_HEADER } from "@app/constants";
 import { useMediaQuery } from "@mantine/hooks";
-import { CardList } from "@/components/List";
-import { SchmellButton } from "@/components/Buttons";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { FilterMenu as FilterType } from "@app/types";
+import { toCategoryString, toPriorityString, toStatusString } from "@app/utils";
+import { TaskCategory, TaskPriority, TaskStatus } from "@app/enums";
+import { useUsersQuery, useTasksQuery } from "@app/hooks";
+import { useRouter } from "next/router";
 
 export default withPageAuthRequired(function Tasks(): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
   const isMobileScreen = useMediaQuery("(max-width: 768px)");
 
+  const router = useRouter();
+
+  const { data: users } = useUsersQuery();
+
   const [showModal, setShowModal] = useState(false);
-  const [filters, setFilters] = useState<string[]>([]);
-  const [responsible, setResponsible] = useState<string>("1"); // TODO: Update with user id
+  const [filters, setFilters] = useState<FilterType>({
+    responsible: "",
+    status: [],
+    priority: [],
+    category: []
+  });
   const [sort, setSort] = useState<string>("");
 
-  const isDarkScheme = colorScheme === "dark";
-  const isEmptyFilters = filters.length > 0 || responsible.length > 0;
-  const activeUser = getUser(Number(responsible));
+  useEffect(() => {
+    if (router.query.category !== undefined) {
+      setFilters({
+        ...filters,
+        category: [...filters.category, router.query.category as string]
+      });
+    }
+  }, [router.query]);
 
-  const handleFilter = (values: string[]): void => {
-    values.forEach((value) => {
-      if (!filters.includes(value)) {
-        setFilters([...filters, value]);
+  const { data: tasks } = useTasksQuery({
+    responsibleUser:
+      filters.responsible !== "" ? filters.responsible : undefined,
+    status: filters.status.length > 0 ? filters.status.join("+") : undefined,
+    priority:
+      filters.priority.length > 0 ? filters.priority.join("+") : undefined,
+    category:
+      filters.category.length > 0 ? filters.category.join("+") : undefined,
+    sort: sort !== "" ? sort : undefined
+  });
+
+  const isDarkScheme = colorScheme === "dark";
+  const isEmptyFilters =
+    filters.responsible.length === 0 &&
+    filters.category.length === 0 &&
+    filters.priority.length === 0 &&
+    filters.status.length === 0;
+  const activeUser = users?.find(
+    (user) => user.id === Number(filters.responsible)
+  );
+
+  const handleFilter =
+    (prop: keyof FilterType) =>
+    (values: string[] | string): void => {
+      setFilters((prev) => ({ ...prev, [prop]: values }));
+    };
+  const handleRemove =
+    (prop: keyof FilterType) =>
+    (value: string): void => {
+      if (prop !== "responsible") {
+        setFilters((prev) => ({
+          ...prev,
+          [prop]: prev[prop].filter((item) => item !== value)
+        }));
+      } else {
+        setFilters((prev) => ({ ...prev, [prop]: "" }));
       }
-    });
-  };
-  const handleRemoveFilter = (filter: string): void => {
-    setFilters(filters.filter((f) => f !== filter));
-  };
+    };
+
   const handleShowModal = (): void => setShowModal((prev) => !prev);
 
   const RemoveButton = (onClick: () => void): ReactNode => (
@@ -67,48 +114,78 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
       <Group position="left" mt="lg">
         <SchmellButton onClick={handleShowModal} label={"Ny oppgave"} />
       </Group>
-      <Group position={isEmptyFilters ? "apart" : "right"} mt="md">
+      <Group position={isEmptyFilters ? "right" : "apart"} mt="md">
         <Group position="left" style={{ gap: 8 }}>
-          {filters.length > 0 &&
-            filters.map((filter, index) => (
+          {!isEmptyFilters &&
+            filters.status.map((filter, idx) => (
               <Badge
                 variant="outline"
                 size="lg"
-                key={index}
-                rightSection={RemoveButton(() => handleRemoveFilter(filter))}
+                key={idx}
+                rightSection={RemoveButton(() =>
+                  handleRemove("status")(filter)
+                )}
                 color={isDarkScheme ? "yellow" : "white"}
               >
-                {filter}
+                {toStatusString(filter as TaskStatus)}
               </Badge>
             ))}
-          {responsible.length > 0 && (
+          {!isEmptyFilters &&
+            filters.category.map((filter, idx) => (
+              <Badge
+                variant="outline"
+                size="lg"
+                key={idx}
+                rightSection={RemoveButton(() =>
+                  handleRemove("category")(filter)
+                )}
+                color={isDarkScheme ? "yellow" : "white"}
+              >
+                {toCategoryString(filter as TaskCategory)}
+              </Badge>
+            ))}
+          {!isEmptyFilters &&
+            filters.priority.map((filter, idx) => (
+              <Badge
+                variant="outline"
+                size="lg"
+                key={idx}
+                rightSection={RemoveButton(() =>
+                  handleRemove("priority")(filter)
+                )}
+                color={isDarkScheme ? "yellow" : "white"}
+              >
+                {toPriorityString(filter as TaskPriority)}
+              </Badge>
+            ))}
+
+          {filters.responsible.length > 0 && (
             <Badge
               variant="outline"
               size="lg"
-              rightSection={RemoveButton(() => setResponsible(""))}
+              rightSection={RemoveButton(() => handleRemove("responsible")(""))}
               color={isDarkScheme ? "yellow" : "white"}
             >
-              {activeUser != null ? getFullName(activeUser) : ""}
+              {activeUser?.firstName} {activeUser?.lastName}
             </Badge>
           )}
         </Group>
-        <FilterMenu
-          filters={filters}
-          handleFilter={handleFilter}
-          responsible={responsible}
-          setResponsible={setResponsible}
-        />
+        <FilterMenu filters={filters} handleFilter={handleFilter} />
       </Group>
       <div>
-        {isMobileScreen ? (
-          <CardList tableData={tasks} />
-        ) : (
-          <DataTable
-            headers={TASKS_HEADER}
-            sort={sort}
-            setSort={setSort}
-            tableData={tasks}
-          />
+        {tasks != null && (
+          <>
+            {isMobileScreen ? (
+              <CardList tableData={tasks} />
+            ) : (
+              <DataTable
+                headers={TASKS_HEADER}
+                sort={sort}
+                setSort={setSort}
+                tableData={tasks}
+              />
+            )}
+          </>
         )}
       </div>
       <AddTask isOpen={showModal} onClose={handleShowModal} />

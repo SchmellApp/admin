@@ -17,14 +17,17 @@
         "project": "./tsconfig.json"
     },
     "plugins": [
-        "react"
+        "react",
+        "unused-imports"
     ],
     "rules": {
         "@typescript-eslint/quotes": "off",
         "@typescript-eslint/semi": "off",
         "@typescript-eslint/space-before-function-paren": "off",
         "@typescript-eslint/member-delimiter-style": "off",
-        "multiline-ternary": "off"
+        "multiline-ternary": "off",
+        "unused-imports/no-unused-imports": "error",
+        "@typescript-eslint/indent": "off"
     },
     "settings": {
         "react": {

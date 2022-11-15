@@ -1,4 +1,4 @@
-import { Wrapper } from "@/components/Wrappers";
+import { Wrapper, ActionDialog } from "@app/components";
 import {
   MediaQuery,
   SimpleGrid,
@@ -7,15 +7,19 @@ import {
   ActionIcon,
   CardProps,
   NumberInput,
-  Box
+  Box,
+  Skeleton
 } from "@mantine/core";
 import React, { FC, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { weeks } from "@/lib/demo/weeks/week";
 import { IconCirclePlus, IconTrash } from "@tabler/icons";
-import { ActionDialog } from "@/components/Modals";
 import Link from "next/link";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import {
+  useDeleteWeekMutation,
+  useWeekMutation,
+  useWeeksQuery
+} from "@app/hooks";
 
 interface WeekCardProps extends CardProps {
   deleteIcon?: boolean;
@@ -24,24 +28,35 @@ interface WeekCardProps extends CardProps {
 
 export default withPageAuthRequired(function Weeks(): JSX.Element {
   const route = useRouter();
+  const {
+    data: weeks,
+    isLoading,
+    isSuccess
+  } = useWeeksQuery(Number(route.query.pid));
+  const weekMutation = useWeekMutation(Number(route.query.pid));
+  const deleteMutation = useDeleteWeekMutation();
+
   const inputRef = useRef<HTMLInputElement>(null);
   const [deleteDialog, setDeleteDialog] = useState({
     isOpen: false,
     id: 0
   });
 
-  const gameWeeks = weeks.filter(
-    (week) => week.relatedGame.id === Number(route.query.pid)
-  );
   const handleSubmit = (): void => {
-    console.log(Number(inputRef.current?.value));
+    if (inputRef.current !== null) {
+      weekMutation.mutate({
+        weekNumber: Number(inputRef.current.value),
+        relatedGame: Number(route.query.pid)
+      });
+    }
   };
+
   const handleDeleteShow = (id: number): void =>
     setDeleteDialog({ isOpen: true, id });
   const handleDeleteClose = (): void =>
     setDeleteDialog({ isOpen: false, id: 0 });
   const handleDelete = (): void => {
-    console.log(deleteDialog.id);
+    deleteMutation.mutate(deleteDialog.id);
     handleDeleteClose();
   };
 
@@ -118,21 +133,31 @@ export default withPageAuthRequired(function Weeks(): JSX.Element {
           }
         ]}
       >
-        {gameWeeks.map((week) => (
-          <Card id={week.id} deleteIcon key={week.id}>
-            <Box
-              component={Link}
-              href={`/games/${route.query.pid as string}/weeks/${
-                week.id
-              }/questions`}
-              sx={{ zIndex: 1 }}
-            >
-              <Title order={2} align="center">
-                Uke {week.weekNumber}
-              </Title>
-            </Box>
-          </Card>
-        ))}
+        {isLoading && (
+          <>
+            <Skeleton height={50} />
+            <Skeleton height={50} />
+            <Skeleton height={50} />
+          </>
+        )}
+        {weeks != null &&
+          isSuccess &&
+          weeks.map((week) => (
+            <Card id={week.id} deleteIcon key={week.id}>
+              <Box
+                component={Link}
+                href={`/games/${route.query.pid as string}/weeks/${
+                  week.id
+                }/questions`}
+                sx={{ zIndex: 1 }}
+              >
+                <Title order={2} align="center">
+                  Uke {week.weekNumber}
+                </Title>
+              </Box>
+            </Card>
+          ))}
+
         <Card>
           <div
             style={{

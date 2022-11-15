@@ -1,17 +1,21 @@
 import React, { useState } from "react";
-import { Wrapper } from "@/components/Wrappers";
+import {
+  Wrapper,
+  IdeaForm,
+  ListElements,
+  ActionDialog,
+  SchmellButton
+} from "@app/components";
 import { Group, MediaQuery, Title, Collapse, SimpleGrid } from "@mantine/core";
-import { IdeaForm } from "@/components/Forms";
-import { ListElements } from "@/components/List";
-import { ideas } from "@/lib/demo/ideas/ideas";
-import { filterByCategory, toListElements } from "@/utils/idea";
-import { ActionDialog } from "@/components/Modals";
-import { SchmellButton } from "@/components/Buttons";
-import { IDEA_CATEGORIES_ELEMENTS } from "@/constants/idea";
+import { filterByCategory, toListElements } from "@app/utils";
+import { IDEA_CATEGORIES_ELEMENTS } from "@app/constants";
 import { IconPlus, IconX } from "@tabler/icons";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useIdeaDelete, useIdeasQuery } from "@app/hooks";
 
 export default withPageAuthRequired(function Ideas(): JSX.Element {
+  const { data: ideas, isLoading } = useIdeasQuery();
+  const deleteIdeaMutation = useIdeaDelete();
   const [openMenu, setOpenMenu] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState({
     isOpen: false,
@@ -27,7 +31,8 @@ export default withPageAuthRequired(function Ideas(): JSX.Element {
   };
   const handleHide = (): void => setDeleteDialog({ isOpen: false, id: 0 });
   const handleDelete = (): void => {
-    console.log("Not implemented yet", deleteDialog.id);
+    deleteIdeaMutation.mutate(deleteDialog.id);
+    handleHide();
   };
 
   return (
@@ -69,10 +74,13 @@ export default withPageAuthRequired(function Ideas(): JSX.Element {
             key={category.title}
             title={category.title}
             color={category.color}
-            elements={toListElements(
-              filterByCategory(ideas, category.category)
-            )}
+            elements={
+              ideas !== undefined
+                ? toListElements(filterByCategory(ideas, category.category))
+                : []
+            }
             handleClick={handleDeleteClick}
+            isLoading={isLoading}
           />
         ))}
       </SimpleGrid>

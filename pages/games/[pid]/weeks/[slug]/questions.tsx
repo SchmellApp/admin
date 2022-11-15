@@ -1,4 +1,4 @@
-import { Wrapper } from "@/components/Wrappers";
+import { Wrapper, SchmellButton, QuestionCard } from "@app/components";
 import {
   Title,
   Anchor,
@@ -10,32 +10,25 @@ import {
 } from "@mantine/core";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { games } from "@/lib/demo/games/game";
-import { weeks } from "@/lib/demo/weeks/week";
-import { GameDetails } from "@/views";
-import { AddQuestion } from "@/modals";
-import { SchmellButton } from "@/components/Buttons";
-import { questions } from "@/lib/demo/questions/question";
-import QuestionCard from "@/components/Cards/QuestionCard";
+import { GameDetails } from "@app/views";
+import { AddQuestion } from "@app/modals";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useGameQuery, useQuestionsQuery, useWeekQuery } from "@app/hooks";
 
 export default withPageAuthRequired(function Questions(): JSX.Element {
   const route = useRouter();
   const isDarkMode = useMantineTheme().colorScheme === "dark";
 
+  const { data: currentGame } = useGameQuery(Number(route.query.pid));
+  const { data: currentWeek } = useWeekQuery(Number(route.query.slug));
+  const { data: questions, isSuccess } = useQuestionsQuery(
+    Number(route.query.slug)
+  );
+
   const [showDetails, setShowDetails] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
 
   const handleShowAdd = (): void => setShowAdd((prev) => !prev);
-  const selectedGame = games.find(
-    (game) => game.id === Number(route.query.pid)
-  );
-  const selectedWeek = weeks.find(
-    (week) => week.id === Number(route.query.slug)
-  );
-  const filteredQuestions = questions.filter((question) => {
-    return question.relatedWeek === Number(route.query.slug);
-  });
 
   const items = [
     {
@@ -43,13 +36,13 @@ export default withPageAuthRequired(function Questions(): JSX.Element {
       href: "/games"
     },
     {
-      title: selectedGame?.name,
-      href: `/games/${selectedGame?.id ?? 0}/weeks`
+      title: currentGame?.name,
+      href: `/games/${currentGame?.id ?? 0}/weeks`
     },
     {
-      title: `Uke: ${selectedWeek?.weekNumber ?? 0}`,
-      href: `/games/${selectedGame?.id ?? 0}/weeks/${
-        selectedWeek?.id ?? 0
+      title: `Uke: ${currentWeek?.weekNumber ?? 0}`,
+      href: `/games/${currentGame?.id ?? 0}/weeks/${
+        currentWeek?.id ?? 0
       }/questions`
     }
   ].map((item, index) => (
@@ -74,16 +67,16 @@ export default withPageAuthRequired(function Questions(): JSX.Element {
           labelPosition="left"
         />
       </Group>
-      {selectedGame !== undefined && showDetails && (
-        <GameDetails game={selectedGame} />
+      {currentGame !== undefined && showDetails && (
+        <GameDetails game={currentGame} />
       )}
       <SchmellButton onClick={handleShowAdd} label="Opprett spørsmål" />
-      {selectedGame !== undefined && selectedWeek !== undefined && (
+      {currentGame !== undefined && currentWeek !== undefined && (
         <AddQuestion
           isOpen={showAdd}
           onClose={handleShowAdd}
-          selectedGame={selectedGame}
-          selectedWeek={selectedWeek}
+          selectedGame={currentGame}
+          selectedWeek={currentWeek}
         />
       )}
       <SimpleGrid
@@ -108,9 +101,11 @@ export default withPageAuthRequired(function Questions(): JSX.Element {
           }
         ]}
       >
-        {filteredQuestions.map((question) => (
-          <QuestionCard question={question} key={question.id} />
-        ))}
+        {questions !== undefined &&
+          isSuccess &&
+          questions.map((question) => (
+            <QuestionCard question={question} key={question.id} />
+          ))}
       </SimpleGrid>
     </Wrapper>
   );
