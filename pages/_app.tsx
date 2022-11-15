@@ -17,16 +17,19 @@ const client = new QueryClient();
 
 export default function App(props: AppProps): JSX.Element {
   const { Component, pageProps } = props;
+  const { pathname } = useRouter();
   const [colorScheme, setColorScheme] = useState<ColorScheme>("dark");
+
   const toggleColorScheme = (): void =>
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
-  const { pathname } = useRouter();
+
+  const title = `Schmell - ${toPageTitle(pathname)}`;
 
   return (
     <>
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <title>Schmell - {toPageTitle(pathname)}</title>
+        <title>{title}</title>
         <link rel="shortcut icon" href="/faviconv2.ico" />
       </Head>
 

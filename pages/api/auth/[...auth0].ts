@@ -5,7 +5,7 @@ export default handleAuth({
     try {
       await handleLogin(req, res, {
         authorizationParams: {
-          scope: "openid profile email read:all"
+          scope: "openid profile email"
         }
       });
     } catch (error: any) {
