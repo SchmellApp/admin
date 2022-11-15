@@ -37,7 +37,7 @@ const CardList: FC<CardListProps> = ({ tableData }): JSX.Element => {
             <div style={{ marginLeft: "xl" }}>
               <Text>{task.title}</Text>
               <Text size="xs" color="dimmed">
-                {getDifferenceInDays(task.lastUpdated)}
+                {getDifferenceInDays(new Date(task.lastUpdated))}
               </Text>
             </div>
           </Group>
@@ -48,7 +48,7 @@ const CardList: FC<CardListProps> = ({ tableData }): JSX.Element => {
           </Group>
           <Group position="left" my="xs">
             <Text weight="bolder">Frist:</Text>
-            <Text>{toDateString(task.deadline)}</Text>
+            <Text>{toDateString(new Date(task.deadline))}</Text>
           </Group>
           <Group position="left" my="xs">
             <Text weight="bolder">Prioritet:</Text>
