@@ -73,7 +73,7 @@ const TableCard: FC<TableCardProps> = ({
             </thead>
             <tbody>
               {rows.map((row, index) =>
-                isLoading ? (
+                isLoading === true ? (
                   <tr>
                     <td colSpan={4}>
                       <Skeleton height={25} />
