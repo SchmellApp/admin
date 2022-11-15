@@ -35,7 +35,7 @@ const QuestionCard: FC<QuestionCardProps> = ({ question }) => {
   const handleShowEdit = (): void => setShowEdit((prev) => !prev);
   const handleShowDelete = (): void => setShowDelete((prev) => !prev);
   const handleShowImage = (): void => setShowImage((prev) => !prev);
-  const handleDelete = (): void => deleteQuestion.mutate(question.id);
+  const handleDelete = (): void => deleteQuestion.mutate(String(question.id));
 
   const TextGroup = ({ title, text }: TextGroupProps): JSX.Element => (
     <Box

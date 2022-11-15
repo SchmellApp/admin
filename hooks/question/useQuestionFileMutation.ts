@@ -1,16 +1,12 @@
-import { cms } from "@app/services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MutationObserverResult, Question } from "@app/types";
+import { schmellClient } from "@app/pages/_app";
 
-const useQuestionFileMutation = (): MutationObserverResult<
-  Question,
-  { id: number; file: File }
-> => {
+const useQuestionFileMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async ({ id, file }: { id: number; file: File }) =>
-      await cms.questionService.addQuestionPicture(id, file),
+    async ({ id, file }: { id: string; file: File }) =>
+      await schmellClient.question.addPicture(id, file),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["questions"]);

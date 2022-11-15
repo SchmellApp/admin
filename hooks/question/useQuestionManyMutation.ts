@@ -1,16 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateQuestion, Question, MutationObserverResult } from "@app/types";
-import { cms } from "@app/services";
+import { CreateQuestion } from "@app/types";
+import { schmellClient } from "@app/pages/_app";
 
-const useQuestionManyMutation = (): MutationObserverResult<
-  Question[],
-  CreateQuestion[]
-> => {
+const useQuestionManyMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
     async (questions: CreateQuestion[]) =>
-      await cms.questionService.createMany(questions),
+      await schmellClient.question.createMany(questions),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["questions"]);

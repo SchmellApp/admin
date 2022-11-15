@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateTaskForm, MutationObserverResult, Task } from "@app/types";
-import { task } from "@app/services";
+import { CreateTaskForm } from "@app/types";
+import { schmellClient } from "@app/pages/_app";
 
-const useTaskMutation = (): MutationObserverResult<Task, CreateTaskForm> => {
+const useTaskMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
     async (createTask: CreateTaskForm) =>
-      await task.taskService.createTask(createTask),
+      await schmellClient.task.create(createTask),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["tasks"]);

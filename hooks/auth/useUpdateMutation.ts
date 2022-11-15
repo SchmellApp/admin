@@ -1,14 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { EditUser, MutationObserverResult, User } from "@app/types";
-import { userService } from "@app/services";
+import { EditUser } from "@app/types";
+import { schmellClient } from "@app/pages/_app";
 
-const useUpdateMutation = (
-  id: string
-): MutationObserverResult<User, EditUser> => {
+const useUpdateMutation = (id: string) => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (user: EditUser) => await userService.updateUser(id, user),
+    async (user: EditUser) => await schmellClient.user.update(id, user),
     {
       onSuccess: async (data) => {
         await queryClient.invalidateQueries(["self"]);

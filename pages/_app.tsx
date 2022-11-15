@@ -12,8 +12,10 @@ import { useRouter } from "next/router";
 import "dayjs/locale/nb";
 import { UserProvider } from "@auth0/nextjs-auth0";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SchmellClient from "@app/client/client";
 
 const client = new QueryClient();
+export const schmellClient = new SchmellClient("/api");
 
 export default function App(props: AppProps): JSX.Element {
   const { Component, pageProps } = props;

@@ -1,11 +1,11 @@
-import { cms } from "@app/services";
 import { useQuery } from "@tanstack/react-query";
 import { QueryObserverResult, Game } from "@app/types";
+import { schmellClient } from "@app/pages/_app";
 
 const useGamesQuery = (): QueryObserverResult<Game[]> =>
   useQuery({
     queryKey: ["games"],
-    queryFn: cms.gameService.getGames
+    queryFn: schmellClient.game.getAll
   });
 
 export default useGamesQuery;

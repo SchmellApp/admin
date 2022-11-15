@@ -30,7 +30,7 @@ const AddGame: FC<AddGameProps> = ({ isOpen, onClose }): JSX.Element => {
 
     if (createdGame !== undefined && values.file !== undefined) {
       fileMutation.mutate({
-        id: createdGame.id,
+        id: String(createdGame.id),
         file: values.file
       });
     }

@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateWeek, Week, MutationObserverResult } from "@app/types";
-import { cms } from "@app/services";
+import { schmellClient } from "@app/pages/_app";
 
 const useWeekMutation = (
-  relatedGame: number
+  relatedGame: string
 ): MutationObserverResult<Week, CreateWeek> => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (week: CreateWeek) => await cms.weekService.createWeek(week),
+    async (week: CreateWeek) => await schmellClient.week.create(week),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["week", relatedGame]);

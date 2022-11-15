@@ -1,11 +1,11 @@
-import { common } from "@app/services";
 import { useQuery } from "@tanstack/react-query";
 import { QueryObserverResult, StatisticsResponse } from "@app/types";
+import { schmellClient } from "@app/pages/_app";
 
 const useGetStatisticsQuery = (): QueryObserverResult<StatisticsResponse> =>
   useQuery({
     queryKey: ["statistics"],
-    queryFn: common.statisticService.getStatistics
+    queryFn: schmellClient.statistics.get
   });
 
 export default useGetStatisticsQuery;

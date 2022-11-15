@@ -15,7 +15,7 @@ interface EditGameDetailsProps {
 
 const EditGameDetails: FC<EditGameDetailsProps> = (props) => {
   const { onClose, game, isOpen } = props;
-  const editGame = useEditGameMutation(game.id);
+  const editGame = useEditGameMutation(String(game.id));
   const updateLogo = useGameFileMutation();
 
   const form = useForm<EditGameForm>({
@@ -30,7 +30,7 @@ const EditGameDetails: FC<EditGameDetailsProps> = (props) => {
 
     if (values.file != null) {
       await updateLogo.mutate({
-        id: game.id,
+        id: String(game.id),
         file: values.file
       });
     }

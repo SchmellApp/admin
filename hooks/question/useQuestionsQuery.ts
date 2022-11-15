@@ -1,15 +1,15 @@
-import { cms } from "@app/services";
 import { useQuery } from "@tanstack/react-query";
 import { QueryObserverResult, Question } from "@app/types";
+import { schmellClient } from "@app/pages/_app";
 
 const useQuestionsQuery = (
-  relatedWeek: number
+  relatedWeek: string
 ): QueryObserverResult<Question[]> =>
   useQuery(
     ["questions", relatedWeek],
-    async () => await cms.questionService.getQuestions({ relatedWeek }),
+    async () => await schmellClient.question.getAll({ relatedWeek }),
     {
-      enabled: !(relatedWeek === 0)
+      enabled: !(relatedWeek === "")
     }
   );
 

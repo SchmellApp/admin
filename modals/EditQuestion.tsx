@@ -14,7 +14,7 @@ interface EditQuestionProps {
 
 const EditQuestion: FC<EditQuestionProps> = (props) => {
   const { isOpen, onClose, question } = props;
-  const editQuestion = useEditQuestionMutation(question.id);
+  const editQuestion = useEditQuestionMutation(String(question.id));
   const addFile = useQuestionFileMutation();
 
   const form = useForm<EditQuestionForm>({
@@ -33,7 +33,7 @@ const EditQuestion: FC<EditQuestionProps> = (props) => {
     await editQuestion.mutateAsync(values);
     if (values.file !== undefined) {
       await addFile.mutate({
-        id: question.id,
+        id: String(question.id),
         file: values.file
       });
     }

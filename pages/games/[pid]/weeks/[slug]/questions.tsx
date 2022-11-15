@@ -19,10 +19,10 @@ export default withPageAuthRequired(function Questions(): JSX.Element {
   const route = useRouter();
   const isDarkMode = useMantineTheme().colorScheme === "dark";
 
-  const { data: currentGame } = useGameQuery(Number(route.query.pid));
-  const { data: currentWeek } = useWeekQuery(Number(route.query.slug));
+  const { data: currentGame } = useGameQuery(route.query.pid as string);
+  const { data: currentWeek } = useWeekQuery(route.query.slug as string);
   const { data: questions, isSuccess } = useQuestionsQuery(
-    Number(route.query.slug)
+    route.query.slug as string
   );
 
   const [showDetails, setShowDetails] = useState(false);

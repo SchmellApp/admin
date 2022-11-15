@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryObserverResult, Task, TaskFilters } from "@app/types";
-import { task } from "@app/services";
+import { schmellClient } from "@app/pages/_app";
 
 const useTasksQuery = ({
   priority,
@@ -12,7 +12,7 @@ const useTasksQuery = ({
   useQuery({
     queryKey: ["tasks", priority, sort, status, responsibleUser, category],
     queryFn: async () =>
-      await task.taskService.getTasks({
+      await schmellClient.task.getAll({
         priority,
         sort,
         status,

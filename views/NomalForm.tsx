@@ -24,7 +24,7 @@ const NormalForm: FC<FormProps> = ({ onClose, selectedWeek, selectedGame }) => {
     );
     if (values.file !== undefined) {
       await fileMutation.mutate({
-        id: createdQuestion.id,
+        id: String(createdQuestion.id),
         file: values.file
       });
     }

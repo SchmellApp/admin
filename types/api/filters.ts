@@ -1,21 +1,9 @@
-import { GameStatus, IdeaCategory } from "@app/enums";
-
-export interface GameFilters {
-  name?: string;
-  status?: GameStatus;
-}
-
 export interface QuestionFilters {
-  relatedWeek?: number;
+  relatedWeek?: string;
 }
 
 export interface WeekFilters {
-  relatedGame?: number;
-}
-
-export interface IdeaFilters {
-  category?: IdeaCategory;
-  createdBy?: number;
+  relatedGame?: string;
 }
 
 export interface TaskFilters {
@@ -24,6 +12,7 @@ export interface TaskFilters {
   category?: string;
   responsibleUser?: string;
   sort?: string;
+  toDate?: Date;
 }
 
 export interface CommentFilters {

@@ -32,8 +32,8 @@ export default withPageAuthRequired(function Weeks(): JSX.Element {
     data: weeks,
     isLoading,
     isSuccess
-  } = useWeeksQuery(Number(route.query.pid));
-  const weekMutation = useWeekMutation(Number(route.query.pid));
+  } = useWeeksQuery(route.query.pid as string);
+  const weekMutation = useWeekMutation(route.query.pid as string);
   const deleteMutation = useDeleteWeekMutation();
 
   const inputRef = useRef<HTMLInputElement>(null);

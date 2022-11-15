@@ -1,14 +1,11 @@
-import { userService } from "@app/services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MutationObserverResult, User } from "@app/types";
+import { schmellClient } from "@app/pages/_app";
 
-const useProfilePictureMutation = (
-  id: string
-): MutationObserverResult<User, File> => {
+const useProfilePictureMutation = (id: string) => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (file: File) => await userService.addProfilePicture(id, file),
+    async (file: File) => await schmellClient.user.addProfilePicture(id, file),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["self"]);
