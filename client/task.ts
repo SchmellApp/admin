@@ -3,7 +3,8 @@ import {
   CreateTaskForm,
   TaskFilters,
   UpdateTaskParams,
-  Task as TaskType
+  Task as TaskType,
+  TaskPaginatedResponse
 } from "@app/types";
 
 export default class Task {
@@ -13,7 +14,7 @@ export default class Task {
     this.client = client;
   }
 
-  getAll = async (filters: TaskFilters): Promise<TaskType[]> =>
+  getAll = async (filters: TaskFilters): Promise<TaskPaginatedResponse> =>
     await this.client.axiosInstance
       .get("/tasks/", { params: filters })
       .then((response) => response.data);

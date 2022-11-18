@@ -28,6 +28,9 @@ interface DataTableProps {
   tableData: Task[];
   sort: string;
   setSort: Dispatch<SetStateAction<string>>;
+  currentPage: number;
+  maxPage: number;
+  onChangePage: (page: number) => void;
   title?: string;
 }
 
@@ -36,7 +39,10 @@ const DataTable: FC<DataTableProps> = ({
   headers,
   setSort,
   sort,
-  tableData
+  tableData,
+  currentPage,
+  maxPage,
+  onChangePage
 }): JSX.Element => {
   const router = useRouter();
   const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
@@ -125,10 +131,12 @@ const DataTable: FC<DataTableProps> = ({
         </tbody>
       </Table>
       <Pagination
-        total={100}
+        total={maxPage}
         color={isDarkScheme ? "yellow" : "dark"}
         mt="md"
         position="right"
+        page={currentPage}
+        onChange={(page) => onChangePage(page)}
       />
     </div>
   );

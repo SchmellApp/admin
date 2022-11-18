@@ -38,7 +38,8 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
     responsible: "",
     status: [],
     priority: [],
-    category: []
+    category: [],
+    page: 1
   });
   const [sort, setSort] = useState<string>("");
 
@@ -59,7 +60,9 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
       filters.priority.length > 0 ? filters.priority.join("+") : undefined,
     category:
       filters.category.length > 0 ? filters.category.join("+") : undefined,
-    sort: sort !== "" ? sort : undefined
+    sort: sort !== "" ? sort : undefined,
+    page: filters.page,
+    pageSize: 10
   });
 
   const isDarkScheme = colorScheme === "dark";
@@ -74,19 +77,22 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
 
   const handleFilter =
     (prop: keyof FilterType) =>
-    (values: string[] | string): void => {
+    (values: string[] | string | number): void => {
+      console.log(prop, values);
       setFilters((prev) => ({ ...prev, [prop]: values }));
     };
   const handleRemove =
     (prop: keyof FilterType) =>
-    (value: string): void => {
-      if (prop !== "responsible") {
+    (value: string | number): void => {
+      if (prop === "responsible") {
+        setFilters((prev) => ({ ...prev, responsible: "" }));
+      } else if (prop === "page") {
+        setFilters((prev) => ({ ...prev, page: 1 }));
+      } else {
         setFilters((prev) => ({
           ...prev,
           [prop]: prev[prop].filter((item) => item !== value)
         }));
-      } else {
-        setFilters((prev) => ({ ...prev, [prop]: "" }));
       }
     };
 
@@ -176,13 +182,16 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
         {tasks != null && (
           <>
             {isMobileScreen ? (
-              <CardList tableData={tasks} />
+              <CardList tableData={tasks.tasks} />
             ) : (
               <DataTable
                 headers={TASKS_HEADER}
                 sort={sort}
                 setSort={setSort}
-                tableData={tasks}
+                tableData={tasks.tasks}
+                currentPage={filters.page}
+                onChangePage={handleFilter("page")}
+                maxPage={tasks.lastPage}
               />
             )}
           </>

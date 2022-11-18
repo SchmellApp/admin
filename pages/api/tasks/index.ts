@@ -1,11 +1,11 @@
 import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
-import { Task, TaskFilters } from "@app/types";
+import { Task, TaskFilters, TaskPaginatedResponse } from "@app/types";
 import { NextApiRequest, NextApiResponse } from "next";
 import SchmellClient from "@app/client/client";
 
 export default withApiAuthRequired(async function handle(
   req: NextApiRequest,
-  res: NextApiResponse<Task | Task[]>
+  res: NextApiResponse<Task | TaskPaginatedResponse>
 ) {
   const { accessToken } = await getAccessToken(req, res);
   const client = new SchmellClient(
