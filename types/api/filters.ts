@@ -13,6 +13,8 @@ export interface TaskFilters {
   responsibleUser?: string;
   sort?: string;
   toDate?: Date;
+  page?: number;
+  pageSize?: number;
 }
 
 export interface CommentFilters {

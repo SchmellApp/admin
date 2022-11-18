@@ -1,5 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { QueryObserverResult, Task, TaskFilters } from "@app/types";
+import {
+  QueryObserverResult,
+  TaskFilters,
+  TaskPaginatedResponse
+} from "@app/types";
 import { schmellClient } from "@app/pages/_app";
 
 const useTasksQuery = ({
@@ -7,17 +11,30 @@ const useTasksQuery = ({
   sort,
   status,
   responsibleUser,
-  category
-}: TaskFilters): QueryObserverResult<Task[]> =>
+  category,
+  page,
+  pageSize
+}: TaskFilters): QueryObserverResult<TaskPaginatedResponse> =>
   useQuery({
-    queryKey: ["tasks", priority, sort, status, responsibleUser, category],
+    queryKey: [
+      "tasks",
+      priority,
+      sort,
+      status,
+      responsibleUser,
+      category,
+      page,
+      pageSize
+    ],
     queryFn: async () =>
       await schmellClient.task.getAll({
         priority,
         sort,
         status,
         responsibleUser,
-        category
+        category,
+        page,
+        pageSize
       })
   });
 

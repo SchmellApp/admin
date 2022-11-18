@@ -16,6 +16,13 @@ export interface Task {
   lastUpdated: string;
 }
 
+export interface TaskPaginatedResponse {
+  tasks: Task[];
+  total: number;
+  page: number;
+  lastPage: number;
+}
+
 export interface UpdateTaskParams {
   status?: TaskStatus;
   deadline?: Date;
