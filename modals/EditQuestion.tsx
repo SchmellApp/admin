@@ -14,7 +14,7 @@ interface EditQuestionProps {
 
 const EditQuestion: FC<EditQuestionProps> = (props) => {
   const { isOpen, onClose, question } = props;
-  const editQuestion = useEditQuestionMutation(String(question.id));
+  const editQuestion = useEditQuestionMutation(question.id);
   const addFile = useQuestionFileMutation();
 
   const form = useForm<EditQuestionForm>({

@@ -1,11 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryObserverResult, Week } from "@app/types";
-import { schmellClient } from "@app/pages/_app";
+import axios from "axios";
 
 const useWeeksQuery = (relatedGame: string): QueryObserverResult<Week[]> =>
   useQuery(
     ["week", relatedGame],
-    async () => await schmellClient.week.getAll({ relatedGame }),
+    async () =>
+      await axios
+        .get(`/api/cms/week/?relatedGame=${relatedGame}`)
+        .then((res) => res.data),
     {
       enabled: !(relatedGame === "")
     }

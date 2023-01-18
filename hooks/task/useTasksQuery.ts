@@ -4,7 +4,7 @@ import {
   TaskFilters,
   TaskPaginatedResponse
 } from "@app/types";
-import { schmellClient } from "@app/pages/_app";
+import axios from "axios";
 
 const useTasksQuery = ({
   priority,
@@ -27,15 +27,19 @@ const useTasksQuery = ({
       pageSize
     ],
     queryFn: async () =>
-      await schmellClient.task.getAll({
-        priority,
-        sort,
-        status,
-        responsibleUser,
-        category,
-        page,
-        pageSize
-      })
+      await axios
+        .get("/api/tasks", {
+          params: {
+            priority,
+            sort,
+            status,
+            responsibleUser,
+            category,
+            page,
+            pageSize
+          }
+        })
+        .then((res) => res.data)
   });
 
 export default useTasksQuery;

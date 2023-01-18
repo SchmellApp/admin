@@ -1,19 +1,21 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { StatisticsResponse } from "@app/types";
 import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
-import SchmellClient from "@app/client/client";
+import { axiosClient } from "@app/lib";
 
 export default withApiAuthRequired(async function handle(
   req: NextApiRequest,
   res: NextApiResponse<StatisticsResponse>
 ) {
   const { accessToken } = await getAccessToken(req, res);
-  const client = new SchmellClient(
-    process.env.NEXT_PUBLIC_BASE_URL,
-    accessToken
-  );
 
-  const statistics = await client.statistics.get();
+  if (accessToken === undefined) {
+    return res.status(401).end();
+  }
 
-  return res.status(200).json(statistics);
+  axiosClient.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+
+  const response = await axiosClient.get("/common/statistics/");
+
+  return res.status(200).json(response.data);
 });

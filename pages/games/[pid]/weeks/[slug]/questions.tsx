@@ -10,10 +10,10 @@ import {
 } from "@mantine/core";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { GameDetails } from "@app/views";
-import { AddQuestion } from "@app/modals";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useGameQuery, useQuestionsQuery, useWeekQuery } from "@app/hooks";
+import { GameDetails } from "@app/views";
+import { AddQuestion } from "@app/modals";
 
 export default withPageAuthRequired(function Questions(): JSX.Element {
   const route = useRouter();

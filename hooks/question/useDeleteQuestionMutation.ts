@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MutationObserverResult } from "@app/types";
-import { schmellClient } from "@app/pages/_app";
+import axios from "axios";
 
-const useDeleteQuestionMutation = (): MutationObserverResult<void, string> => {
+const useDeleteQuestionMutation = (): MutationObserverResult<void, number> => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (id: string) => await schmellClient.question.delete(id),
+    async (id: number) =>
+      await axios.delete(`/api/cms/question/${id}`).then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["questions"]);

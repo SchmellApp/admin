@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MutationObserverResult } from "@app/types";
-import { schmellClient } from "@app/pages/_app";
+import axios from "axios";
 
 const useGameFileMutation = (): MutationObserverResult<
   void,
@@ -10,7 +10,9 @@ const useGameFileMutation = (): MutationObserverResult<
 
   return useMutation(
     async (params: { id: string; file: File }) =>
-      await schmellClient.game.addLogo(params.id, params.file),
+      await axios
+        .post(`/api/cms/game/${params.id}/files`, params.file)
+        .then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: ["games", "game"] });

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { schmellClient } from "@app/pages/_app";
+import axios from "axios";
 
 const useTodaysTasksQuery = (responsibleId: string) => {
   const toDate = new Date();
@@ -8,10 +8,14 @@ const useTodaysTasksQuery = (responsibleId: string) => {
   return useQuery({
     queryKey: ["tasks", "today", responsibleId],
     queryFn: async () =>
-      await schmellClient.task.getAll({
-        responsibleUser: responsibleId,
-        toDate
-      })
+      await axios
+        .get("/api/tasks", {
+          params: {
+            responsibleUser: responsibleId,
+            toDate
+          }
+        })
+        .then((res) => res.data)
   });
 };
 

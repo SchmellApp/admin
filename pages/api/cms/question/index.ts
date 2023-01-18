@@ -1,28 +1,30 @@
 import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { NextApiResponse } from "next";
 import { Question } from "@app/types";
-import SchmellClient from "@app/client/client";
+import { axiosClient } from "@app/lib";
 
 export default withApiAuthRequired(async function handle(
   req,
   res: NextApiResponse<Question[] | Question>
 ) {
   const { accessToken } = await getAccessToken(req, res);
-  const client = new SchmellClient(
-    process.env.NEXT_PUBLIC_BASE_URL,
-    accessToken
-  );
+
+  if (accessToken === undefined) {
+    return res.status(401).end();
+  }
+
+  axiosClient.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
   switch (req.method) {
     case "GET": {
-      const questions = await client.question.getAll({
-        relatedWeek: req.query.relatedWeek as string
-      });
-      return res.status(200).json(questions);
+      const response = await axiosClient.get(
+        `/cms/question/?relatedWeek=${req.query.relatedWeek as string}`
+      );
+      return res.status(200).json(response.data);
     }
     case "POST": {
-      const question = await client.question.create(req.body);
-      return res.status(201).json(question);
+      const response = await axiosClient.post(`/cms/question`, req.body);
+      return res.status(201).json(response.data);
     }
     default: {
       return res.status(405).end();
