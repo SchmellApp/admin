@@ -31,7 +31,7 @@ export default withPageAuthRequired(function Ideas(): JSX.Element {
   };
   const handleHide = (): void => setDeleteDialog({ isOpen: false, id: 0 });
   const handleDelete = (): void => {
-    deleteIdeaMutation.mutate(String(deleteDialog.id));
+    deleteIdeaMutation.mutate(deleteDialog.id);
     handleHide();
   };
 

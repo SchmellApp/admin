@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateTaskForm } from "@app/types";
-import { schmellClient } from "@app/pages/_app";
+import axios from "axios";
 
 const useTaskMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
     async (createTask: CreateTaskForm) =>
-      await schmellClient.task.create(createTask),
+      await axios.post("/api/tasks", createTask).then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["tasks"]);

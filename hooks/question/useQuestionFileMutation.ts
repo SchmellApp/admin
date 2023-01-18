@@ -1,12 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { schmellClient } from "@app/pages/_app";
+import axios from "axios";
 
 const useQuestionFileMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
     async ({ id, file }: { id: string; file: File }) =>
-      await schmellClient.question.addPicture(id, file),
+      await axios
+        .post(`/api/cms/question/${id}/files`, file)
+        .then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["questions"]);

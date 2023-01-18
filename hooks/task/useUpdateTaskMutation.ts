@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UpdateTaskParams } from "@app/types";
-import { schmellClient } from "@app/pages/_app";
+import axios from "axios";
 
 const useUpdateTaskMutation = (id: string) => {
   const queryClient = useQueryClient();
 
   return useMutation(
     async (updateTask: UpdateTaskParams) =>
-      await schmellClient.task.update(id, updateTask),
+      await axios.patch(`/api/tasks/${id}`, updateTask).then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: [id] });

@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateQuestion } from "@app/types";
-import { schmellClient } from "@app/pages/_app";
+import axios from "axios";
 
 const useQuestionMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
     async (question: CreateQuestion) =>
-      await schmellClient.question.create(question),
+      await axios.post(`/api/cms/question`, question).then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["questions"]);

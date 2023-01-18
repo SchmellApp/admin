@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryObserverResult, StatisticsResponse } from "@app/types";
-import { schmellClient } from "@app/pages/_app";
+import axios from "axios";
 
 const useGetStatisticsQuery = (): QueryObserverResult<StatisticsResponse> =>
   useQuery({
     queryKey: ["statistics"],
-    queryFn: schmellClient.statistics.get
+    queryFn: async () =>
+      await axios.get("/api/common/statistics").then((res) => res.data)
   });
 
 export default useGetStatisticsQuery;

@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AddGame } from "@app/types";
-import { schmellClient } from "@app/pages/_app";
+import axios from "axios";
 
 const useGameMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (game: AddGame) => await schmellClient.game.create(game),
+    mutationFn: async (game: AddGame) =>
+      await axios.post("/api/cms/game", game).then((res) => res.data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["games"] });
     }
