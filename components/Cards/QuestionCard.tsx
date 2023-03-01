@@ -14,8 +14,6 @@ import { ActionDialog } from "@app/components";
 import { EditQuestion } from "@app/modals";
 import { useDeleteQuestionMutation } from "@app/hooks";
 import { toCommaSeparatedString } from "@app/utils";
-import is from "@sindresorhus/is";
-import undefined = is.undefined;
 
 interface QuestionCardProps {
   question: Question;
