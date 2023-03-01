@@ -1,21 +1,20 @@
-import { Wrapper, SchmellButton, QuestionCard } from "@app/components";
+import { QuestionCard, SchmellButton, Wrapper } from "@app/components";
 import {
-  Title,
   Anchor,
   Breadcrumbs,
   Group,
-  useMantineTheme,
+  SimpleGrid,
   Switch,
-  SimpleGrid
+  Title,
+  useMantineTheme
 } from "@mantine/core";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useGameQuery, useQuestionsQuery, useWeekQuery } from "@app/hooks";
 import { GameDetails } from "@app/views";
 import { AddQuestion } from "@app/modals";
 
-export default withPageAuthRequired(function Questions(): JSX.Element {
+export default function Questions(): JSX.Element {
   const route = useRouter();
   const isDarkMode = useMantineTheme().colorScheme === "dark";
 
@@ -67,7 +66,7 @@ export default withPageAuthRequired(function Questions(): JSX.Element {
           labelPosition="left"
         />
       </Group>
-      {currentGame !== undefined && showDetails && (
+      {showDetails && currentGame !== undefined && (
         <GameDetails game={currentGame} />
       )}
       <SchmellButton onClick={handleShowAdd} label="Opprett spørsmål" />
@@ -109,4 +108,4 @@ export default withPageAuthRequired(function Questions(): JSX.Element {
       </SimpleGrid>
     </Wrapper>
   );
-});
+}

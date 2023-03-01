@@ -30,9 +30,7 @@ const JsonForm: FC<FormProps> = (props) => {
     values: CreateQuestionJsonForm
   ): Promise<void> => {
     const questions: CreateQuestion[] = JSON.parse(values.json);
-    addQuestions.mutate(
-      questions.map((q) => ({ ...q, function: JSON.stringify(q.function) }))
-    );
+    addQuestions.mutate(questions);
     onClose();
   };
   const handleAdd = (): void => {

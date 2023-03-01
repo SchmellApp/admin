@@ -1,11 +1,19 @@
 import React, { FC } from "react";
 import { FormProps } from "@app/modals/AddQuestion";
 import { useForm } from "@mantine/form";
-import { FileInput, NumberInput, Textarea, TextInput } from "@mantine/core";
+import {
+  FileInput,
+  NumberInput,
+  Textarea,
+  TextInput,
+  Title,
+  useMantineTheme
+} from "@mantine/core";
 import { SubmitButton } from "@app/components";
 import { createQuestionInitialValues, createQuestionValidator } from "@app/lib";
-import { CreateQuestionForm, CreateQuestion } from "@app/types";
+import { CreateQuestionForm } from "@app/types";
 import { useQuestionFileMutation, useQuestionMutation } from "@app/hooks";
+import { toCreateQuestion } from "@app/utils";
 
 const NormalForm: FC<FormProps> = ({ onClose, selectedWeek, selectedGame }) => {
   const addQuestion = useQuestionMutation();
@@ -17,10 +25,11 @@ const NormalForm: FC<FormProps> = ({ onClose, selectedWeek, selectedGame }) => {
     ),
     validate: createQuestionValidator
   });
+  const isDarkScheme = useMantineTheme().colorScheme === "dark";
 
   const handleSubmit = async (values: CreateQuestionForm): Promise<void> => {
     const createdQuestion = await addQuestion.mutateAsync(
-      values as CreateQuestion
+      toCreateQuestion(values)
     );
     if (values.file !== undefined) {
       await fileMutation.mutate({
@@ -59,12 +68,7 @@ const NormalForm: FC<FormProps> = ({ onClose, selectedWeek, selectedGame }) => {
         my="md"
         {...form.getInputProps("phase")}
       />
-      <TextInput
-        label="Skriv inn funksjon"
-        placeholder='{"answer":"svar"}'
-        my="md"
-        {...form.getInputProps("function")}
-      />
+
       <NumberInput
         withAsterisk
         label="Skriv inn straff"
@@ -77,6 +81,39 @@ const NormalForm: FC<FormProps> = ({ onClose, selectedWeek, selectedGame }) => {
         placeholder="EdSheeran.png"
         my="md"
         {...form.getInputProps("file")}
+      />
+      <Title order={4} color={isDarkScheme ? "white" : "dark"}>
+        Legg til funksjon
+      </Title>
+      <NumberInput
+        label="Skriv inn antall sekunder"
+        placeholder="Timer for et spørsmål"
+        {...form.getInputProps("timer")}
+        my="sm"
+      />
+      <TextInput
+        label="Skriv inn et svar"
+        placeholder="Eksempelvis svaret til Guess The Gibberish"
+        my="sm"
+        {...form.getInputProps("answer")}
+      />
+      <TextInput
+        label="Skriv inn utfordringer (separer med komma)"
+        placeholder="Eksempelvis: 'Skriv et dikt', 'Skriv en sang', 'Skriv en historie'"
+        my="sm"
+        {...form.getInputProps("challenges")}
+      />
+      <TextInput
+        label="Skriv inn spørsmål (separer med komma)"
+        placeholder="Eksempelvis: 'Hva er din favorittfarge?', 'Hva er din favorittmat?'"
+        my="sm"
+        {...form.getInputProps("questions")}
+      />
+      <TextInput
+        label="Skriv inn svaralternativer (separer med komma)"
+        placeholder="Eksempelvis: 'Rød', 'Blå', 'Grønn'"
+        my="sm"
+        {...form.getInputProps("options")}
       />
       <SubmitButton label="Opprett spørsmål" />
     </form>

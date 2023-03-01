@@ -8,7 +8,7 @@ const useQuestionManyMutation = () => {
   return useMutation(
     async (questions: CreateQuestion[]) =>
       await axios
-        .post(`/api/cms/question/many`, questions)
+        .post(`/api/cms/question/many/`, questions)
         .then((res) => res.data),
     {
       onSuccess: async () => {
