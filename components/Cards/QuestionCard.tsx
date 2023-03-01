@@ -13,6 +13,7 @@ import { IconEdit, IconPhoto, IconTrash } from "@tabler/icons";
 import { ActionDialog } from "@app/components";
 import { EditQuestion } from "@app/modals";
 import { useDeleteQuestionMutation } from "@app/hooks";
+import { toCommaSeparatedString } from "@app/utils";
 
 interface QuestionCardProps {
   question: Question;
@@ -86,10 +87,36 @@ const QuestionCard: FC<QuestionCardProps> = ({ question }) => {
           <TextGroup title="Spørsmål:" text={question.questionDescription} />
           <TextGroup title="Fase:" text={String(question.phase)} />
           <TextGroup title="Straff:" text={String(question.punishment)} />
-          {question.function !== "null" && question.function !== undefined && (
-            <TextGroup title="Funksjon:" text={JSON.parse(question.function)} />
+          {question.function?.questions != null &&
+            question.function.questions.length > 0 && (
+              <TextGroup
+                title="Spørsmål:"
+                text={toCommaSeparatedString(question.function.questions)}
+              />
+            )}
+          {question.function?.challenges != null &&
+            question.function.challenges.length > 0 && (
+              <TextGroup
+                title="Utfordringer:"
+                text={toCommaSeparatedString(question.function.challenges)}
+              />
+            )}
+          {question.function?.answer != null &&
+            question.function.answer !== "" && (
+              <TextGroup title="Svar:" text={question.function.answer} />
+            )}
+          {question.function?.timer != null && (
+            <TextGroup title="Tid:" text={String(question.function.timer)} />
           )}
-          {question.questionPicture !== undefined && (
+          {question.function?.options != null &&
+            question.function.options.length > 0 && (
+              <TextGroup
+                title="Alternativer:"
+                text={toCommaSeparatedString(question.function.options)}
+              />
+            )}
+
+          {question.questionPicture != null && (
             <Group position="right" mb="xs">
               <Button
                 variant="light"

@@ -7,7 +7,7 @@ const useQuestionMutation = () => {
 
   return useMutation(
     async (question: CreateQuestion) =>
-      await axios.post(`/api/cms/question`, question).then((res) => res.data),
+      await axios.post(`/api/cms/question/`, question).then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["questions"]);

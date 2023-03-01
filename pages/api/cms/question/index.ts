@@ -2,6 +2,7 @@ import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { NextApiResponse } from "next";
 import { Question } from "@app/types";
 import { axiosClient } from "@app/lib";
+import * as process from "process";
 
 export default withApiAuthRequired(async function handle(
   req,
@@ -23,7 +24,8 @@ export default withApiAuthRequired(async function handle(
       return res.status(200).json(response.data);
     }
     case "POST": {
-      const response = await axiosClient.post(`/cms/question`, req.body);
+      console.log(process.env.NEXT_PUBLIC_BASE_URL);
+      const response = await axiosClient.post(`/cms/question/`, req.body);
       return res.status(201).json(response.data);
     }
     default: {
