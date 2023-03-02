@@ -1,5 +1,4 @@
 import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
-import { axiosClient } from "@app/lib";
 
 export default withApiAuthRequired(async function handler(req, res) {
   const { accessToken } = await getAccessToken(req, res);
@@ -8,15 +7,9 @@ export default withApiAuthRequired(async function handler(req, res) {
     return res.status(401).end();
   }
 
-  axiosClient.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
   switch (req.method) {
-    case "POST": {
-      const response = await axiosClient.post(
-        `/cms/game/${req.query.pid as string}/files`,
-        req.body
-      );
-      return res.status(200).json(response);
+    case "GET": {
+      return res.status(200).json({ accessToken });
     }
     default:
       return res.status(405).end();
