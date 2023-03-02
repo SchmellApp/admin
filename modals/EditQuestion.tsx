@@ -35,9 +35,12 @@ const EditQuestion: FC<EditQuestionProps> = (props) => {
   const handleSubmit = async (values: EditQuestionForm): Promise<void> => {
     await editQuestion.mutateAsync(toUpdateQuestion(values));
     if (values.file !== undefined) {
-      await addFile.mutate({
+      const data = new FormData();
+      data.append("file", values.file);
+
+      await addFile.mutateAsync({
         id: String(question.id),
-        file: values.file
+        file: data
       });
     }
     onClose();

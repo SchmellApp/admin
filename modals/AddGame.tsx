@@ -29,9 +29,12 @@ const AddGame: FC<AddGameProps> = ({ isOpen, onClose }): JSX.Element => {
     const createdGame = await gameMutation.mutateAsync(values);
 
     if (createdGame !== undefined && values.file !== undefined) {
+      const data = new FormData();
+      data.append("file", values.file);
+
       fileMutation.mutate({
         id: String(createdGame.id),
-        file: values.file
+        file: data
       });
     }
 

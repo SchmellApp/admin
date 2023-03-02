@@ -29,9 +29,12 @@ const EditGameDetails: FC<EditGameDetailsProps> = (props) => {
     });
 
     if (values.file != null) {
-      await updateLogo.mutate({
+      const data = new FormData();
+      data.append("file", values.file);
+
+      await updateLogo.mutateAsync({
         id: String(game.id),
-        file: values.file
+        file: data
       });
     }
 
