@@ -1,5 +1,6 @@
-import React, { FC, ReactNode } from "react";
-import { Modal, Title, useMantineTheme } from "@mantine/core";
+import React, { ReactNode } from "react";
+import { Modal, Title } from "@mantine/core";
+import { useTheme } from "@app/hooks";
 
 interface ModalBaseProps {
   children: ReactNode;
@@ -8,13 +9,13 @@ interface ModalBaseProps {
   title: string;
 }
 
-const ModalBase: FC<ModalBaseProps> = ({
+const ModalBase = ({
   isOpen,
   onClose,
   title,
   children
-}) => {
-  const isDarkScheme = useMantineTheme().colorScheme === "dark";
+}: ModalBaseProps): JSX.Element => {
+  const { isDark } = useTheme();
   return (
     <Modal
       opened={isOpen}
@@ -29,7 +30,7 @@ const ModalBase: FC<ModalBaseProps> = ({
         }
       }}
     >
-      <Title order={3} color={isDarkScheme ? "white" : "dark"}>
+      <Title order={3} color={isDark ? "white" : "dark"}>
         {title}
       </Title>
       {children}

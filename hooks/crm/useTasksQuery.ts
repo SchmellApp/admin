@@ -28,7 +28,7 @@ const useTasksQuery = ({
     ],
     queryFn: async () =>
       await axios
-        .get("/api/tasks", {
+        .get("/api/crm/tasks", {
           params: {
             priority,
             sort,

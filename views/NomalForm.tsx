@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import { FormProps } from "@app/modals/AddQuestion";
 import { useForm } from "@mantine/form";
 import {
@@ -6,16 +6,23 @@ import {
   NumberInput,
   Textarea,
   TextInput,
-  Title,
-  useMantineTheme
+  Title
 } from "@mantine/core";
 import { SubmitButton } from "@app/components";
 import { createQuestionInitialValues, createQuestionValidator } from "@app/lib";
 import { CreateQuestionForm } from "@app/types";
-import { useQuestionFileMutation, useQuestionMutation } from "@app/hooks";
+import {
+  useQuestionFileMutation,
+  useQuestionMutation,
+  useTheme
+} from "@app/hooks";
 import { toCreateQuestion } from "@app/utils";
 
-const NormalForm: FC<FormProps> = ({ onClose, selectedWeek, selectedGame }) => {
+const NormalForm = ({
+  onClose,
+  selectedWeek,
+  selectedGame
+}: FormProps): JSX.Element => {
   const addQuestion = useQuestionMutation();
   const fileMutation = useQuestionFileMutation();
   const form = useForm<CreateQuestionForm>({
@@ -25,7 +32,7 @@ const NormalForm: FC<FormProps> = ({ onClose, selectedWeek, selectedGame }) => {
     ),
     validate: createQuestionValidator
   });
-  const isDarkScheme = useMantineTheme().colorScheme === "dark";
+  const { isDark } = useTheme();
 
   const handleSubmit = async (values: CreateQuestionForm): Promise<void> => {
     const createdQuestion = await addQuestion.mutateAsync(
@@ -85,7 +92,7 @@ const NormalForm: FC<FormProps> = ({ onClose, selectedWeek, selectedGame }) => {
         my="md"
         {...form.getInputProps("file")}
       />
-      <Title order={4} color={isDarkScheme ? "white" : "dark"}>
+      <Title order={4} color={isDark ? "white" : "dark"}>
         Legg til funksjon
       </Title>
       <NumberInput

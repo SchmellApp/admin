@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Wrapper } from "@app/components";
 import {
   Container,
@@ -7,7 +7,6 @@ import {
   Card,
   Group,
   Text,
-  useMantineColorScheme,
   Switch,
   Avatar,
   ActionIcon
@@ -16,7 +15,12 @@ import { getFullName } from "@app/utils";
 import { IconEdit } from "@tabler/icons";
 import { EditProfile } from "@app/modals";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { useSelfQuery, useUpdateMutation } from "@app/hooks";
+import {
+  useModal,
+  useSelfQuery,
+  useTheme,
+  useUpdateMutation
+} from "@app/hooks";
 
 interface TextGroupProps {
   title: string;
@@ -26,8 +30,8 @@ interface TextGroupProps {
 export default withPageAuthRequired(function Settings(): JSX.Element {
   const { data: activeUser } = useSelfQuery();
   const updateUser = useUpdateMutation(String(activeUser?.id) ?? "");
-  const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
-  const [editModalVisible, setEditModalVisible] = useState(false);
+  const { isDark } = useTheme();
+  const { isOpen, onOpen, onClose } = useModal();
 
   const [alerts, setAlerts] = useState({
     alertsForTasks: activeUser?.alertsForTasks ?? false,
@@ -51,9 +55,7 @@ export default withPageAuthRequired(function Settings(): JSX.Element {
     });
   };
 
-  const handleEditModalVisibility = (): void => setEditModalVisible((v) => !v);
-
-  const TextGroup: FC<TextGroupProps> = ({ title, text }) => (
+  const TextGroup = ({ title, text }: TextGroupProps): JSX.Element => (
     <Group my="md" position="apart">
       <Text size="lg" weight={500}>
         {title}
@@ -77,7 +79,7 @@ export default withPageAuthRequired(function Settings(): JSX.Element {
               <ActionIcon
                 size="xl"
                 sx={{ position: "absolute", top: 5, right: 5 }}
-                onClick={handleEditModalVisibility}
+                onClick={onOpen}
               >
                 <IconEdit size={30} />
               </ActionIcon>
@@ -99,7 +101,7 @@ export default withPageAuthRequired(function Settings(): JSX.Element {
                 <Switch
                   label="Ønsker å motta varslinger om oppgaver"
                   size="lg"
-                  color={isDarkScheme ? "yellow" : "dark"}
+                  color={isDark ? "yellow" : "dark"}
                   my="md"
                   checked={alerts.alertsForTasks}
                   onChange={() =>
@@ -109,7 +111,7 @@ export default withPageAuthRequired(function Settings(): JSX.Element {
                 <Switch
                   label="Ønsker å motta varslinger om spill"
                   size="lg"
-                  color={isDarkScheme ? "yellow" : "dark"}
+                  color={isDark ? "yellow" : "dark"}
                   my="md"
                   checked={alerts.alertsForDeadlines}
                   onChange={() =>
@@ -121,11 +123,7 @@ export default withPageAuthRequired(function Settings(): JSX.Element {
               </div>
             </Card>
           </Container>
-          <EditProfile
-            user={activeUser}
-            isOpen={editModalVisible}
-            onClose={handleEditModalVisibility}
-          />
+          <EditProfile user={activeUser} isOpen={isOpen} onClose={onClose} />
         </>
       )}
     </Wrapper>

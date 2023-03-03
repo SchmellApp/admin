@@ -7,7 +7,9 @@ const useCommentMutation = () => {
 
   return useMutation(
     async (comment: CreateCommentForm) =>
-      await axios.post("/api/tasks/comment", comment).then((res) => res.data),
+      await axios
+        .post("/api/crm/tasks/comment", comment)
+        .then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["comments"]);

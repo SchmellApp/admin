@@ -7,18 +7,18 @@ import {
   Group,
   Pagination,
   Text,
-  Badge,
-  useMantineColorScheme
+  Badge
 } from "@mantine/core";
 import Link from "next/link";
 import { getDifferenceInDays, toDateString, getColor } from "@app/utils";
+import { useTheme } from "@app/hooks";
 
-interface CardListProps {
+interface TaskCardListProps {
   tableData: Task[];
 }
 
-const CardList: FC<CardListProps> = ({ tableData }): JSX.Element => {
-  const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
+const TaskCardList: FC<TaskCardListProps> = ({ tableData }): JSX.Element => {
+  const { isDark } = useTheme();
 
   return (
     <div>
@@ -58,14 +58,9 @@ const CardList: FC<CardListProps> = ({ tableData }): JSX.Element => {
           </Group>
         </Card>
       ))}
-      <Pagination
-        total={100}
-        color={isDarkScheme ? "yellow" : "dark"}
-        mt="md"
-        grow
-      />
+      <Pagination total={100} color={isDark ? "yellow" : "dark"} mt="md" grow />
     </div>
   );
 };
 
-export default CardList;
+export default TaskCardList;

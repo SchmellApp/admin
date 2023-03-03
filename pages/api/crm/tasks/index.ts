@@ -1,11 +1,11 @@
 import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
+import { Task, TaskFilters, TaskPaginatedResponse } from "@app/types";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Task } from "@app/types";
 import { axiosClient } from "@app/lib";
 
 export default withApiAuthRequired(async function handle(
   req: NextApiRequest,
-  res: NextApiResponse<Task>
+  res: NextApiResponse<Task | TaskPaginatedResponse>
 ) {
   const { accessToken } = await getAccessToken(req, res);
 
@@ -16,21 +16,17 @@ export default withApiAuthRequired(async function handle(
   axiosClient.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
   switch (req.method) {
-    case "PATCH": {
-      const response = await axiosClient.patch(
-        `/tasks/${req.query.pid as string}/`,
-        req.body
-      );
-      return res.status(200).json(response.data);
-    }
     case "GET": {
-      const response = await axiosClient.get(
-        `/tasks/${req.query.pid as string}/`
-      );
+      const response = await axiosClient.get("/crm/tasks/", {
+        params: req.query as TaskFilters
+      });
       return res.status(200).json(response.data);
     }
-    default: {
-      return res.status(405).end();
+    case "POST": {
+      const response = await axiosClient.post("/crm/tasks/", req.body);
+      return res.status(201).json(response.data);
     }
+    default:
+      return res.status(405).end();
   }
 });

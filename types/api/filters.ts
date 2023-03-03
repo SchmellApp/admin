@@ -1,11 +1,3 @@
-export interface QuestionFilters {
-  relatedWeek?: string;
-}
-
-export interface WeekFilters {
-  relatedGame?: string;
-}
-
 export interface TaskFilters {
   priority?: string;
   status?: string;
@@ -17,6 +9,10 @@ export interface TaskFilters {
   pageSize?: number;
 }
 
-export interface CommentFilters {
-  relatedTask?: string;
+export interface ContactFormFilters {
+  type?: string;
+  email?: string;
+  acceptedTerms?: boolean;
+  page?: number;
+  pageSize?: number;
 }

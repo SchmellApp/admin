@@ -1,6 +1,7 @@
-import { MantineSize, Button, useMantineColorScheme } from "@mantine/core";
-import React, { FC, ReactNode } from "react";
+import { MantineSize, Button } from "@mantine/core";
+import React, { ReactNode } from "react";
 import { IconPlus } from "@tabler/icons";
+import { useTheme } from "@app/hooks";
 
 interface ButtonProps {
   label: string;
@@ -8,17 +9,18 @@ interface ButtonProps {
   size?: MantineSize;
   rightIcon?: ReactNode;
 }
-const SchmellButton: FC<ButtonProps> = ({
+const SchmellButton = ({
   label,
   onClick,
   size = "lg",
   rightIcon = <IconPlus />
-}): JSX.Element => {
-  const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
+}: ButtonProps): JSX.Element => {
+  const { isDark } = useTheme();
+
   return (
     <Button
       onClick={onClick}
-      color={isDarkScheme ? "yellow" : "dark"}
+      color={isDark ? "yellow" : "dark"}
       variant="light"
       radius="md"
       size={size}

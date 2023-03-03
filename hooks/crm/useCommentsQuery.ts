@@ -9,7 +9,7 @@ const useCommentsQuery = (
     ["comments", relatedTask],
     async () =>
       await axios
-        .get("/api/tasks/comment", { params: { relatedTask } })
+        .get("/api/crm/tasks/comment", { params: { relatedTask } })
         .then((res) => res.data)
   );
 

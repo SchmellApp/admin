@@ -11,28 +11,27 @@ import { filterByCategory, toListElements } from "@app/utils";
 import { IDEA_CATEGORIES_ELEMENTS } from "@app/constants";
 import { IconPlus, IconX } from "@tabler/icons";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { useIdeaDelete, useIdeasQuery } from "@app/hooks";
+import { useIdeaDelete, useIdeasQuery, useModal } from "@app/hooks";
 
 export default withPageAuthRequired(function Ideas(): JSX.Element {
   const { data: ideas, isLoading } = useIdeasQuery();
   const deleteIdeaMutation = useIdeaDelete();
-  const [openMenu, setOpenMenu] = useState(false);
-  const [deleteDialog, setDeleteDialog] = useState({
-    isOpen: false,
-    id: 0
-  });
 
-  const handleOpenMenu = (): void => setOpenMenu((prev) => !prev);
-  const handleDeleteClick = (id: number): void => {
-    setDeleteDialog({
-      isOpen: true,
-      id
-    });
-  };
-  const handleHide = (): void => setDeleteDialog({ isOpen: false, id: 0 });
-  const handleDelete = (): void => {
-    deleteIdeaMutation.mutate(deleteDialog.id);
-    handleHide();
+  const { isOpen: showAdd, onOpen: openAdd, onClose: closeAdd } = useModal();
+  const {
+    isOpen: showDelete,
+    onOpen: openDelete,
+    onClose: closeDelete
+  } = useModal();
+
+  const [ideaToDelete, setIdeaToDelete] = useState<number | null>(null);
+
+  const handleDelete = async (): Promise<void> => {
+    if (ideaToDelete !== null) {
+      await deleteIdeaMutation.mutateAsync(ideaToDelete);
+      closeDelete();
+      setIdeaToDelete(null);
+    }
   };
 
   return (
@@ -44,12 +43,12 @@ export default withPageAuthRequired(function Ideas(): JSX.Element {
       </MediaQuery>
       <Group position="right">
         <SchmellButton
-          onClick={handleOpenMenu}
+          onClick={showAdd ? closeAdd : openAdd}
           label={"Jeg har en ny idé!"}
-          rightIcon={openMenu ? <IconX /> : <IconPlus />}
+          rightIcon={showAdd ? <IconX /> : <IconPlus />}
         />
       </Group>
-      <Collapse in={openMenu}>
+      <Collapse in={showAdd}>
         <IdeaForm />
       </Collapse>
       <SimpleGrid
@@ -79,7 +78,7 @@ export default withPageAuthRequired(function Ideas(): JSX.Element {
                 ? toListElements(filterByCategory(ideas, category.category))
                 : []
             }
-            handleClick={handleDeleteClick}
+            handleClick={openDelete}
             isLoading={isLoading}
           />
         ))}
@@ -89,17 +88,19 @@ export default withPageAuthRequired(function Ideas(): JSX.Element {
         actions={[
           {
             label: "Ja",
-            onClick: handleDelete,
+            onClick: () => {
+              void handleDelete();
+            },
             color: "green"
           },
           {
             label: "Nei",
-            onClick: handleHide,
+            onClick: closeDelete,
             color: "red"
           }
         ]}
-        isDialogOpen={deleteDialog.isOpen}
-        handleClose={handleHide}
+        isDialogOpen={showDelete}
+        handleClose={closeDelete}
       />
     </Wrapper>
   );

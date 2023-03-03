@@ -7,3 +7,4 @@ export * from "./question";
 export * from "./statistics";
 export * from "./task";
 export * from "./user";
+export * from "./contact";

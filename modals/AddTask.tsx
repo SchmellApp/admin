@@ -1,11 +1,10 @@
-import React, { FC } from "react";
+import React from "react";
 import {
   SegmentedControl,
   Select,
   Text,
   Textarea,
-  TextInput,
-  useMantineTheme
+  TextInput
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { TASK_CATEGORY, TASK_PRIORITY, TASK_STATUS } from "@app/constants";
@@ -14,7 +13,12 @@ import { toOptions, toUserControls } from "@app/utils";
 import { ModalBase, SubmitButton } from "@app/components";
 import { createTaskInitialValues, createTaskValidationSchema } from "@app/lib";
 import { CreateTaskForm } from "@app/types";
-import { useGamesQuery, useTaskMutation, useUsersQuery } from "@app/hooks";
+import {
+  useGamesQuery,
+  useTaskMutation,
+  useTheme,
+  useUsersQuery
+} from "@app/hooks";
 import { TaskCategory } from "@app/enums";
 
 interface AddTaskProps {
@@ -22,11 +26,11 @@ interface AddTaskProps {
   onClose: () => void;
 }
 
-const AddTask: FC<AddTaskProps> = ({ isOpen, onClose }): JSX.Element => {
+const AddTask = ({ isOpen, onClose }: AddTaskProps): JSX.Element => {
   const addTask = useTaskMutation();
   const { data: users } = useUsersQuery();
   const { data: games } = useGamesQuery();
-  const isDarkScheme = useMantineTheme().colorScheme === "dark";
+  const { isDark } = useTheme();
 
   const form = useForm<CreateTaskForm>({
     initialValues: createTaskInitialValues,
@@ -66,7 +70,7 @@ const AddTask: FC<AddTaskProps> = ({ isOpen, onClose }): JSX.Element => {
           label="Velg status"
           data={TASK_STATUS}
           my="md"
-          color={isDarkScheme ? "yellow" : "dark"}
+          color={isDark ? "yellow" : "dark"}
           {...form.getInputProps("status")}
         />
         <DatePicker
@@ -100,7 +104,7 @@ const AddTask: FC<AddTaskProps> = ({ isOpen, onClose }): JSX.Element => {
           <SegmentedControl
             data={TASK_PRIORITY}
             fullWidth
-            color={isDarkScheme ? "yellow" : "dark"}
+            color={isDark ? "yellow" : "dark"}
             {...form.getInputProps("priority")}
           />
         </div>
@@ -112,7 +116,7 @@ const AddTask: FC<AddTaskProps> = ({ isOpen, onClose }): JSX.Element => {
             <SegmentedControl
               data={toUserControls(users)}
               fullWidth
-              color={isDarkScheme ? "yellow" : "dark"}
+              color={isDark ? "yellow" : "dark"}
               sx={{
                 ".mantine-SegmentedControl-label": {
                   display: "flex",

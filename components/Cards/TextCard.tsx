@@ -1,13 +1,13 @@
-import React, { FC, useRef } from "react";
+import React, { useRef } from "react";
 import { Card, Skeleton, Text, Title } from "@mantine/core";
 import { CardProps } from "@app/types";
 
-const TextCard: FC<CardProps> = ({
+const TextCard = ({
   title,
   description,
   color,
   isLoading
-}): JSX.Element => {
+}: CardProps): JSX.Element => {
   const cardRef = useRef<HTMLDivElement>(null);
   return (
     <>

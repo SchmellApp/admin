@@ -17,7 +17,7 @@ export default withApiAuthRequired(async function handle(
 
   switch (req.method) {
     case "GET": {
-      const response = await axiosClient.get(`/tasks/comment`, {
+      const response = await axiosClient.get(`/crm/tasks/comment`, {
         params: {
           relatedTask: req.query.relatedTask
         }
@@ -25,7 +25,7 @@ export default withApiAuthRequired(async function handle(
       return res.status(200).json(response.data);
     }
     case "POST": {
-      const response = await axiosClient.post(`/tasks/comment`, req.body);
+      const response = await axiosClient.post(`/crm/tasks/comment`, req.body);
       return res.status(201).json(response.data);
     }
     default:

@@ -1,5 +1,5 @@
 import { Game } from "@app/types/game";
-import React, { FC } from "react";
+import React from "react";
 import { FileInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { SubmitButton, ModalBase } from "@app/components";
@@ -13,7 +13,7 @@ interface EditGameDetailsProps {
   onClose: () => void;
 }
 
-const EditGameDetails: FC<EditGameDetailsProps> = (props) => {
+const EditGameDetails = (props: EditGameDetailsProps): JSX.Element => {
   const { onClose, game, isOpen } = props;
   const editGame = useEditGameMutation(String(game.id));
   const updateLogo = useGameFileMutation();

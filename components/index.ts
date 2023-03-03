@@ -1,5 +1,4 @@
 export { default as Navbar } from "./Navbar";
-export { default as FilterMenu } from "./Menus";
 export { default as CommentBox } from "./CommentBox";
 
 export * from "./Wrappers";
@@ -10,3 +9,4 @@ export * from "./List";
 export * from "./Header";
 export * from "./Forms";
 export * from "./Cards";
+export * from "./Menus";

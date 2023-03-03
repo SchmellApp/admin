@@ -58,3 +58,18 @@ export const TASKS_HEADER: DataTableHeader[] = [
     }
   }
 ];
+
+export const CONTACT_FORM_HEADER: DataTableHeader[] = [
+  {
+    name: "Type",
+    isSortable: false
+  },
+  {
+    name: "Akseptert vilkår",
+    isSortable: false
+  },
+  {
+    name: "E-post",
+    isSortable: false
+  }
+];

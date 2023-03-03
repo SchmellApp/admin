@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import { Group, SegmentedControl } from "@mantine/core";
 import { Game, Week } from "@app/types";
 import { GameNormal, JsonForm } from "@app/views";
@@ -17,7 +17,7 @@ export interface FormProps {
   selectedWeek: Week;
 }
 
-const AddQuestion: FC<AddQuestionProps> = (props) => {
+const AddQuestion = (props: AddQuestionProps): JSX.Element => {
   const { isOpen, onClose, selectedWeek, selectedGame } = props;
 
   const [editType, setEditType] = useState("normal");
