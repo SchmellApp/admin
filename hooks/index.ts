@@ -3,7 +3,6 @@ export * from "./idea";
 export * from "./week";
 export * from "./question";
 export * from "./auth";
-export * from "./task";
-export * from "./comment";
+export * from "./crm";
 
 export { default as useGetStatisticsQuery } from "./useGetStatisticsQuery";

@@ -11,3 +11,4 @@ export * from "./card";
 export * from "./ui";
 export * from "./forms";
 export * from "./hooks";
+export * from "./contact";

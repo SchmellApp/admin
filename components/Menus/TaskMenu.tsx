@@ -12,15 +12,17 @@ import { IconFilter } from "@tabler/icons";
 import React, { FC } from "react";
 import { toUserControls } from "@app/utils";
 import { TASK_CATEGORY, TASK_PRIORITY, TASK_STATUS } from "@app/constants";
-import { FilterMenu as Filter } from "@app/types";
+import { TaskFilterMenu } from "@app/types";
 import { useUsersQuery } from "@app/hooks";
 
-interface FilterMenuProps {
-  filters: Filter;
-  handleFilter: (prop: keyof Filter) => (values: string[] | string) => void;
+interface TaskMenuProps {
+  filters: TaskFilterMenu;
+  handleFilter: (
+    prop: keyof TaskFilterMenu
+  ) => (values: string[] | string) => void;
 }
 
-const FilterMenu: FC<FilterMenuProps> = ({
+const TaskMenu: FC<TaskMenuProps> = ({
   handleFilter,
   filters
 }): JSX.Element => {
@@ -105,4 +107,4 @@ const FilterMenu: FC<FilterMenuProps> = ({
   );
 };
 
-export default FilterMenu;
+export default TaskMenu;

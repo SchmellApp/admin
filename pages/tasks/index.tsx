@@ -1,10 +1,11 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import {
   Wrapper,
-  FilterMenu,
-  DataTable,
-  CardList,
-  SchmellButton
+  SchmellButton,
+  TaskMenu,
+  DataTableWrapper,
+  TaskTableBody,
+  TaskCardList
 } from "@app/components";
 import {
   Group,
@@ -19,7 +20,7 @@ import { AddTask } from "@app/modals";
 import { TASKS_HEADER } from "@app/constants";
 import { useMediaQuery } from "@mantine/hooks";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { FilterMenu as FilterType } from "@app/types";
+import { TaskFilterMenu } from "@app/types";
 import { toCategoryString, toPriorityString, toStatusString } from "@app/utils";
 import { TaskCategory, TaskPriority, TaskStatus } from "@app/enums";
 import { useUsersQuery, useTasksQuery } from "@app/hooks";
@@ -34,7 +35,7 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
   const { data: users } = useUsersQuery();
 
   const [showModal, setShowModal] = useState(false);
-  const [filters, setFilters] = useState<FilterType>({
+  const [filters, setFilters] = useState<TaskFilterMenu>({
     responsible: "",
     status: [],
     priority: [],
@@ -76,13 +77,13 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
   );
 
   const handleFilter =
-    (prop: keyof FilterType) =>
+    (prop: keyof TaskFilterMenu) =>
     (values: string[] | string | number): void => {
       console.log(prop, values);
       setFilters((prev) => ({ ...prev, [prop]: values }));
     };
   const handleRemove =
-    (prop: keyof FilterType) =>
+    (prop: keyof TaskFilterMenu) =>
     (value: string | number): void => {
       if (prop === "responsible") {
         setFilters((prev) => ({ ...prev, responsible: "" }));
@@ -95,8 +96,10 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
         }));
       }
     };
-
   const handleShowModal = (): void => setShowModal((prev) => !prev);
+  const handleRowClick = async (id: number): Promise<void> => {
+    await router.push(`/tasks/${id}`);
+  };
 
   const RemoveButton = (onClick: () => void): ReactNode => (
     <ActionIcon
@@ -176,23 +179,27 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
             </Badge>
           )}
         </Group>
-        <FilterMenu filters={filters} handleFilter={handleFilter} />
+        <TaskMenu filters={filters} handleFilter={handleFilter} />
       </Group>
       <div>
         {tasks != null && (
           <>
             {isMobileScreen ? (
-              <CardList tableData={tasks.tasks} />
+              <TaskCardList tableData={tasks.tasks} />
             ) : (
-              <DataTable
+              <DataTableWrapper
                 headers={TASKS_HEADER}
                 sort={sort}
                 setSort={setSort}
-                tableData={tasks.tasks}
                 currentPage={filters.page}
                 onChangePage={handleFilter("page")}
                 maxPage={tasks.lastPage}
-              />
+              >
+                <TaskTableBody
+                  data={tasks.tasks}
+                  handleRowClick={handleRowClick}
+                />
+              </DataTableWrapper>
             )}
           </>
         )}

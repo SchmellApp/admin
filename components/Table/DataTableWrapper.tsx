@@ -1,50 +1,36 @@
-import { DataTableHeader, Task } from "@app/types";
-import React, { Dispatch, FC, ReactNode, SetStateAction } from "react";
+import { DataTableHeader } from "@app/types";
+import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import {
-  Avatar,
-  Badge,
   Button,
-  Group,
   Pagination,
   Table,
-  Text,
   Title,
   Tooltip,
   useMantineColorScheme
 } from "@mantine/core";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons";
-import { TaskStatus } from "@app/enums";
-import {
-  getDifferenceInDays,
-  toDateString,
-  getColor,
-  toCategoryString,
-  toPriorityString
-} from "@app/utils";
-import { useRouter } from "next/router";
 
 interface DataTableProps {
   headers: DataTableHeader[];
-  tableData: Task[];
-  sort: string;
-  setSort: Dispatch<SetStateAction<string>>;
+  sort?: string;
+  setSort?: Dispatch<SetStateAction<string>>;
   currentPage: number;
   maxPage: number;
   onChangePage: (page: number) => void;
   title?: string;
+  children: ReactNode;
 }
 
-const DataTable: FC<DataTableProps> = ({
+const DataTableWrapper = ({
   title,
   headers,
   setSort,
   sort,
-  tableData,
   currentPage,
   maxPage,
-  onChangePage
-}): JSX.Element => {
-  const router = useRouter();
+  onChangePage,
+  children
+}: DataTableProps): JSX.Element => {
   const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
 
   const getSortIcon = (header: DataTableHeader): ReactNode | undefined => {
@@ -57,7 +43,7 @@ const DataTable: FC<DataTableProps> = ({
     }
   };
   const handleClick = (header: DataTableHeader): void => {
-    if (header.isSortable && header.sortKeys != null) {
+    if (header.isSortable && header.sortKeys != null && setSort != null) {
       if (sort === header.sortKeys.ASC) {
         setSort(header.sortKeys.DESC);
       } else if (sort === header.sortKeys.DESC) {
@@ -96,39 +82,7 @@ const DataTable: FC<DataTableProps> = ({
             ))}
           </tr>
         </thead>
-        <tbody>
-          {tableData.map((task) => (
-            <tr
-              style={{
-                opacity: task.status === TaskStatus.DONE ? 0.5 : 1,
-                cursor: "pointer"
-              }}
-              key={task.id}
-              onClick={() => {
-                void router.push(`/tasks/${task.id}`);
-              }}
-            >
-              <td>
-                <Group position="left">
-                  <Avatar src={task.responsibleUser.profilePictureUrl} />
-                  <div>
-                    <Text>{task.title}</Text>
-                    <Text size="xs" color="dimmed">
-                      {getDifferenceInDays(new Date(task.lastUpdated))}
-                    </Text>
-                  </div>
-                </Group>
-              </td>
-              <td>{toCategoryString(task.category)}</td>
-              <td>{toDateString(new Date(task.deadline))}</td>
-              <td>
-                <Badge color={getColor(task.priority)} size="lg" fullWidth>
-                  {toPriorityString(task.priority)}
-                </Badge>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+        {children}
       </Table>
       <Pagination
         total={maxPage}
@@ -142,4 +96,4 @@ const DataTable: FC<DataTableProps> = ({
   );
 };
 
-export default DataTable;
+export default DataTableWrapper;

@@ -5,3 +5,4 @@ export { default as ConfirmStatus } from "./ConfirmStatus";
 export { default as AddQuestion } from "./AddQuestion";
 export { default as EditQuestion } from "./EditQuestion";
 export { default as EditProfile } from "./EditProfile";
+export { default as ContactFormDetail } from "./ContactFormDetail";

@@ -9,7 +9,7 @@ const useTodaysTasksQuery = (responsibleId: string) => {
     queryKey: ["tasks", "today", responsibleId],
     queryFn: async () =>
       await axios
-        .get("/api/tasks", {
+        .get("/api/crm/tasks", {
           params: {
             responsibleUser: responsibleId,
             toDate

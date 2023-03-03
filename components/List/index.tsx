@@ -1,2 +1,2 @@
-export { default as CardList } from "./CardList";
+export { default as TaskCardList } from "./TaskCardList";
 export { default as ListElements } from "./List";

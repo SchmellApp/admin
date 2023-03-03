@@ -13,11 +13,11 @@ import {
 import Link from "next/link";
 import { getDifferenceInDays, toDateString, getColor } from "@app/utils";
 
-interface CardListProps {
+interface TaskCardListProps {
   tableData: Task[];
 }
 
-const CardList: FC<CardListProps> = ({ tableData }): JSX.Element => {
+const TaskCardList: FC<TaskCardListProps> = ({ tableData }): JSX.Element => {
   const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
 
   return (
@@ -68,4 +68,4 @@ const CardList: FC<CardListProps> = ({ tableData }): JSX.Element => {
   );
 };
 
-export default CardList;
+export default TaskCardList;

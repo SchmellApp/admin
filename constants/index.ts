@@ -3,3 +3,4 @@ export * from "./idea";
 export * from "./nav";
 export * from "./table";
 export * from "./task";
+export * from "./contact";

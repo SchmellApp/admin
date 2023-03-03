@@ -7,7 +7,9 @@ const useUpdateTaskMutation = (id: string) => {
 
   return useMutation(
     async (updateTask: UpdateTaskParams) =>
-      await axios.patch(`/api/tasks/${id}`, updateTask).then((res) => res.data),
+      await axios
+        .patch(`/api/crm/tasks/${id}`, updateTask)
+        .then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: [id] });

@@ -7,7 +7,7 @@ const useTaskMutation = () => {
 
   return useMutation(
     async (createTask: CreateTaskForm) =>
-      await axios.post("/api/tasks", createTask).then((res) => res.data),
+      await axios.post("/api/crm/tasks", createTask).then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["tasks"]);
