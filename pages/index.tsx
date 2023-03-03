@@ -91,7 +91,7 @@ export default withPageAuthRequired(function Home(): JSX.Element {
           isLoading={isLoading}
         />
         <ActionCard
-          actionElements={toTodayActions(todaysTasks ?? [])}
+          actionElements={toTodayActions(todaysTasks?.tasks ?? [])}
           title={"Oppgaver"}
           description={"Dagens"}
           isLoading={isLoading}

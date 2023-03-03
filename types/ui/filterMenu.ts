@@ -3,4 +3,5 @@ export interface FilterMenu {
   status: string[];
   category: string[];
   responsible: string;
+  page: number;
 }

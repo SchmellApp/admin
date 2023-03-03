@@ -28,7 +28,7 @@ export default withPageAuthRequired(function Games(): JSX.Element {
   const handleClick = (id: number): void =>
     setDeleteDialog({ isOpen: true, id });
   const handleDelete = (): void => {
-    deleteGameMutation.mutate(deleteDialog.id);
+    deleteGameMutation.mutate(String(deleteDialog.id));
     handleClose();
   };
 

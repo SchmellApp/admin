@@ -1,24 +1,45 @@
 import { useQuery } from "@tanstack/react-query";
-import { QueryObserverResult, Task, TaskFilters } from "@app/types";
-import { task } from "@app/services";
+import {
+  QueryObserverResult,
+  TaskFilters,
+  TaskPaginatedResponse
+} from "@app/types";
+import axios from "axios";
 
 const useTasksQuery = ({
   priority,
   sort,
   status,
   responsibleUser,
-  category
-}: TaskFilters): QueryObserverResult<Task[]> =>
+  category,
+  page,
+  pageSize
+}: TaskFilters): QueryObserverResult<TaskPaginatedResponse> =>
   useQuery({
-    queryKey: ["tasks", priority, sort, status, responsibleUser, category],
+    queryKey: [
+      "tasks",
+      priority,
+      sort,
+      status,
+      responsibleUser,
+      category,
+      page,
+      pageSize
+    ],
     queryFn: async () =>
-      await task.taskService.getTasks({
-        priority,
-        sort,
-        status,
-        responsibleUser,
-        category
-      })
+      await axios
+        .get("/api/tasks", {
+          params: {
+            priority,
+            sort,
+            status,
+            responsibleUser,
+            category,
+            page,
+            pageSize
+          }
+        })
+        .then((res) => res.data)
   });
 
 export default useTasksQuery;

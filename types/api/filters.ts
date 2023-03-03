@@ -1,22 +1,9 @@
-import { GameStatus, IdeaCategory } from "@app/enums";
-import { ContactFormType } from "@app/enums/contactForm";
-
-export interface GameFilters {
-  name?: string;
-  status?: GameStatus;
-}
-
 export interface QuestionFilters {
-  relatedWeek?: number;
+  relatedWeek?: string;
 }
 
 export interface WeekFilters {
-  relatedGame?: number;
-}
-
-export interface IdeaFilters {
-  category?: IdeaCategory;
-  createdBy?: number;
+  relatedGame?: string;
 }
 
 export interface TaskFilters {
@@ -25,6 +12,9 @@ export interface TaskFilters {
   category?: string;
   responsibleUser?: string;
   sort?: string;
+  toDate?: Date;
+  page?: number;
+  pageSize?: number;
 }
 
 export interface CommentFilters {

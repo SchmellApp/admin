@@ -22,7 +22,7 @@ interface ConfirmStatusProps {
 
 const ConfirmStatus: FC<ConfirmStatusProps> = (props) => {
   const { isOpen, id, onClose, setStatus } = props;
-  const editGame = useEditGameMutation(id);
+  const editGame = useEditGameMutation(String(id));
 
   const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
   const form = useForm<GameStatusForm>({

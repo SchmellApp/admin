@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Question, UpdateQuestion, MutationObserverResult } from "@app/types";
-import { cms } from "@app/services";
+import { UpdateQuestion } from "@app/types";
+import axios from "axios";
 
-const useEditQuestionMutation = (
-  id: number
-): MutationObserverResult<Question, UpdateQuestion> => {
+const useEditQuestionMutation = (id: number) => {
   const queryClient = useQueryClient();
 
   return useMutation(
     async (question: UpdateQuestion) =>
-      await cms.questionService.updateQuestion(id, question),
+      await axios
+        .patch(`/api/cms/question/${id}`, question)
+        .then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["questions"]);

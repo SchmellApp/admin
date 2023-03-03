@@ -16,7 +16,7 @@ const EditProfile: FC<EditProfileProps> = (props) => {
   const { user, onClose, isOpen } = props;
 
   const updateUser = useUpdateMutation(String(user.id));
-  const updateProfilePicture = useProfilePictureMutation(String(user.id));
+  const updateProfilePicture = useProfilePictureMutation();
 
   const form = useForm<EditUserForm>({
     initialValues: editUserInitialValues(user),
@@ -31,7 +31,13 @@ const EditProfile: FC<EditProfileProps> = (props) => {
       phoneNumber: values.phoneNumber
     });
     if (values.file !== undefined) {
-      await updateProfilePicture.mutateAsync(values.file);
+      const data = new FormData();
+      data.append("file", values.file);
+
+      await updateProfilePicture.mutateAsync({
+        id: String(user.id),
+        file: data
+      });
     }
     onClose();
   };

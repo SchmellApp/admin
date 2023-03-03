@@ -1,11 +1,12 @@
-import { cms } from "@app/services";
 import { useQuery } from "@tanstack/react-query";
 import { QueryObserverResult, Game } from "@app/types";
+import axios from "axios";
 
 const useGamesQuery = (): QueryObserverResult<Game[]> =>
   useQuery({
     queryKey: ["games"],
-    queryFn: cms.gameService.getGames
+    queryFn: async () =>
+      await axios.get("/api/cms/game").then((res) => res.data)
   });
 
 export default useGamesQuery;

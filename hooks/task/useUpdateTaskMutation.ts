@@ -1,15 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MutationObserverResult, Task, UpdateTaskParams } from "@app/types";
-import { task } from "@app/services";
+import { UpdateTaskParams } from "@app/types";
+import axios from "axios";
 
-const useUpdateTaskMutation = (
-  id: string
-): MutationObserverResult<Task, UpdateTaskParams> => {
+const useUpdateTaskMutation = (id: string) => {
   const queryClient = useQueryClient();
 
   return useMutation(
     async (updateTask: UpdateTaskParams) =>
-      await task.taskService.updateTask(id, updateTask),
+      await axios.patch(`/api/tasks/${id}`, updateTask).then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: [id] });

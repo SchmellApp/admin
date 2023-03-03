@@ -23,7 +23,7 @@ const GameDetails: FC<GameDetailsProps> = ({ game }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [status, setStatus] = useState(game.status);
   const [confirmStatusChange, setConfirmStatusChange] = useState(false);
-  const editGame = useEditGameMutation(game.id);
+  const editGame = useEditGameMutation(String(game.id));
 
   const handleShowEdit = (): void => setShowEdit((prev) => !prev);
   const handleStatusChange = (value: string): void => {
