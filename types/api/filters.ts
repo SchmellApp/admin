@@ -1,4 +1,5 @@
 import { GameStatus, IdeaCategory } from "@app/enums";
+import { ContactFormType } from "@app/enums/contactForm";
 
 export interface GameFilters {
   name?: string;
@@ -28,4 +29,10 @@ export interface TaskFilters {
 
 export interface CommentFilters {
   relatedTask?: string;
+}
+
+export interface ContactFormFilters {
+  type?: ContactFormType;
+  email?: string;
+  acceptedTerms?: boolean;
 }
