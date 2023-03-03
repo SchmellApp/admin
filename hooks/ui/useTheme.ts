@@ -10,16 +10,19 @@ const useTheme = (): {
   toggleScheme: (scheme?: ColorScheme) => void;
   theme: MantineTheme;
 } => {
-  const colorScheme = useMantineColorScheme().colorScheme;
+  const mantineScheme = useMantineColorScheme();
+
+  const colorScheme = mantineScheme.colorScheme;
+  const theme = useMantineTheme();
 
   const toggleScheme = (scheme?: ColorScheme): void => {
-    useMantineColorScheme().toggleColorScheme(scheme);
+    mantineScheme.toggleColorScheme(scheme);
   };
 
   return {
     isDark: colorScheme === "dark",
     toggleScheme,
-    theme: useMantineTheme()
+    theme
   };
 };
 
