@@ -1,14 +1,8 @@
 import { DataTableHeader } from "@app/types";
 import React, { Dispatch, ReactNode, SetStateAction } from "react";
-import {
-  Button,
-  Pagination,
-  Table,
-  Title,
-  Tooltip,
-  useMantineColorScheme
-} from "@mantine/core";
+import { Button, Pagination, Table, Title, Tooltip } from "@mantine/core";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons";
+import { useTheme } from "@app/hooks";
 
 interface DataTableProps {
   headers: DataTableHeader[];
@@ -31,7 +25,7 @@ const DataTableWrapper = ({
   onChangePage,
   children
 }: DataTableProps): JSX.Element => {
-  const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
+  const { isDark } = useTheme();
 
   const getSortIcon = (header: DataTableHeader): ReactNode | undefined => {
     if (header.isSortable && header.sortKeys != null) {
@@ -86,7 +80,7 @@ const DataTableWrapper = ({
       </Table>
       <Pagination
         total={maxPage}
-        color={isDarkScheme ? "yellow" : "dark"}
+        color={isDark ? "yellow" : "dark"}
         mt="md"
         position="right"
         page={currentPage}

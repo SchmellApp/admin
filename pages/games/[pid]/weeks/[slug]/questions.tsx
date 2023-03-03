@@ -5,18 +5,23 @@ import {
   Group,
   SimpleGrid,
   Switch,
-  Title,
-  useMantineTheme
+  Title
 } from "@mantine/core";
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
-import { useGameQuery, useQuestionsQuery, useWeekQuery } from "@app/hooks";
+import {
+  useGameQuery,
+  useModal,
+  useQuestionsQuery,
+  useTheme,
+  useWeekQuery
+} from "@app/hooks";
 import { GameDetails } from "@app/views";
 import { AddQuestion } from "@app/modals";
 
 export default function Questions(): JSX.Element {
   const route = useRouter();
-  const isDarkMode = useMantineTheme().colorScheme === "dark";
+  const { isDark } = useTheme();
 
   const { data: currentGame } = useGameQuery(route.query.pid as string);
   const { data: currentWeek } = useWeekQuery(route.query.slug as string);
@@ -24,10 +29,8 @@ export default function Questions(): JSX.Element {
     route.query.slug as string
   );
 
-  const [showDetails, setShowDetails] = useState(false);
-  const [showAdd, setShowAdd] = useState(false);
-
-  const handleShowAdd = (): void => setShowAdd((prev) => !prev);
+  const { onClose: closeAdd, onOpen: openAdd, isOpen: showAdd } = useModal();
+  const { isOpen: showDetails, setIsOpen: setShowDetails } = useModal();
 
   const items = [
     {
@@ -62,18 +65,18 @@ export default function Questions(): JSX.Element {
           onChange={(event) => setShowDetails(event.currentTarget.checked)}
           size="lg"
           label="Vis spilldetaljer"
-          color={isDarkMode ? "yellow" : "dark"}
+          color={isDark ? "yellow" : "dark"}
           labelPosition="left"
         />
       </Group>
       {showDetails && currentGame !== undefined && (
         <GameDetails game={currentGame} />
       )}
-      <SchmellButton onClick={handleShowAdd} label="Opprett spørsmål" />
+      <SchmellButton onClick={openAdd} label="Opprett spørsmål" />
       {currentGame !== undefined && currentWeek !== undefined && (
         <AddQuestion
           isOpen={showAdd}
-          onClose={handleShowAdd}
+          onClose={closeAdd}
           selectedGame={currentGame}
           selectedWeek={currentWeek}
         />

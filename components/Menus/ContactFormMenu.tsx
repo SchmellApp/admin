@@ -4,13 +4,13 @@ import {
   Menu,
   MultiSelect,
   Title,
-  useMantineTheme,
   Text,
   Switch
 } from "@mantine/core";
 import { IconFilter } from "@tabler/icons";
-import React, { FC } from "react";
+import React from "react";
 import { CONTACT_FORM_TYPES } from "@app/constants";
+import { useTheme } from "@app/hooks";
 
 interface ContactFormMenuProps {
   filters: ContactFilterMenu;
@@ -19,29 +19,28 @@ interface ContactFormMenuProps {
   ) => (values: string[] | string | boolean) => void;
 }
 
-const ContactFormMenu: FC<ContactFormMenuProps> = ({
+const ContactFormMenu = ({
   handleFilter,
   filters
-}): JSX.Element => {
-  const theme = useMantineTheme();
-  const isDarkScheme = theme.colorScheme === "dark";
+}: ContactFormMenuProps): JSX.Element => {
+  const { isDark } = useTheme();
 
   return (
     <Menu shadow="md" position={"left-start"}>
       <Menu.Target>
-        <ActionIcon color={isDarkScheme ? "yellow" : "dark"} size="lg">
+        <ActionIcon color={isDark ? "yellow" : "dark"} size="lg">
           <IconFilter size={30} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>
-          <Title order={4} color={isDarkScheme ? "white" : "dark"}>
+          <Title order={4} color={isDark ? "white" : "dark"}>
             Filter
           </Title>
         </Menu.Label>
         <Menu.Divider />
         <Menu.Label>
-          <Text size="md" color={isDarkScheme ? "white" : "dark"}>
+          <Text size="md" color={isDark ? "white" : "dark"}>
             Type
           </Text>
           <MultiSelect
@@ -64,7 +63,7 @@ const ContactFormMenu: FC<ContactFormMenuProps> = ({
               handleFilter("acceptedTerms")(event.currentTarget.checked)
             }
             mb="sm"
-            color={isDarkScheme ? "yellow" : "dark"}
+            color={isDark ? "yellow" : "dark"}
           />
         </Menu.Label>
       </Menu.Dropdown>

@@ -1,5 +1,5 @@
 import { Game } from "@app/types";
-import React, { FC } from "react";
+import React from "react";
 import {
   Card,
   Group,
@@ -21,7 +21,11 @@ interface GameCardProps {
   isLoading?: boolean;
 }
 
-const GameCard: FC<GameCardProps> = ({ game, handleClick, isLoading }) => {
+const GameCard = ({
+  game,
+  handleClick,
+  isLoading
+}: GameCardProps): JSX.Element => {
   const { data: statistics, isLoading: isFetching } = useGetStatisticsQuery();
 
   const questionsCount = statistics?.questionsCount.countByGame.find(

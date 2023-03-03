@@ -1,5 +1,5 @@
 import { User, EditUserForm } from "@app/types";
-import React, { FC } from "react";
+import React from "react";
 import { useForm } from "@mantine/form";
 import { editUserInitialValues, editUserValidator } from "@app/lib";
 import { ModalBase, SubmitButton } from "@app/components";
@@ -12,7 +12,7 @@ interface EditProfileProps {
   onClose: () => void;
 }
 
-const EditProfile: FC<EditProfileProps> = (props) => {
+const EditProfile = (props: EditProfileProps) => {
   const { user, onClose, isOpen } = props;
 
   const updateUser = useUpdateMutation(String(user.id));

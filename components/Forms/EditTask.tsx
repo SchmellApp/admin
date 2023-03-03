@@ -1,5 +1,5 @@
 import { Task, EditTaskForm } from "@app/types";
-import React, { FC, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "@mantine/form";
 import { Group, Select } from "@mantine/core";
 import { TASK_STATUS } from "@app/constants";
@@ -14,7 +14,7 @@ interface EditTaskProps {
   task: Task;
 }
 
-const EditTask: FC<EditTaskProps> = ({ task }) => {
+const EditTask = ({ task }: EditTaskProps): JSX.Element => {
   const updateTask = useUpdateTaskMutation(String(task.id));
   const { data: games } = useGamesQuery();
 

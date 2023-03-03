@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import { Comment as CommentType } from "@app/types";
 import { Box, Group, Text, Avatar } from "@mantine/core";
 import { toDateTimeString } from "@app/utils";
@@ -7,7 +7,7 @@ interface CommentProps {
   comment: CommentType;
 }
 
-const CommentBox: FC<CommentProps> = ({ comment }): JSX.Element => (
+const CommentBox = ({ comment }: CommentProps): JSX.Element => (
   <Box>
     <Text size="xs" color="dimmed">
       {toDateTimeString(new Date(comment.createdDate))}

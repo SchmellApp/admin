@@ -1,5 +1,5 @@
 import { Question, EditQuestionForm } from "@app/types";
-import React, { FC } from "react";
+import React from "react";
 import { useForm } from "@mantine/form";
 import { ModalBase, SubmitButton } from "@app/components";
 import {
@@ -7,11 +7,14 @@ import {
   NumberInput,
   Textarea,
   TextInput,
-  Title,
-  useMantineTheme
+  Title
 } from "@mantine/core";
 import { editQuestionInitialValues, editQuestionValidator } from "@app/lib";
-import { useQuestionFileMutation, useEditQuestionMutation } from "@app/hooks";
+import {
+  useQuestionFileMutation,
+  useEditQuestionMutation,
+  useTheme
+} from "@app/hooks";
 import { toUpdateQuestion } from "@app/utils";
 
 interface EditQuestionProps {
@@ -20,12 +23,11 @@ interface EditQuestionProps {
   onClose: () => void;
 }
 
-const EditQuestion: FC<EditQuestionProps> = (props) => {
+const EditQuestion = (props: EditQuestionProps): JSX.Element => {
   const { isOpen, onClose, question } = props;
   const editQuestion = useEditQuestionMutation(question.id);
   const addFile = useQuestionFileMutation();
-
-  const isDarkScheme = useMantineTheme().colorScheme === "dark";
+  const { isDark } = useTheme();
 
   const form = useForm<EditQuestionForm>({
     initialValues: editQuestionInitialValues(question),
@@ -87,7 +89,7 @@ const EditQuestion: FC<EditQuestionProps> = (props) => {
           my="md"
           {...form.getInputProps("file")}
         />
-        <Title order={4} color={isDarkScheme ? "white" : "dark"}>
+        <Title order={4} color={isDark ? "white" : "dark"}>
           Legg til funksjon
         </Title>
         <NumberInput

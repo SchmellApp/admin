@@ -1,15 +1,8 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import {
-  ActionIcon,
-  Badge,
-  Group,
-  MediaQuery,
-  Title,
-  useMantineColorScheme
-} from "@mantine/core";
+import { ActionIcon, Badge, Group, MediaQuery, Title } from "@mantine/core";
 import React, { ReactNode, useState } from "react";
 import { ContactFilterMenu, ContactForm } from "@app/types";
-import { useContactFormsQuery } from "@app/hooks";
+import { useContactFormsQuery, useModal, useTheme } from "@app/hooks";
 import {
   ContactFormMenu,
   ContactFormTableBody,
@@ -23,15 +16,10 @@ import { CONTACT_FORM_HEADER } from "@app/constants";
 import { ContactFormDetail } from "@app/modals";
 
 export default withPageAuthRequired(function Contact(): JSX.Element {
-  const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
+  const { isDark } = useTheme();
+  const { onClose, onOpen, isOpen } = useModal();
 
-  const [showDetails, setShowDetails] = useState<{
-    show: boolean;
-    selectedForm: ContactForm | null;
-  }>({
-    show: false,
-    selectedForm: null
-  });
+  const [selectedForm, setSelectedForm] = useState<ContactForm | null>(null);
   const [filters, setFilters] = useState<ContactFilterMenu>({
     type: [],
     acceptedTerms: true,
@@ -72,16 +60,15 @@ export default withPageAuthRequired(function Contact(): JSX.Element {
         }));
       }
     };
-  const handleShowDetails = (id: number): void =>
-    setShowDetails((prev) => ({
-      show: !prev.show,
-      selectedForm: forms?.contactForms.find((form) => form.id === id) ?? null
-    }));
+  const handleShowDetails = (id: number): void => {
+    setSelectedForm(forms?.contactForms.find((form) => form.id === id) ?? null);
+    onOpen();
+  };
 
   const RemoveButton = (onClick: () => void): ReactNode => (
     <ActionIcon
       size={"sm"}
-      color={isDarkScheme ? "yellow" : "dark"}
+      color={isDark ? "yellow" : "dark"}
       radius={"xl"}
       variant={"transparent"}
       onClick={onClick}
@@ -106,7 +93,7 @@ export default withPageAuthRequired(function Contact(): JSX.Element {
                 size="lg"
                 key={idx}
                 rightSection={RemoveButton(() => handleRemove("type")(filter))}
-                color={isDarkScheme ? "yellow" : "white"}
+                color={isDark ? "yellow" : "white"}
               >
                 {toContactTypeString(filter as ContactFormType)}
               </Badge>
@@ -118,7 +105,7 @@ export default withPageAuthRequired(function Contact(): JSX.Element {
               rightSection={RemoveButton(() =>
                 handleFilter("acceptedTerms")(false)
               )}
-              color={isDarkScheme ? "yellow" : "white"}
+              color={isDark ? "yellow" : "white"}
             >
               Godkjent vilkår
             </Badge>
@@ -128,7 +115,7 @@ export default withPageAuthRequired(function Contact(): JSX.Element {
               variant="outline"
               size="lg"
               rightSection={RemoveButton(() => handleFilter("email")(""))}
-              color={isDarkScheme ? "yellow" : "white"}
+              color={isDark ? "yellow" : "white"}
             >
               {filters.email}
             </Badge>
@@ -153,11 +140,14 @@ export default withPageAuthRequired(function Contact(): JSX.Element {
           </>
         )}
       </div>
-      {showDetails.selectedForm != null && (
+      {selectedForm != null && (
         <ContactFormDetail
-          isOpen={showDetails.show}
-          contactForm={showDetails.selectedForm}
-          onClose={() => setShowDetails({ show: false, selectedForm: null })}
+          isOpen={isOpen}
+          contactForm={selectedForm}
+          onClose={() => {
+            onClose();
+            setSelectedForm(null);
+          }}
         />
       )}
     </Wrapper>

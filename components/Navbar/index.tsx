@@ -1,21 +1,18 @@
 import { nav } from "@app/constants";
-import {
-  Button,
-  Stack,
-  useMantineColorScheme,
-  Navbar as MantineNavbar
-} from "@mantine/core";
+import { Button, Stack, Navbar as MantineNavbar } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { FC, RefObject, useEffect, useState } from "react";
+import React, { RefObject, useEffect, useState } from "react";
+import { useTheme } from "@app/hooks";
 
 interface NavbarProps {
   opened: boolean;
   wrapperRef: RefObject<HTMLDivElement>;
 }
 
-const Navbar: FC<NavbarProps> = ({ opened, wrapperRef }) => {
+const Navbar = ({ opened, wrapperRef }: NavbarProps): JSX.Element => {
   const { pathname } = useRouter();
+  const { isDark } = useTheme();
 
   const isActive = (href: string): boolean => {
     if (href === pathname) {
@@ -25,10 +22,6 @@ const Navbar: FC<NavbarProps> = ({ opened, wrapperRef }) => {
   };
 
   const [height, setHeight] = useState<number>(0);
-
-  const { colorScheme } = useMantineColorScheme();
-
-  const isDark = colorScheme === "dark";
 
   useEffect(() => {
     if (wrapperRef.current != null) {

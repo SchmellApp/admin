@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import { Game } from "@app/types";
 import {
   ActionIcon,
@@ -13,22 +13,29 @@ import {
 import { IconEdit } from "@tabler/icons";
 import { GameStatus } from "@app/enums";
 import { ConfirmStatus, EditGame } from "@app/modals";
-import { useEditGameMutation } from "@app/hooks";
+import { useEditGameMutation, useModal } from "@app/hooks";
 
 interface GameDetailsProps {
   game: Game;
 }
 
-const GameDetails: FC<GameDetailsProps> = ({ game }) => {
-  const [showEdit, setShowEdit] = useState(false);
+const GameDetails = ({ game }: GameDetailsProps): JSX.Element => {
+  const {
+    onClose: closeEdit,
+    isOpen: isEditOpen,
+    onOpen: openEdit
+  } = useModal();
+  const {
+    onClose: closeConfirm,
+    isOpen: statusOpen,
+    onOpen: openConfirm
+  } = useModal();
   const [status, setStatus] = useState(game.status);
-  const [confirmStatusChange, setConfirmStatusChange] = useState(false);
   const editGame = useEditGameMutation(String(game.id));
 
-  const handleShowEdit = (): void => setShowEdit((prev) => !prev);
   const handleStatusChange = (value: string): void => {
     if ((value as GameStatus) === GameStatus.DEPLOYED) {
-      setConfirmStatusChange(true);
+      openConfirm();
     } else {
       editGame.mutate({ status: value as GameStatus });
       setStatus(value as GameStatus);
@@ -48,7 +55,7 @@ const GameDetails: FC<GameDetailsProps> = ({ game }) => {
           size={30}
           variant="default"
           sx={{ position: "absolute", top: 5, right: 5 }}
-          onClick={handleShowEdit}
+          onClick={openEdit}
         >
           <IconEdit />
         </ActionIcon>
@@ -74,11 +81,11 @@ const GameDetails: FC<GameDetailsProps> = ({ game }) => {
           mt="md"
         />
       </Card>
-      <EditGame isOpen={showEdit} onClose={handleShowEdit} game={game} />
+      <EditGame isOpen={isEditOpen} onClose={closeEdit} game={game} />
       <ConfirmStatus
-        isOpen={confirmStatusChange}
+        isOpen={statusOpen}
         id={game.id}
-        onClose={() => setConfirmStatusChange(false)}
+        onClose={closeConfirm}
         setStatus={setStatus}
       />
     </Center>

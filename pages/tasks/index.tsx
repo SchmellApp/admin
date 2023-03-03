@@ -7,14 +7,7 @@ import {
   TaskTableBody,
   TaskCardList
 } from "@app/components";
-import {
-  Group,
-  MediaQuery,
-  Title,
-  useMantineColorScheme,
-  Badge,
-  ActionIcon
-} from "@mantine/core";
+import { Group, MediaQuery, Title, Badge, ActionIcon } from "@mantine/core";
 import { IconX } from "@tabler/icons";
 import { AddTask } from "@app/modals";
 import { TASKS_HEADER } from "@app/constants";
@@ -23,18 +16,16 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { TaskFilterMenu } from "@app/types";
 import { toCategoryString, toPriorityString, toStatusString } from "@app/utils";
 import { TaskCategory, TaskPriority, TaskStatus } from "@app/enums";
-import { useUsersQuery, useTasksQuery } from "@app/hooks";
+import { useUsersQuery, useTasksQuery, useTheme, useModal } from "@app/hooks";
 import { useRouter } from "next/router";
 
 export default withPageAuthRequired(function Tasks(): JSX.Element {
-  const { colorScheme } = useMantineColorScheme();
   const isMobileScreen = useMediaQuery("(max-width: 768px)");
-
   const router = useRouter();
-
   const { data: users } = useUsersQuery();
+  const { isDark } = useTheme();
 
-  const [showModal, setShowModal] = useState(false);
+  const { onOpen, isOpen, onClose } = useModal();
   const [filters, setFilters] = useState<TaskFilterMenu>({
     responsible: "",
     status: [],
@@ -66,7 +57,6 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
     pageSize: 10
   });
 
-  const isDarkScheme = colorScheme === "dark";
   const isEmptyFilters =
     filters.responsible.length === 0 &&
     filters.category.length === 0 &&
@@ -96,7 +86,6 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
         }));
       }
     };
-  const handleShowModal = (): void => setShowModal((prev) => !prev);
   const handleRowClick = async (id: number): Promise<void> => {
     await router.push(`/tasks/${id}`);
   };
@@ -104,7 +93,7 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
   const RemoveButton = (onClick: () => void): ReactNode => (
     <ActionIcon
       size={"sm"}
-      color={isDarkScheme ? "yellow" : "dark"}
+      color={isDark ? "yellow" : "dark"}
       radius={"xl"}
       variant={"transparent"}
       onClick={onClick}
@@ -121,7 +110,7 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
         </Title>
       </MediaQuery>
       <Group position="left" mt="lg">
-        <SchmellButton onClick={handleShowModal} label={"Ny oppgave"} />
+        <SchmellButton onClick={onOpen} label={"Ny oppgave"} />
       </Group>
       <Group position={isEmptyFilters ? "right" : "apart"} mt="md">
         <Group position="left" style={{ gap: 8 }}>
@@ -134,7 +123,7 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
                 rightSection={RemoveButton(() =>
                   handleRemove("status")(filter)
                 )}
-                color={isDarkScheme ? "yellow" : "white"}
+                color={isDark ? "yellow" : "white"}
               >
                 {toStatusString(filter as TaskStatus)}
               </Badge>
@@ -148,7 +137,7 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
                 rightSection={RemoveButton(() =>
                   handleRemove("category")(filter)
                 )}
-                color={isDarkScheme ? "yellow" : "white"}
+                color={isDark ? "yellow" : "white"}
               >
                 {toCategoryString(filter as TaskCategory)}
               </Badge>
@@ -162,7 +151,7 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
                 rightSection={RemoveButton(() =>
                   handleRemove("priority")(filter)
                 )}
-                color={isDarkScheme ? "yellow" : "white"}
+                color={isDark ? "yellow" : "white"}
               >
                 {toPriorityString(filter as TaskPriority)}
               </Badge>
@@ -173,7 +162,7 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
               variant="outline"
               size="lg"
               rightSection={RemoveButton(() => handleRemove("responsible")(""))}
-              color={isDarkScheme ? "yellow" : "white"}
+              color={isDark ? "yellow" : "white"}
             >
               {activeUser?.firstName} {activeUser?.lastName}
             </Badge>
@@ -204,7 +193,7 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
           </>
         )}
       </div>
-      <AddTask isOpen={showModal} onClose={handleShowModal} />
+      <AddTask isOpen={isOpen} onClose={onClose} />
     </Wrapper>
   );
 });

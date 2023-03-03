@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React from "react";
 import { FormProps } from "@app/modals/AddQuestion";
 import { useForm } from "@mantine/form";
-import { Group, JsonInput, Button, useMantineTheme } from "@mantine/core";
+import { Group, JsonInput, Button } from "@mantine/core";
 import { SubmitButton } from "@app/components";
 import { IconCode } from "@tabler/icons";
 import {
@@ -10,10 +10,11 @@ import {
 } from "@app/lib";
 import { getEmptyJson } from "@app/utils";
 import { CreateQuestionJsonForm, CreateQuestion } from "@app/types";
-import { useQuestionManyMutation } from "@app/hooks";
+import { useQuestionManyMutation, useTheme } from "@app/hooks";
 
-const JsonForm: FC<FormProps> = (props) => {
+const JsonForm = (props: FormProps): JSX.Element => {
   const { onClose, selectedGame, selectedWeek } = props;
+  const { isDark } = useTheme();
   const addQuestions = useQuestionManyMutation();
 
   const form = useForm<CreateQuestionJsonForm>({
@@ -23,8 +24,6 @@ const JsonForm: FC<FormProps> = (props) => {
     ),
     validate: createQuestionJsonValidator
   });
-
-  const isDarkScheme = useMantineTheme().colorScheme === "dark";
 
   const handleSubmit = async (
     values: CreateQuestionJsonForm
@@ -43,13 +42,15 @@ const JsonForm: FC<FormProps> = (props) => {
 
   return (
     <form
-      onSubmit={form.onSubmit(async (values) => await handleSubmit(values))}
+      onSubmit={form.onSubmit((values) => {
+        void handleSubmit(values);
+      })}
     >
       <Group position="right">
         <Button
           onClick={handleAdd}
           variant="light"
-          color={isDarkScheme ? "yellow" : "dark"}
+          color={isDark ? "yellow" : "dark"}
           my="xs"
           rightIcon={<IconCode />}
         >

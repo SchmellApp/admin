@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import { Paper, Stack } from "@mantine/core";
 import { AvatarCard, TextCard } from "../Cards";
 import { ListElement } from "@app/types/ui/list";
@@ -10,13 +10,14 @@ interface ListElementsProps {
   handleClick?: (id: number) => void;
   isLoading?: boolean;
 }
-const ListElements: FC<ListElementsProps> = ({
+
+const ListElements = ({
   elements,
   color,
   title,
   handleClick,
   isLoading
-}): JSX.Element => {
+}: ListElementsProps): JSX.Element => {
   return (
     <Paper
       shadow="md"

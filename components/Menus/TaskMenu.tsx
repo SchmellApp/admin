@@ -3,17 +3,16 @@ import {
   Menu,
   Title,
   Text,
-  useMantineTheme,
   MultiSelect,
   SegmentedControl,
   Center
 } from "@mantine/core";
 import { IconFilter } from "@tabler/icons";
-import React, { FC } from "react";
+import React from "react";
 import { toUserControls } from "@app/utils";
 import { TASK_CATEGORY, TASK_PRIORITY, TASK_STATUS } from "@app/constants";
 import { TaskFilterMenu } from "@app/types";
-import { useUsersQuery } from "@app/hooks";
+import { useTheme, useUsersQuery } from "@app/hooks";
 
 interface TaskMenuProps {
   filters: TaskFilterMenu;
@@ -22,30 +21,26 @@ interface TaskMenuProps {
   ) => (values: string[] | string) => void;
 }
 
-const TaskMenu: FC<TaskMenuProps> = ({
-  handleFilter,
-  filters
-}): JSX.Element => {
-  const theme = useMantineTheme();
-  const isDarkScheme = theme.colorScheme === "dark";
+const TaskMenu = ({ handleFilter, filters }: TaskMenuProps): JSX.Element => {
+  const { isDark } = useTheme();
   const { data: users } = useUsersQuery();
 
   return (
     <Menu shadow="md" position={"left-start"}>
       <Menu.Target>
-        <ActionIcon color={isDarkScheme ? "yellow" : "dark"} size="lg">
+        <ActionIcon color={isDark ? "yellow" : "dark"} size="lg">
           <IconFilter size={30} />
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>
-          <Title order={4} color={isDarkScheme ? "white" : "dark"}>
+          <Title order={4} color={isDark ? "white" : "dark"}>
             Filter
           </Title>
         </Menu.Label>
         <Menu.Divider />
         <Menu.Label>
-          <Text size="md" color={isDarkScheme ? "white" : "dark"}>
+          <Text size="md" color={isDark ? "white" : "dark"}>
             Prioritet
           </Text>
           <MultiSelect
@@ -59,7 +54,7 @@ const TaskMenu: FC<TaskMenuProps> = ({
         </Menu.Label>
         <Menu.Divider />
         <Menu.Label>
-          <Text size="md" color={isDarkScheme ? "white" : "dark"}>
+          <Text size="md" color={isDark ? "white" : "dark"}>
             Status
           </Text>
           <MultiSelect
@@ -73,7 +68,7 @@ const TaskMenu: FC<TaskMenuProps> = ({
         </Menu.Label>
         <Menu.Divider />
         <Menu.Label>
-          <Text size="md" color={isDarkScheme ? "white" : "dark"}>
+          <Text size="md" color={isDark ? "white" : "dark"}>
             Kategori
           </Text>
           <MultiSelect
@@ -87,7 +82,7 @@ const TaskMenu: FC<TaskMenuProps> = ({
         </Menu.Label>
         <Menu.Divider />
         <Menu.Label>
-          <Text size="md" color={isDarkScheme ? "white" : "dark"}>
+          <Text size="md" color={isDark ? "white" : "dark"}>
             Ansvarlig
           </Text>
           <Center>

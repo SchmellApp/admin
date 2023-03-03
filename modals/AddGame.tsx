@@ -1,6 +1,6 @@
 import { Checkbox, FileInput, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import React, { FC } from "react";
+import React from "react";
 import { SubmitButton, ModalBase } from "@app/components";
 import { createGameInitialValues, createGameValidationSchema } from "@app/lib";
 import { CreateGameForm } from "@app/types";
@@ -11,7 +11,7 @@ interface AddGameProps {
   onClose: () => void;
 }
 
-const AddGame: FC<AddGameProps> = ({ isOpen, onClose }): JSX.Element => {
+const AddGame = ({ isOpen, onClose }: AddGameProps): JSX.Element => {
   const gameMutation = useGameMutation();
   const fileMutation = useGameFileMutation();
   const form = useForm<CreateGameForm>({

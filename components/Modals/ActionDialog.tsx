@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import { Modal, Button, Title, Group } from "@mantine/core";
 
 interface ActionDialogProps {
@@ -12,12 +12,12 @@ interface ActionDialogProps {
   handleClose: () => void;
 }
 
-const ActionDialog: FC<ActionDialogProps> = ({
+const ActionDialog = ({
   isDialogOpen,
   actions,
   title,
   handleClose
-}): JSX.Element => (
+}: ActionDialogProps): JSX.Element => (
   <Modal
     opened={isDialogOpen}
     onClose={handleClose}
