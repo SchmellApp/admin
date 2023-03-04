@@ -1,13 +1,7 @@
-import React, { FC } from "react";
-import {
-  Card,
-  Text,
-  Avatar,
-  ActionIcon,
-  useMantineTheme,
-  Skeleton
-} from "@mantine/core";
+import React from "react";
+import { Card, Text, Avatar, ActionIcon, Skeleton } from "@mantine/core";
 import { IconTrash } from "@tabler/icons";
+import { useTheme } from "@app/hooks";
 
 interface AvatarCardProps {
   text: string;
@@ -18,15 +12,15 @@ interface AvatarCardProps {
   isLoading?: boolean;
 }
 
-const AvatarCard: FC<AvatarCardProps> = ({
+const AvatarCard = ({
   text,
   avatarUrl,
   color,
   handleClick,
   id,
   isLoading
-}): JSX.Element => {
-  const theme = useMantineTheme();
+}: AvatarCardProps): JSX.Element => {
+  const { theme } = useTheme();
   return (
     <>
       {isLoading === true ? (

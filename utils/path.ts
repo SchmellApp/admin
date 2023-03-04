@@ -11,6 +11,8 @@ export const toPageTitle = (path: string): string => {
     return "Statistikk";
   } else if (path.includes("settings")) {
     return "Innstillinger";
+  } else if (path.includes("contact")) {
+    return "Kundekontakt";
   } else {
     return "Oops!";
   }

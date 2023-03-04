@@ -1,5 +1,5 @@
 import { CardProps, ActionElement } from "@app/types";
-import React, { FC, useRef } from "react";
+import React, { useRef } from "react";
 import {
   Card,
   Title,
@@ -15,12 +15,12 @@ interface ActionCardProps extends CardProps {
   actionElements: ActionElement[];
 }
 
-const ActionCard: FC<ActionCardProps> = ({
+const ActionCard = ({
   title,
   description,
   actionElements,
   isLoading
-}): JSX.Element => {
+}: ActionCardProps): JSX.Element => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   return (
     <Card p="md" shadow="sm" radius="md">

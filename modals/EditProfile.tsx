@@ -1,5 +1,5 @@
 import { User, EditUserForm } from "@app/types";
-import React, { FC } from "react";
+import React from "react";
 import { useForm } from "@mantine/form";
 import { editUserInitialValues, editUserValidator } from "@app/lib";
 import { ModalBase, SubmitButton } from "@app/components";
@@ -12,11 +12,11 @@ interface EditProfileProps {
   onClose: () => void;
 }
 
-const EditProfile: FC<EditProfileProps> = (props) => {
+const EditProfile = (props: EditProfileProps) => {
   const { user, onClose, isOpen } = props;
 
   const updateUser = useUpdateMutation(String(user.id));
-  const updateProfilePicture = useProfilePictureMutation(String(user.id));
+  const updateProfilePicture = useProfilePictureMutation();
 
   const form = useForm<EditUserForm>({
     initialValues: editUserInitialValues(user),
@@ -31,7 +31,13 @@ const EditProfile: FC<EditProfileProps> = (props) => {
       phoneNumber: values.phoneNumber
     });
     if (values.file !== undefined) {
-      await updateProfilePicture.mutateAsync(values.file);
+      const data = new FormData();
+      data.append("file", values.file);
+
+      await updateProfilePicture.mutateAsync({
+        id: String(user.id),
+        file: data
+      });
     }
     onClose();
   };

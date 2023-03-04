@@ -11,25 +11,27 @@ import {
 import { IconCirclePlus } from "@tabler/icons";
 import { AddGameModal } from "@app/modals";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { useDeleteGameMutation, useGamesQuery } from "@app/hooks";
+import { useDeleteGameMutation, useGamesQuery, useModal } from "@app/hooks";
 
 export default withPageAuthRequired(function Games(): JSX.Element {
   const { data: games, isLoading } = useGamesQuery();
   const deleteGameMutation = useDeleteGameMutation();
 
-  const [open, setOpen] = useState(false);
-  const [deleteDialog, setDeleteDialog] = useState({
-    isOpen: false,
-    id: 0
-  });
+  const { isOpen: showAdd, onOpen: openAdd, onClose: closeAdd } = useModal();
+  const {
+    isOpen: showDelete,
+    onOpen: openDelete,
+    onClose: closeDelete
+  } = useModal();
 
-  const handleShow = (): void => setOpen((o) => !o);
-  const handleClose = (): void => setDeleteDialog({ isOpen: false, id: 0 });
-  const handleClick = (id: number): void =>
-    setDeleteDialog({ isOpen: true, id });
-  const handleDelete = (): void => {
-    deleteGameMutation.mutate(deleteDialog.id);
-    handleClose();
+  const [gameToDelete, setGameToDelete] = useState<number | null>(null);
+
+  const handleDelete = async (): Promise<void> => {
+    if (gameToDelete !== null) {
+      await deleteGameMutation.mutateAsync(String(gameToDelete));
+      closeDelete();
+      setGameToDelete(null);
+    }
   };
 
   return (
@@ -52,11 +54,14 @@ export default withPageAuthRequired(function Games(): JSX.Element {
           <GameCard
             game={game}
             key={game.id}
-            handleClick={handleClick}
+            handleClick={() => {
+              setGameToDelete(game.id);
+              openDelete();
+            }}
             isLoading={isLoading}
           />
         ))}
-        <UnstyledButton onClick={handleShow}>
+        <UnstyledButton onClick={openAdd}>
           <Card
             shadow="md"
             p="md"
@@ -82,19 +87,21 @@ export default withPageAuthRequired(function Games(): JSX.Element {
         actions={[
           {
             label: "Ja",
-            onClick: handleDelete,
+            onClick: () => {
+              void handleDelete();
+            },
             color: "green"
           },
           {
             label: "Nei",
-            onClick: handleClose,
+            onClick: closeDelete,
             color: "red"
           }
         ]}
-        isDialogOpen={deleteDialog.isOpen}
-        handleClose={handleClose}
+        isDialogOpen={showDelete}
+        handleClose={closeDelete}
       />
-      <AddGameModal isOpen={open} onClose={handleShow} />
+      <AddGameModal isOpen={showAdd} onClose={closeAdd} />
     </Wrapper>
   );
 });

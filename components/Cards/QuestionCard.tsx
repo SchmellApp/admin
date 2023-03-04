@@ -1,5 +1,5 @@
 import { Question } from "@app/types";
-import React, { FC, useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
   Card,
   Group,
@@ -12,7 +12,8 @@ import {
 import { IconEdit, IconPhoto, IconTrash } from "@tabler/icons";
 import { ActionDialog } from "@app/components";
 import { EditQuestion } from "@app/modals";
-import { useDeleteQuestionMutation } from "@app/hooks";
+import { useDeleteQuestionMutation, useModal } from "@app/hooks";
+import { toCommaSeparatedString } from "@app/utils";
 
 interface QuestionCardProps {
   question: Question;
@@ -23,19 +24,29 @@ interface TextGroupProps {
   text: string;
 }
 
-const QuestionCard: FC<QuestionCardProps> = ({ question }) => {
+const QuestionCard = ({ question }: QuestionCardProps): JSX.Element => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const deleteQuestion = useDeleteQuestionMutation();
 
-  const [showEdit, setShowEdit] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
-  const [showImage, setShowImage] = useState(false);
+  const {
+    onOpen: openEdit,
+    isOpen: isEditOpen,
+    onClose: closeEdit
+  } = useModal();
+  const {
+    onOpen: openDelete,
+    isOpen: isDeleteOpen,
+    onClose: closeDelete
+  } = useModal();
+  const {
+    onOpen: openImage,
+    isOpen: isImageOpen,
+    onClose: closeImage
+  } = useModal();
 
-  const handleShowEdit = (): void => setShowEdit((prev) => !prev);
-  const handleShowDelete = (): void => setShowDelete((prev) => !prev);
-  const handleShowImage = (): void => setShowImage((prev) => !prev);
-  const handleDelete = (): void => deleteQuestion.mutate(question.id);
+  const handleDelete = async (): Promise<void> =>
+    await deleteQuestion.mutateAsync(question.id);
 
   const TextGroup = ({ title, text }: TextGroupProps): JSX.Element => (
     <Box
@@ -67,17 +78,17 @@ const QuestionCard: FC<QuestionCardProps> = ({ question }) => {
       }}
       ref={cardRef}
     >
-      {!showImage ? (
+      {!isImageOpen ? (
         <div>
           <Group position="apart" mb="sm">
             <Text color="dimmed" size="md">
               #{question.id}
             </Text>
             <Box sx={{ display: "flex" }}>
-              <ActionIcon size="md" onClick={handleShowEdit}>
+              <ActionIcon size="md" onClick={openEdit}>
                 <IconEdit />
               </ActionIcon>
-              <ActionIcon size="md" onClick={handleShowDelete}>
+              <ActionIcon size="md" onClick={openDelete}>
                 <IconTrash />
               </ActionIcon>
             </Box>
@@ -86,15 +97,41 @@ const QuestionCard: FC<QuestionCardProps> = ({ question }) => {
           <TextGroup title="Spørsmål:" text={question.questionDescription} />
           <TextGroup title="Fase:" text={String(question.phase)} />
           <TextGroup title="Straff:" text={String(question.punishment)} />
-          {question.function !== undefined && (
-            <TextGroup title="Funksjon:" text={question.function} />
+          {question.function?.questions != null &&
+            question.function.questions.length > 0 && (
+              <TextGroup
+                title="Spørsmål:"
+                text={toCommaSeparatedString(question.function.questions)}
+              />
+            )}
+          {question.function?.challenges != null &&
+            question.function.challenges.length > 0 && (
+              <TextGroup
+                title="Utfordringer:"
+                text={toCommaSeparatedString(question.function.challenges)}
+              />
+            )}
+          {question.function?.answer != null &&
+            question.function.answer !== "" && (
+              <TextGroup title="Svar:" text={question.function.answer} />
+            )}
+          {question.function?.timer != null && (
+            <TextGroup title="Tid:" text={String(question.function.timer)} />
           )}
-          {question.questionPicture !== undefined && (
+          {question.function?.options != null &&
+            question.function.options.length > 0 && (
+              <TextGroup
+                title="Alternativer:"
+                text={toCommaSeparatedString(question.function.options)}
+              />
+            )}
+
+          {question.questionPicture != null && (
             <Group position="right" mb="xs">
               <Button
                 variant="light"
                 color="red"
-                onClick={handleShowImage}
+                onClick={openImage}
                 size="xs"
                 rightIcon={<IconPhoto />}
               >
@@ -115,7 +152,7 @@ const QuestionCard: FC<QuestionCardProps> = ({ question }) => {
           <Button
             variant="light"
             color="red"
-            onClick={handleShowImage}
+            onClick={closeImage}
             size="xs"
             rightIcon={<IconPhoto />}
             sx={{ position: "absolute", bottom: 5, right: 5 }}
@@ -130,21 +167,23 @@ const QuestionCard: FC<QuestionCardProps> = ({ question }) => {
           {
             label: "Slett",
             color: "red",
-            onClick: handleDelete
+            onClick: () => {
+              void handleDelete();
+            }
           },
           {
             label: "Avbryt",
             color: "green",
-            onClick: handleShowDelete
+            onClick: closeDelete
           }
         ]}
-        isDialogOpen={showDelete}
-        handleClose={handleShowDelete}
+        isDialogOpen={isDeleteOpen}
+        handleClose={closeDelete}
       />
       <EditQuestion
         question={question}
-        isOpen={showEdit}
-        onClose={handleShowEdit}
+        isOpen={isEditOpen}
+        onClose={closeEdit}
       />
     </Card>
   );

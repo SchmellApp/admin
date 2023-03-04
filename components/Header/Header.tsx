@@ -1,9 +1,8 @@
-import React, { FC } from "react";
+import React from "react";
 import {
   Group,
   Header as MantineHeader,
   ActionIcon,
-  useMantineColorScheme,
   Image,
   Title,
   MediaQuery,
@@ -23,17 +22,15 @@ import UserNav from "./UserNav";
 import { useMediaQuery } from "@mantine/hooks";
 import Link from "next/link";
 import useSelfQuery from "@app/hooks/auth/useSelfQuery";
+import { useTheme } from "@app/hooks";
 
 interface HeaderProps {
   opened: boolean;
   handleNavbarToggle: () => void;
 }
 
-const Header: FC<HeaderProps> = ({
-  handleNavbarToggle,
-  opened
-}): JSX.Element => {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+const Header = ({ handleNavbarToggle, opened }: HeaderProps): JSX.Element => {
+  const { isDark, toggleScheme } = useTheme();
   const { pathname } = useRouter();
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
 
@@ -57,14 +54,10 @@ const Header: FC<HeaderProps> = ({
         <Group>
           <ActionIcon
             variant="default"
-            onClick={() => toggleColorScheme()}
+            onClick={() => toggleScheme()}
             size={30}
           >
-            {colorScheme === "dark" ? (
-              <IconSun size={16} />
-            ) : (
-              <IconMoonStars size={16} />
-            )}
+            {isDark ? <IconSun size={16} /> : <IconMoonStars size={16} />}
           </ActionIcon>
           <Menu position={isSmallScreen ? "left-start" : "bottom"} withArrow>
             <>

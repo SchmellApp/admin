@@ -1,34 +1,36 @@
-import { Wrapper, SchmellButton, QuestionCard } from "@app/components";
+import { QuestionCard, SchmellButton, Wrapper } from "@app/components";
 import {
-  Title,
   Anchor,
   Breadcrumbs,
   Group,
-  useMantineTheme,
+  SimpleGrid,
   Switch,
-  SimpleGrid
+  Title
 } from "@mantine/core";
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
+import {
+  useGameQuery,
+  useModal,
+  useQuestionsQuery,
+  useTheme,
+  useWeekQuery
+} from "@app/hooks";
 import { GameDetails } from "@app/views";
 import { AddQuestion } from "@app/modals";
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { useGameQuery, useQuestionsQuery, useWeekQuery } from "@app/hooks";
 
-export default withPageAuthRequired(function Questions(): JSX.Element {
+export default function Questions(): JSX.Element {
   const route = useRouter();
-  const isDarkMode = useMantineTheme().colorScheme === "dark";
+  const { isDark } = useTheme();
 
-  const { data: currentGame } = useGameQuery(Number(route.query.pid));
-  const { data: currentWeek } = useWeekQuery(Number(route.query.slug));
+  const { data: currentGame } = useGameQuery(route.query.pid as string);
+  const { data: currentWeek } = useWeekQuery(route.query.slug as string);
   const { data: questions, isSuccess } = useQuestionsQuery(
-    Number(route.query.slug)
+    route.query.slug as string
   );
 
-  const [showDetails, setShowDetails] = useState(false);
-  const [showAdd, setShowAdd] = useState(false);
-
-  const handleShowAdd = (): void => setShowAdd((prev) => !prev);
+  const { onClose: closeAdd, onOpen: openAdd, isOpen: showAdd } = useModal();
+  const { isOpen: showDetails, setIsOpen: setShowDetails } = useModal();
 
   const items = [
     {
@@ -63,18 +65,18 @@ export default withPageAuthRequired(function Questions(): JSX.Element {
           onChange={(event) => setShowDetails(event.currentTarget.checked)}
           size="lg"
           label="Vis spilldetaljer"
-          color={isDarkMode ? "yellow" : "dark"}
+          color={isDark ? "yellow" : "dark"}
           labelPosition="left"
         />
       </Group>
-      {currentGame !== undefined && showDetails && (
+      {showDetails && currentGame !== undefined && (
         <GameDetails game={currentGame} />
       )}
-      <SchmellButton onClick={handleShowAdd} label="Opprett spørsmål" />
+      <SchmellButton onClick={openAdd} label="Opprett spørsmål" />
       {currentGame !== undefined && currentWeek !== undefined && (
         <AddQuestion
           isOpen={showAdd}
-          onClose={handleShowAdd}
+          onClose={closeAdd}
           selectedGame={currentGame}
           selectedWeek={currentWeek}
         />
@@ -109,4 +111,4 @@ export default withPageAuthRequired(function Questions(): JSX.Element {
       </SimpleGrid>
     </Wrapper>
   );
-});
+}

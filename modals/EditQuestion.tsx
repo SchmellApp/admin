@@ -1,10 +1,21 @@
 import { Question, EditQuestionForm } from "@app/types";
-import React, { FC } from "react";
+import React from "react";
 import { useForm } from "@mantine/form";
 import { ModalBase, SubmitButton } from "@app/components";
-import { FileInput, NumberInput, Textarea, TextInput } from "@mantine/core";
+import {
+  FileInput,
+  NumberInput,
+  Textarea,
+  TextInput,
+  Title
+} from "@mantine/core";
 import { editQuestionInitialValues, editQuestionValidator } from "@app/lib";
-import { useQuestionFileMutation, useEditQuestionMutation } from "@app/hooks";
+import {
+  useQuestionFileMutation,
+  useEditQuestionMutation,
+  useTheme
+} from "@app/hooks";
+import { toUpdateQuestion } from "@app/utils";
 
 interface EditQuestionProps {
   question: Question;
@@ -12,29 +23,26 @@ interface EditQuestionProps {
   onClose: () => void;
 }
 
-const EditQuestion: FC<EditQuestionProps> = (props) => {
+const EditQuestion = (props: EditQuestionProps): JSX.Element => {
   const { isOpen, onClose, question } = props;
   const editQuestion = useEditQuestionMutation(question.id);
   const addFile = useQuestionFileMutation();
+  const { isDark } = useTheme();
 
   const form = useForm<EditQuestionForm>({
     initialValues: editQuestionInitialValues(question),
-    validate: {
-      ...editQuestionValidator,
-      function: (value: string) =>
-        !(value.length > 0) &&
-        question.function !== undefined &&
-        question.function.length > 0 &&
-        "Må skrive inn funksjon"
-    }
+    validate: editQuestionValidator
   });
 
   const handleSubmit = async (values: EditQuestionForm): Promise<void> => {
-    await editQuestion.mutateAsync(values);
+    await editQuestion.mutateAsync(toUpdateQuestion(values));
     if (values.file !== undefined) {
-      await addFile.mutate({
-        id: question.id,
-        file: values.file
+      const data = new FormData();
+      data.append("file", values.file);
+
+      await addFile.mutateAsync({
+        id: String(question.id),
+        file: data
       });
     }
     onClose();
@@ -68,12 +76,6 @@ const EditQuestion: FC<EditQuestionProps> = (props) => {
           my="md"
           {...form.getInputProps("phase")}
         />
-        <TextInput
-          label="Oppdater funksjon"
-          placeholder='{"answer":"svar"}'
-          my="md"
-          {...form.getInputProps("function")}
-        />
         <NumberInput
           withAsterisk
           label="Oppdater straff"
@@ -86,6 +88,39 @@ const EditQuestion: FC<EditQuestionProps> = (props) => {
           placeholder={question.questionPicture ?? "EdSheeran.png"}
           my="md"
           {...form.getInputProps("file")}
+        />
+        <Title order={4} color={isDark ? "white" : "dark"}>
+          Legg til funksjon
+        </Title>
+        <NumberInput
+          label="Skriv inn antall sekunder"
+          placeholder="Timer for et spørsmål"
+          {...form.getInputProps("timer")}
+          my="sm"
+        />
+        <TextInput
+          label="Skriv inn et svar"
+          placeholder="Eksempelvis svaret til Guess The Gibberish"
+          my="sm"
+          {...form.getInputProps("answer")}
+        />
+        <TextInput
+          label="Skriv inn utfordringer (separer med komma)"
+          placeholder="Eksempelvis: 'Skriv et dikt', 'Skriv en sang', 'Skriv en historie'"
+          my="sm"
+          {...form.getInputProps("challenges")}
+        />
+        <TextInput
+          label="Skriv inn spørsmål (separer med komma)"
+          placeholder="Eksempelvis: 'Hva er din favorittfarge?', 'Hva er din favorittmat?'"
+          my="sm"
+          {...form.getInputProps("questions")}
+        />
+        <TextInput
+          label="Skriv inn svaralternativer (separer med komma)"
+          placeholder="Eksempelvis: 'Rød', 'Blå', 'Grønn'"
+          my="sm"
+          {...form.getInputProps("options")}
         />
         <SubmitButton
           label="Oppdater spørsmål"

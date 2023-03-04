@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { cms } from "@app/services";
-import { MutationObserverResult, AddGame, Game } from "@app/types";
+import { AddGame } from "@app/types";
+import axios from "axios";
 
-const useGameMutation = (): MutationObserverResult<Game, AddGame> => {
+const useGameMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: cms.gameService.createGame,
+    mutationFn: async (game: AddGame) =>
+      await axios.post("/api/cms/game", game).then((res) => res.data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["games"] });
     }

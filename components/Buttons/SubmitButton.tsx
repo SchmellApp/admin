@@ -1,19 +1,21 @@
-import { Button, Group, useMantineTheme } from "@mantine/core";
+import { Button, Group } from "@mantine/core";
 import { IconCirclePlus } from "@tabler/icons";
-import React, { FC } from "react";
+import React from "react";
+import { useTheme } from "@app/hooks";
 
 interface SubmitButtonProps {
   label: string;
   isLoading?: boolean;
 }
 
-const SubmitButton: FC<SubmitButtonProps> = ({ label, isLoading }) => {
-  const isDarkScheme = useMantineTheme().colorScheme === "dark";
+const SubmitButton = ({ label, isLoading }: SubmitButtonProps): JSX.Element => {
+  const { isDark } = useTheme();
+
   return (
     <Group position="right" mt="lg">
       <Button
         type="submit"
-        color={isDarkScheme ? "yellow" : "dark"}
+        color={isDark ? "yellow" : "dark"}
         variant="light"
         rightIcon={<IconCirclePlus />}
         loading={isLoading}

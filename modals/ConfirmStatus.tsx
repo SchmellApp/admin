@@ -1,17 +1,11 @@
-import React, { Dispatch, FC, SetStateAction } from "react";
-import {
-  Title,
-  Text,
-  Checkbox,
-  useMantineColorScheme,
-  MantineColor
-} from "@mantine/core";
+import React, { Dispatch, SetStateAction } from "react";
+import { Title, Text, Checkbox, MantineColor } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GameStatus } from "@app/enums";
 import { SubmitButton, ModalBase } from "@app/components";
 import { gameStatusValidationSchema, gameStatusInitialValues } from "@app/lib";
 import { GameStatusForm } from "@app/types";
-import { useEditGameMutation } from "@app/hooks";
+import { useEditGameMutation, useTheme } from "@app/hooks";
 
 interface ConfirmStatusProps {
   isOpen: boolean;
@@ -20,17 +14,17 @@ interface ConfirmStatusProps {
   setStatus: Dispatch<SetStateAction<GameStatus>>;
 }
 
-const ConfirmStatus: FC<ConfirmStatusProps> = (props) => {
+const ConfirmStatus = (props: ConfirmStatusProps): JSX.Element => {
   const { isOpen, id, onClose, setStatus } = props;
-  const editGame = useEditGameMutation(id);
+  const editGame = useEditGameMutation(String(id));
 
-  const isDarkScheme = useMantineColorScheme().colorScheme === "dark";
+  const { isDark } = useTheme();
   const form = useForm<GameStatusForm>({
     initialValues: gameStatusInitialValues,
     validate: gameStatusValidationSchema
   });
 
-  const color: MantineColor = isDarkScheme ? "yellow" : "dark";
+  const color: MantineColor = isDark ? "yellow" : "dark";
 
   const handleConfirm = async (): Promise<void> => {
     await editGame.mutate({

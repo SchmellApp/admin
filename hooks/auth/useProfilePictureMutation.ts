@@ -1,14 +1,28 @@
-import { userService } from "@app/services";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MutationObserverResult, User } from "@app/types";
+import axios, { AxiosResponse } from "axios";
+import { FileParams, MutationObserverResult, User } from "@app/types";
+import { axiosClient } from "@app/lib";
 
-const useProfilePictureMutation = (
-  id: string
-): MutationObserverResult<User, File> => {
+const addFile = async (params: FileParams): Promise<AxiosResponse<User>> => {
+  const { accessToken } = await axios
+    .get("/api/users/token")
+    .then((res) => res.data);
+
+  axiosClient.defaults.headers.common.Authorization = `Bearer ${
+    accessToken as string
+  }`;
+
+  return await axiosClient.post(`/users/${params.id}/files/`, params.file);
+};
+
+const useProfilePictureMutation = (): MutationObserverResult<
+  User,
+  FileParams
+> => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (file: File) => await userService.addProfilePicture(id, file),
+    async (params: FileParams) => await addFile(params).then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["self"]);

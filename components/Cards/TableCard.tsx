@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import {
   Grid,
   Paper,
@@ -6,11 +6,11 @@ import {
   Text,
   Table,
   SimpleGrid,
-  useMantineTheme,
   Divider,
   Skeleton
 } from "@mantine/core";
 import { DayStatisticsRows, CardProps } from "@app/types";
+import { useTheme } from "@app/hooks";
 
 interface TableCardProps extends CardProps {
   headers: string[];
@@ -21,17 +21,15 @@ interface TableCardProps extends CardProps {
   }>;
 }
 
-const TableCard: FC<TableCardProps> = ({
+const TableCard = ({
   title,
   description,
   headers,
   rows,
   rightCards,
   isLoading
-}): JSX.Element => {
-  const theme = useMantineTheme();
-
-  const isDarkMode = theme.colorScheme === "dark";
+}: TableCardProps): JSX.Element => {
+  const { isDark, theme } = useTheme();
 
   return (
     <Paper
@@ -39,7 +37,7 @@ const TableCard: FC<TableCardProps> = ({
       radius="md"
       mt="xl"
       sx={{
-        backgroundColor: isDarkMode ? theme.colors.dark[6] : theme.white
+        backgroundColor: isDark ? theme.colors.dark[6] : theme.white
       }}
     >
       <Grid grow>
@@ -48,7 +46,7 @@ const TableCard: FC<TableCardProps> = ({
           p="lg"
           sx={{
             borderRight: `0.5px solid ${
-              isDarkMode ? theme.colors.dark[4] : theme.colors.gray[2]
+              isDark ? theme.colors.dark[4] : theme.colors.gray[2]
             }`
           }}
         >

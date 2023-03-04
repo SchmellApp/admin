@@ -6,7 +6,7 @@ import {
   EditQuestionForm,
   Question
 } from "@app/types";
-import { getEmptyJson } from "@app/utils";
+import { getEmptyJson, toCommaSeparatedString } from "@app/utils";
 
 export const createQuestionInitialValues = (
   relatedGame: Game["id"],
@@ -15,11 +15,15 @@ export const createQuestionInitialValues = (
   type: "",
   questionDescription: "",
   phase: 0,
-  function: undefined,
   punishment: 0,
   relatedWeek,
   relatedGame,
-  file: undefined
+  file: undefined,
+  timer: undefined,
+  questions: undefined,
+  answer: undefined,
+  options: undefined,
+  challenges: undefined
 });
 
 export const createQuestionJsonInitialValues = (
@@ -35,7 +39,22 @@ export const editQuestionInitialValues = (
   type: question.type,
   questionDescription: question.questionDescription,
   phase: question.phase,
-  function: question.function,
   punishment: question.punishment,
-  file: undefined
+  file: undefined,
+  timer: question.function?.timer,
+  answer: question.function?.answer,
+  questions:
+    question.function?.questions != null &&
+    question.function?.questions?.length > 0
+      ? toCommaSeparatedString(question.function?.questions)
+      : undefined,
+  options:
+    question.function?.options != null && question.function?.options.length > 0
+      ? toCommaSeparatedString(question.function?.options)
+      : undefined,
+  challenges:
+    question.function?.challenges != null &&
+    question.function?.challenges.length > 0
+      ? toCommaSeparatedString(question.function?.challenges)
+      : undefined
 });

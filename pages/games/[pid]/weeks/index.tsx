@@ -10,13 +10,14 @@ import {
   Box,
   Skeleton
 } from "@mantine/core";
-import React, { FC, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { IconCirclePlus, IconTrash } from "@tabler/icons";
 import Link from "next/link";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import {
   useDeleteWeekMutation,
+  useModal,
   useWeekMutation,
   useWeeksQuery
 } from "@app/hooks";
@@ -32,15 +33,13 @@ export default withPageAuthRequired(function Weeks(): JSX.Element {
     data: weeks,
     isLoading,
     isSuccess
-  } = useWeeksQuery(Number(route.query.pid));
-  const weekMutation = useWeekMutation(Number(route.query.pid));
+  } = useWeeksQuery(route.query.pid as string);
+  const weekMutation = useWeekMutation(route.query.pid as string);
   const deleteMutation = useDeleteWeekMutation();
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const [deleteDialog, setDeleteDialog] = useState({
-    isOpen: false,
-    id: 0
-  });
+  const [weekToDelete, setWeekToDelete] = useState<number | null>(null);
+  const { onClose, onOpen, isOpen } = useModal();
 
   const handleSubmit = (): void => {
     if (inputRef.current !== null) {
@@ -51,20 +50,15 @@ export default withPageAuthRequired(function Weeks(): JSX.Element {
     }
   };
 
-  const handleDeleteShow = (id: number): void =>
-    setDeleteDialog({ isOpen: true, id });
-  const handleDeleteClose = (): void =>
-    setDeleteDialog({ isOpen: false, id: 0 });
-  const handleDelete = (): void => {
-    deleteMutation.mutate(deleteDialog.id);
-    handleDeleteClose();
+  const handleDelete = async (): Promise<void> => {
+    if (weekToDelete !== null) {
+      await deleteMutation.mutateAsync(weekToDelete);
+      setWeekToDelete(null);
+      onClose();
+    }
   };
 
-  const Card: FC<WeekCardProps> = ({
-    children,
-    id,
-    deleteIcon
-  }): JSX.Element => (
+  const Card = ({ children, id, deleteIcon }: WeekCardProps): JSX.Element => (
     <MantineCard
       shadow="sm"
       p="md"
@@ -82,7 +76,10 @@ export default withPageAuthRequired(function Weeks(): JSX.Element {
       {deleteIcon === true && (
         <ActionIcon
           sx={{ position: "absolute", top: 5, right: 5, zIndex: 100 }}
-          onClick={() => handleDeleteShow(id ?? 0)}
+          onClick={() => {
+            setWeekToDelete(id as number);
+            onOpen();
+          }}
         >
           <IconTrash />
         </ActionIcon>
@@ -183,16 +180,18 @@ export default withPageAuthRequired(function Weeks(): JSX.Element {
           {
             label: "Ja",
             color: "red",
-            onClick: handleDelete
+            onClick: () => {
+              void handleDelete();
+            }
           },
           {
             label: "Nei",
             color: "green",
-            onClick: handleDeleteClose
+            onClick: onClose
           }
         ]}
-        isDialogOpen={deleteDialog.isOpen}
-        handleClose={handleDeleteClose}
+        isDialogOpen={isOpen}
+        handleClose={onClose}
       />
     </Wrapper>
   );

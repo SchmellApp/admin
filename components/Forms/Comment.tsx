@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import { useForm } from "@mantine/form";
 import { Textarea, ActionIcon, Box } from "@mantine/core";
 import { IconSend } from "@tabler/icons";
@@ -14,7 +14,7 @@ interface CommentFormProps {
   currentTask: Task;
 }
 
-const CommentForm: FC<CommentFormProps> = ({ currentTask }): JSX.Element => {
+const CommentForm = ({ currentTask }: CommentFormProps): JSX.Element => {
   const createComment = useCommentMutation();
   const { data: activeUser } = useSelfQuery();
   const form = useForm<CreateCommentForm>({

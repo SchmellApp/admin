@@ -1,16 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateQuestion, Question, MutationObserverResult } from "@app/types";
-import { cms } from "@app/services";
+import { CreateQuestion } from "@app/types";
+import axios from "axios";
 
-const useQuestionMutation = (): MutationObserverResult<
-  Question,
-  CreateQuestion
-> => {
+const useQuestionMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
     async (question: CreateQuestion) =>
-      await cms.questionService.createQuestion(question),
+      await axios.post(`/api/cms/question/`, question).then((res) => res.data),
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(["questions"]);
