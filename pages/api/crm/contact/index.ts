@@ -18,7 +18,7 @@ export default withApiAuthRequired(async function handle(
 
   switch (req.method) {
     case "GET": {
-      const response = await axiosClient.get("/crm/contact", {
+      const response = await axiosClient.get("/crm/contact/", {
         params: req.query as ContactFormFilters
       });
 
