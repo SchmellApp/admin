@@ -18,7 +18,7 @@ export default withApiAuthRequired(async function handle(
   switch (req.method) {
     case "POST": {
       const response = await axiosClient.post(
-        `/cms/question/${req.query.pid as string}/files`,
+        `/cms/question/${req.query.pid as string}/files/`,
         req.body
       );
       return res.status(200).json(response.data);

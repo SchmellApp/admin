@@ -19,7 +19,7 @@ export default withApiAuthRequired(async function handle(
   switch (req.method) {
     case "GET": {
       const response = await axiosClient.get(
-        `/cms/question/?relatedWeek=${req.query.relatedWeek as string}`
+        `/cms/question/?relatedWeek=${req.query.relatedWeek as string}/`
       );
       return res.status(200).json(response.data);
     }

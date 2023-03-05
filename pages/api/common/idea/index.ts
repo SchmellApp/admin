@@ -17,12 +17,12 @@ export default withApiAuthRequired(async function handler(
 
   switch (req.method) {
     case "GET": {
-      const response = await axiosClient.get("/common/idea");
+      const response = await axiosClient.get("/common/idea/");
       return res.status(200).json(response.data);
     }
     case "POST": {
       const response = await axiosClient.post(
-        "/common/idea",
+        "/common/idea/",
         req.body as IdeaForm
       );
       return res.status(201).json(response.data);

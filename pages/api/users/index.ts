@@ -14,7 +14,7 @@ export default withApiAuthRequired(async function handle(
 
   axiosClient.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
-  const response = await axiosClient.get("/users");
+  const response = await axiosClient.get("/users/");
 
   return res.status(200).json(response.data);
 });

@@ -16,11 +16,11 @@ export default withApiAuthRequired(async function handler(
 
   switch (req.method) {
     case "GET": {
-      const response = await axiosClient.get(`/cms/game`);
+      const response = await axiosClient.get(`/cms/game/`);
       return res.status(200).json(response.data);
     }
     case "POST": {
-      const response = await axiosClient.post(`/cms/game`, req.body);
+      const response = await axiosClient.post(`/cms/game/`, req.body);
       return res.status(200).json(response.data);
     }
     default:
