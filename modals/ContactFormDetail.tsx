@@ -71,6 +71,7 @@ const ContactFormDetail = ({
             void handleDelete();
           }}
           variant="outline"
+          loading={deleteContactForm.isLoading}
         >
           Slett skjema
         </Button>

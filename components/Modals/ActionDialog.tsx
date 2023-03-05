@@ -6,7 +6,8 @@ interface ActionDialogProps {
   actions: Array<{
     label: string;
     color: string;
-    onClick: () => void;
+    onClick: () => Promise<void> | void;
+    isLoading?: boolean;
   }>;
   isDialogOpen: boolean;
   handleClose: () => void;
@@ -39,8 +40,11 @@ const ActionDialog = ({
         <Button
           key={idx}
           color={action.color}
-          onClick={action.onClick}
+          onClick={() => {
+            void action.onClick();
+          }}
           variant="outline"
+          loading={action.isLoading}
         >
           {action.label}
         </Button>

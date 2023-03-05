@@ -9,7 +9,7 @@ interface DataTableProps {
   sort?: string;
   setSort?: Dispatch<SetStateAction<string>>;
   currentPage: number;
-  maxPage: number;
+  maxPage?: number;
   onChangePage: (page: number) => void;
   title?: string;
   children: ReactNode;
@@ -21,7 +21,7 @@ const DataTableWrapper = ({
   setSort,
   sort,
   currentPage,
-  maxPage,
+  maxPage = 10,
   onChangePage,
   children
 }: DataTableProps): JSX.Element => {

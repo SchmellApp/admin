@@ -78,7 +78,10 @@ export default withPageAuthRequired(function Ideas(): JSX.Element {
                 ? toListElements(filterByCategory(ideas, category.category))
                 : []
             }
-            handleClick={openDelete}
+            handleClick={(id: number) => {
+              setIdeaToDelete(id);
+              openDelete();
+            }}
             isLoading={isLoading}
           />
         ))}
@@ -88,10 +91,9 @@ export default withPageAuthRequired(function Ideas(): JSX.Element {
         actions={[
           {
             label: "Ja",
-            onClick: () => {
-              void handleDelete();
-            },
-            color: "green"
+            onClick: handleDelete,
+            color: "green",
+            isLoading: deleteIdeaMutation.isLoading
           },
           {
             label: "Nei",
