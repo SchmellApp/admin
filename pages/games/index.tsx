@@ -6,7 +6,8 @@ import {
   Title,
   Card,
   Center,
-  UnstyledButton
+  UnstyledButton,
+  Skeleton
 } from "@mantine/core";
 import { IconCirclePlus } from "@tabler/icons";
 import { AddGameModal } from "@app/modals";
@@ -50,17 +51,27 @@ export default withPageAuthRequired(function Games(): JSX.Element {
           { maxWidth: 1700, cols: 3 }
         ]}
       >
-        {games?.map((game) => (
-          <GameCard
-            game={game}
-            key={game.id}
-            handleClick={() => {
-              setGameToDelete(game.id);
-              openDelete();
-            }}
-            isLoading={isLoading}
-          />
-        ))}
+        {isLoading ? (
+          <>
+            <Skeleton height={300} />
+            <Skeleton height={300} />
+            <Skeleton height={300} />
+            <Skeleton height={300} />
+            <Skeleton height={300} />
+          </>
+        ) : (
+          games?.map((game) => (
+            <GameCard
+              game={game}
+              key={game.id}
+              handleClick={() => {
+                setGameToDelete(game.id);
+                openDelete();
+              }}
+              isLoading={isLoading}
+            />
+          ))
+        )}
         <UnstyledButton onClick={openAdd}>
           <Card
             shadow="md"
@@ -90,7 +101,8 @@ export default withPageAuthRequired(function Games(): JSX.Element {
             onClick: () => {
               void handleDelete();
             },
-            color: "green"
+            color: "green",
+            isLoading: deleteGameMutation.isLoading
           },
           {
             label: "Nei",

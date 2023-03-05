@@ -169,7 +169,8 @@ const QuestionCard = ({ question }: QuestionCardProps): JSX.Element => {
             color: "red",
             onClick: () => {
               void handleDelete();
-            }
+            },
+            isLoading: deleteQuestion.isLoading
           },
           {
             label: "Avbryt",

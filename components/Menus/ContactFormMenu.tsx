@@ -5,7 +5,8 @@ import {
   MultiSelect,
   Title,
   Text,
-  Switch
+  Switch,
+  TextInput
 } from "@mantine/core";
 import { IconFilter } from "@tabler/icons";
 import React from "react";
@@ -54,9 +55,23 @@ const ContactFormMenu = ({
         </Menu.Label>
         <Menu.Divider />
         <Menu.Label>
+          <Text size="md" color={isDark ? "white" : "dark"}>
+            E-post
+          </Text>
+          <TextInput
+            value={filters.email}
+            onChange={(event) =>
+              handleFilter("email")(event.currentTarget.value)
+            }
+            placeholder="Søk etter e-post"
+            mt="sm"
+          />
+        </Menu.Label>
+        <Menu.Divider />
+        <Menu.Label>
           <Switch
             size="md"
-            labelPosition="right"
+            labelPosition="left"
             label="Akseptert vilkår"
             checked={filters.acceptedTerms}
             onChange={(event) =>

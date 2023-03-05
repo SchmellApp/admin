@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Stack } from "@mantine/core";
+import { Paper, Skeleton, Stack } from "@mantine/core";
 import { AvatarCard, TextCard } from "../Cards";
 import { ListElement } from "@app/types/ui/list";
 
@@ -32,17 +32,21 @@ const ListElements = ({
     >
       <TextCard title={title} color={color} />
       <Stack spacing="md" mt="md">
-        {elements.map((element, idx) => (
-          <AvatarCard
-            text={element.text}
-            color={color}
-            avatarUrl={element.avatarUrl}
-            key={idx}
-            id={element.id}
-            handleClick={handleClick}
-            isLoading={isLoading}
-          />
-        ))}
+        {isLoading === true ? (
+          <Skeleton height={100} />
+        ) : (
+          elements.map((element, idx) => (
+            <AvatarCard
+              text={element.text}
+              color={color}
+              avatarUrl={element.avatarUrl}
+              key={idx}
+              id={element.id}
+              handleClick={handleClick}
+              isLoading={isLoading}
+            />
+          ))
+        )}
       </Stack>
     </Paper>
   );
