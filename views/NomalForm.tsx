@@ -125,7 +125,10 @@ const NormalForm = ({
         my="sm"
         {...form.getInputProps("options")}
       />
-      <SubmitButton label="Opprett spørsmål" />
+      <SubmitButton
+        label="Opprett spørsmål"
+        isLoading={addQuestion.isLoading}
+      />
     </form>
   );
 };

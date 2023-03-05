@@ -22,7 +22,7 @@ import { useRouter } from "next/router";
 export default withPageAuthRequired(function Tasks(): JSX.Element {
   const isMobileScreen = useMediaQuery("(max-width: 768px)");
   const router = useRouter();
-  const { data: users } = useUsersQuery();
+  const { data: users, isLoading } = useUsersQuery();
   const { isDark } = useTheme();
 
   const { onOpen, isOpen, onClose } = useModal();
@@ -171,26 +171,29 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
         <TaskMenu filters={filters} handleFilter={handleFilter} />
       </Group>
       <div>
-        {tasks != null && (
-          <>
-            {isMobileScreen ? (
-              <TaskCardList tableData={tasks.tasks} />
-            ) : (
-              <DataTableWrapper
-                headers={TASKS_HEADER}
-                sort={sort}
-                setSort={setSort}
-                currentPage={filters.page}
-                onChangePage={handleFilter("page")}
-                maxPage={tasks.lastPage}
-              >
-                <TaskTableBody
-                  data={tasks.tasks}
-                  handleRowClick={handleRowClick}
-                />
-              </DataTableWrapper>
-            )}
-          </>
+        {isMobileScreen ? (
+          <TaskCardList
+            data={tasks?.tasks}
+            isLoading={isLoading}
+            currentPage={filters.page}
+            onChangePage={handleFilter("page")}
+            maxPage={tasks?.lastPage}
+          />
+        ) : (
+          <DataTableWrapper
+            headers={TASKS_HEADER}
+            sort={sort}
+            setSort={setSort}
+            currentPage={filters.page}
+            onChangePage={handleFilter("page")}
+            maxPage={tasks?.lastPage}
+          >
+            <TaskTableBody
+              data={tasks?.tasks}
+              handleRowClick={handleRowClick}
+              isLoading={isLoading}
+            />
+          </DataTableWrapper>
         )}
       </div>
       <AddTask isOpen={isOpen} onClose={onClose} />

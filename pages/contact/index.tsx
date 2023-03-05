@@ -27,7 +27,7 @@ export default withPageAuthRequired(function Contact(): JSX.Element {
     page: 1
   });
 
-  const { data: forms } = useContactFormsQuery({
+  const { data: forms, isLoading } = useContactFormsQuery({
     acceptedTerms: filters.acceptedTerms,
     type: filters.type.length > 0 ? filters.type.join("+") : undefined,
     email: filters.email !== "" ? filters.email : undefined,
@@ -124,21 +124,18 @@ export default withPageAuthRequired(function Contact(): JSX.Element {
         <ContactFormMenu filters={filters} handleFilter={handleFilter} />
       </Group>
       <div>
-        {forms != null && (
-          <>
-            <DataTableWrapper
-              headers={CONTACT_FORM_HEADER}
-              currentPage={filters.page}
-              maxPage={forms.lastPage}
-              onChangePage={handleFilter("page")}
-            >
-              <ContactFormTableBody
-                data={forms.contactForms}
-                handleRowClick={(id: number) => handleShowDetails(id)}
-              />
-            </DataTableWrapper>
-          </>
-        )}
+        <DataTableWrapper
+          headers={CONTACT_FORM_HEADER}
+          currentPage={filters.page}
+          maxPage={forms?.lastPage}
+          onChangePage={handleFilter("page")}
+        >
+          <ContactFormTableBody
+            data={forms?.contactForms}
+            handleRowClick={(id: number) => handleShowDetails(id)}
+            isLoading={isLoading}
+          />
+        </DataTableWrapper>
       </div>
       {selectedForm != null && (
         <ContactFormDetail

@@ -8,7 +8,8 @@ import {
   CardProps,
   NumberInput,
   Box,
-  Skeleton
+  Skeleton,
+  Loader
 } from "@mantine/core";
 import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
@@ -18,6 +19,7 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import {
   useDeleteWeekMutation,
   useModal,
+  useTheme,
   useWeekMutation,
   useWeeksQuery
 } from "@app/hooks";
@@ -40,6 +42,7 @@ export default withPageAuthRequired(function Weeks(): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
   const [weekToDelete, setWeekToDelete] = useState<number | null>(null);
   const { onClose, onOpen, isOpen } = useModal();
+  const { isDark } = useTheme();
 
   const handleSubmit = (): void => {
     if (inputRef.current !== null) {
@@ -168,9 +171,18 @@ export default withPageAuthRequired(function Weeks(): JSX.Element {
               max={52}
               ref={inputRef}
             />
-            <ActionIcon size="md" ml="xs" onClick={handleSubmit}>
-              <IconCirclePlus />
-            </ActionIcon>
+            {weekMutation.isLoading ? (
+              <Loader
+                height={30}
+                width={30}
+                ml="sm"
+                color={isDark ? "yellow" : "dark"}
+              />
+            ) : (
+              <ActionIcon size="md" ml="xs" onClick={handleSubmit}>
+                <IconCirclePlus />
+              </ActionIcon>
+            )}
           </div>
         </Card>
       </SimpleGrid>
@@ -182,7 +194,8 @@ export default withPageAuthRequired(function Weeks(): JSX.Element {
             color: "red",
             onClick: () => {
               void handleDelete();
-            }
+            },
+            isLoading: deleteMutation.isLoading
           },
           {
             label: "Nei",

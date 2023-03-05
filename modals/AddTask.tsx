@@ -128,7 +128,7 @@ const AddTask = ({ isOpen, onClose }: AddTaskProps): JSX.Element => {
           )}
         </div>
 
-        <SubmitButton label="Opprett oppgave" />
+        <SubmitButton label="Opprett oppgave" isLoading={addTask.isLoading} />
       </form>
     </ModalBase>
   );
