@@ -7,13 +7,14 @@ import {
   Group,
   Image,
   SegmentedControl,
+  Switch,
   Text,
   Title
 } from "@mantine/core";
 import { IconEdit } from "@tabler/icons";
 import { GameStatus } from "@app/enums";
 import { ConfirmStatus, EditGame } from "@app/modals";
-import { useEditGameMutation, useModal } from "@app/hooks";
+import { useEditGameMutation, useModal, useTheme } from "@app/hooks";
 
 interface GameDetailsProps {
   game: Game;
@@ -31,7 +32,11 @@ const GameDetails = ({ game }: GameDetailsProps): JSX.Element => {
     onOpen: openConfirm
   } = useModal();
   const [status, setStatus] = useState(game.status);
+  const [isFamilyFriendly, setIsFamilyFriendly] = useState(
+    game.isFamilyFriendly
+  );
   const editGame = useEditGameMutation(String(game.id));
+  const { isDark } = useTheme();
 
   const handleStatusChange = (value: string): void => {
     if ((value as GameStatus) === GameStatus.DEPLOYED) {
@@ -40,6 +45,11 @@ const GameDetails = ({ game }: GameDetailsProps): JSX.Element => {
       editGame.mutate({ status: value as GameStatus });
       setStatus(value as GameStatus);
     }
+  };
+  const handleFamilyFriendlyChange = (value: boolean): void => {
+    console.log("newVal", value);
+    editGame.mutate({ isFamilyFriendly: value });
+    setIsFamilyFriendly(value);
   };
 
   return (
@@ -73,13 +83,28 @@ const GameDetails = ({ game }: GameDetailsProps): JSX.Element => {
             radius="md"
           />
         </Group>
-        <SegmentedControl
-          data={[GameStatus.DEVELOPMENT, GameStatus.READY, GameStatus.DEPLOYED]}
-          fullWidth
-          onChange={(value) => handleStatusChange(value)}
-          value={status}
-          mt="md"
-        />
+        <Group position="center" mt="sm">
+          <SegmentedControl
+            data={[
+              GameStatus.DEVELOPMENT,
+              GameStatus.READY,
+              GameStatus.DEPLOYED
+            ]}
+            fullWidth
+            onChange={(value) => handleStatusChange(value)}
+            value={status}
+            mt="md"
+          />
+          <Switch
+            checked={isFamilyFriendly}
+            size="lg"
+            label="Familievennlig"
+            color={isDark ? "yellow" : "dark"}
+            onChange={(event) =>
+              handleFamilyFriendlyChange(event.currentTarget.checked)
+            }
+          />
+        </Group>
       </Card>
       <EditGame isOpen={isEditOpen} onClose={closeEdit} game={game} />
       <ConfirmStatus
