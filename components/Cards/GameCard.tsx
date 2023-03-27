@@ -77,6 +77,12 @@ const GameCard = ({
                   </Text>
                   <Text size="sm">232</Text>
                 </Group>
+                <Group spacing="xs">
+                  <Text weight="bolder" size="sm">
+                    Familievennlig:
+                  </Text>
+                  <Text size="sm">{game.isFamilyFriendly ? "Ja" : "Nei"}</Text>
+                </Group>
               </div>
               <Image
                 src={game.logoUrl}

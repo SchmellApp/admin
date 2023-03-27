@@ -1,10 +1,16 @@
-import { Checkbox, FileInput, Textarea, TextInput } from "@mantine/core";
+import {
+  Checkbox,
+  Divider,
+  FileInput,
+  Textarea,
+  TextInput
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import React from "react";
 import { SubmitButton, ModalBase } from "@app/components";
 import { createGameInitialValues, createGameValidationSchema } from "@app/lib";
 import { CreateGameForm } from "@app/types";
-import { useGameFileMutation, useGameMutation } from "@app/hooks";
+import { useGameFileMutation, useGameMutation, useTheme } from "@app/hooks";
 
 interface AddGameProps {
   isOpen: boolean;
@@ -12,6 +18,7 @@ interface AddGameProps {
 }
 
 const AddGame = ({ isOpen, onClose }: AddGameProps): JSX.Element => {
+  const { isDark } = useTheme();
   const gameMutation = useGameMutation();
   const fileMutation = useGameFileMutation();
   const form = useForm<CreateGameForm>({
@@ -63,6 +70,7 @@ const AddGame = ({ isOpen, onClose }: AddGameProps): JSX.Element => {
           my="md"
           {...form.getInputProps("description")}
         />
+        <Divider my="xs" />
         <FileInput
           label="Last opp logo"
           placeholder="StartVorset.png"
@@ -73,9 +81,18 @@ const AddGame = ({ isOpen, onClose }: AddGameProps): JSX.Element => {
         {form.values.file === undefined && (
           <Checkbox
             label="Bekreft at du vil legge til spillet uten bilde"
+            color={isDark ? "yellow" : "dark"}
             {...form.getInputProps("confirmWithoutImage")}
           />
         )}
+        <Divider my="xs" />
+        <Checkbox
+          label="Spillet er familievennlig"
+          color={isDark ? "yellow" : "dark"}
+          labelPosition="right"
+          {...form.getInputProps("isFamilyFriendly")}
+        />
+
         <SubmitButton
           label="Opprett spill"
           isLoading={gameMutation.isLoading}

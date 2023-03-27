@@ -4,7 +4,8 @@ export const createGameInitialValues: CreateGameForm = {
   name: "",
   description: "",
   file: undefined,
-  confirmWithoutImage: false
+  confirmWithoutImage: false,
+  isFamilyFriendly: false
 };
 
 export const editGameInitialValues = (

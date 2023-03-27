@@ -5,6 +5,7 @@ export interface CreateGameForm {
   description: Game["description"];
   file?: File;
   confirmWithoutImage: boolean;
+  isFamilyFriendly: boolean;
 }
 
 export interface EditGameForm {
