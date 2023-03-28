@@ -7,7 +7,7 @@ export interface Question {
   questionDescription: string;
   phase: number;
   function?: QuestionFunction;
-  punishment: number;
+  punishment?: number;
   questionPicture?: string;
   relatedGame: number;
   questionPictureUrl?: string;

@@ -6,7 +6,7 @@ export interface CreateQuestionForm {
   type: Question["type"];
   questionDescription: Question["questionDescription"];
   phase: Question["phase"];
-  punishment: Question["punishment"];
+  punishment?: Question["punishment"];
   relatedGame: Question["relatedGame"];
   file?: File;
   timer?: CreateQuestionFunction["timer"];

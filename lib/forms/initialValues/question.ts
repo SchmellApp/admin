@@ -15,7 +15,7 @@ export const createQuestionInitialValues = (
   type: "",
   questionDescription: "",
   phase: 0,
-  punishment: 0,
+  punishment: undefined,
   relatedWeek,
   relatedGame,
   file: undefined,

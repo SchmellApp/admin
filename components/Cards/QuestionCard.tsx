@@ -96,7 +96,9 @@ const QuestionCard = ({ question }: QuestionCardProps): JSX.Element => {
           <TextGroup title="Type:" text={question.type} />
           <TextGroup title="Spørsmål:" text={question.questionDescription} />
           <TextGroup title="Fase:" text={String(question.phase)} />
-          <TextGroup title="Straff:" text={String(question.punishment)} />
+          {question.punishment != null && (
+            <TextGroup title="Straff:" text={String(question.punishment)} />
+          )}
           {question.function?.questions != null &&
             question.function.questions.length > 0 && (
               <TextGroup
