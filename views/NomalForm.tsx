@@ -80,7 +80,6 @@ const NormalForm = ({
       />
 
       <NumberInput
-        withAsterisk
         label="Skriv inn straff"
         placeholder="4"
         my="md"
