@@ -1,42 +1,37 @@
 import {
-  Game,
-  Week,
   CreateQuestionForm,
-  CreateQuestionJsonForm,
   EditQuestionForm,
+  Game,
   Question
 } from "@app/types";
-import { getEmptyJson, toCommaSeparatedString } from "@app/utils";
+import { toCommaSeparatedString } from "@app/utils";
+import { GroupSize } from "@app/enums";
+import { WeekNumbers } from "@app/constants";
 
 export const createQuestionInitialValues = (
-  relatedGame: Game["id"],
-  relatedWeek: Week["id"]
+  relatedGame: Game["id"]
 ): CreateQuestionForm => ({
-  type: "",
+  relatedQuestionType: 0,
   questionDescription: "",
   phase: 0,
   punishment: undefined,
-  relatedWeek,
   relatedGame,
   file: undefined,
   timer: undefined,
   questions: undefined,
   answer: undefined,
   options: undefined,
-  challenges: undefined
-});
-
-export const createQuestionJsonInitialValues = (
-  relatedGame: Game["id"],
-  relatedWeek: Week["id"]
-): CreateQuestionJsonForm => ({
-  json: JSON.stringify(getEmptyJson(relatedWeek, relatedGame), null, 2)
+  challenges: undefined,
+  activeWeeks: WeekNumbers.map((week) => week.value),
+  groupSize: GroupSize.All
 });
 
 export const editQuestionInitialValues = (
   question: Question
 ): EditQuestionForm => ({
-  type: question.type,
+  relatedQuestionType: question.questionType.id,
+  activeWeeks: question.activeWeeks,
+  groupSize: question.groupSize,
   questionDescription: question.questionDescription,
   phase: question.phase,
   punishment: question.punishment,

@@ -1,11 +1,11 @@
-import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { NextApiResponse } from "next";
-import { Week } from "@app/types";
+import { QuestionType } from "@app/types";
+import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { axiosClient } from "@app/lib";
 
 export default withApiAuthRequired(async function handle(
   req,
-  res: NextApiResponse<Week[] | Week>
+  res: NextApiResponse<QuestionType>
 ) {
   const { accessToken } = await getAccessToken(req, res);
 
@@ -16,14 +16,17 @@ export default withApiAuthRequired(async function handle(
   axiosClient.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
   switch (req.method) {
-    case "GET": {
-      const response = await axiosClient.get(
-        `/cms/week/${req.query.pid as string}/`
+    case "PATCH": {
+      const response = await axiosClient.patch(
+        `/cms/question/type/${req.query.pid as string}/`,
+        req.body
       );
       return res.status(200).json(response.data);
     }
     case "DELETE": {
-      await axiosClient.delete(`/cms/week/${req.query.pid as string}/`);
+      await axiosClient.delete(
+        `/cms/question/type/${req.query.pid as string}/`
+      );
       return res.status(204).end();
     }
     default:

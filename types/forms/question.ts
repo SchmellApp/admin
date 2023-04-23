@@ -1,9 +1,9 @@
-import { Question } from "@app/types";
-import { CreateQuestionFunction } from "@app/types/questionFunction";
+import { Question, CreateQuestionFunction } from "@app/types";
 
 export interface CreateQuestionForm {
-  relatedWeek: Question["relatedWeek"];
-  type: Question["type"];
+  activeWeeks?: Question["activeWeeks"];
+  relatedQuestionType: Question["questionType"]["id"];
+  groupSize?: Question["groupSize"];
   questionDescription: Question["questionDescription"];
   phase: Question["phase"];
   punishment?: Question["punishment"];
@@ -16,12 +16,10 @@ export interface CreateQuestionForm {
   options?: CreateQuestionFunction["options"];
 }
 
-export interface CreateQuestionJsonForm {
-  json: string;
-}
-
 export interface EditQuestionForm {
-  type: Question["type"];
+  relatedQuestionType: Question["questionType"]["id"];
+  groupSize?: Question["groupSize"];
+  activeWeeks?: Question["activeWeeks"];
   questionDescription: Question["questionDescription"];
   phase: Question["phase"];
   punishment: Question["punishment"];
