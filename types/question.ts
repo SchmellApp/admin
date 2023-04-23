@@ -1,9 +1,10 @@
 import { QuestionFunction } from "@app/types/questionFunction";
+import { GroupSize } from "@app/enums/question";
+import { QuestionType } from "@app/types/questionType";
 
 export interface Question {
   id: number;
-  relatedWeek: number;
-  type: string;
+  activeWeeks: number[];
   questionDescription: string;
   phase: number;
   function?: QuestionFunction;
@@ -11,17 +12,27 @@ export interface Question {
   questionPicture?: string;
   relatedGame: number;
   questionPictureUrl?: string;
+  questionType: QuestionType;
+  groupSize: GroupSize;
 }
 
 export interface CreateQuestion
   extends Omit<
     Question,
-    "id" | "questionPicture" | "questionPictureUrl" | "function"
+    | "id"
+    | "questionPicture"
+    | "questionPictureUrl"
+    | "function"
+    | "questionType"
+    | "activeWeeks"
+    | "groupSize"
   > {
-  function: Omit<QuestionFunction, "id">;
+  function?: Omit<QuestionFunction, "id">;
+  relatedQuestionType: QuestionType["id"];
+  activeWeeks?: number[];
+  groupSize?: GroupSize;
 }
 
 export interface EmptyQuestionJson extends CreateQuestion {}
 
-export interface UpdateQuestion
-  extends Omit<CreateQuestion, "relatedGame" | "relatedWeek"> {}
+export interface UpdateQuestion extends Omit<CreateQuestion, "relatedGame"> {}

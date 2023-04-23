@@ -3,31 +3,30 @@ import {
   Anchor,
   Breadcrumbs,
   Group,
+  MultiSelect,
   SimpleGrid,
   Switch,
   Title
 } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import {
   useGameQuery,
   useModal,
   useQuestionsQuery,
-  useTheme,
-  useWeekQuery
+  useTheme
 } from "@app/hooks";
 import { GameDetails } from "@app/views";
 import { AddQuestion } from "@app/modals";
+import { toWeekOptions } from "@app/utils";
 
 export default function Questions(): JSX.Element {
+  const [weekNumbers, setWeekNumbers] = useState<string[]>([]);
   const route = useRouter();
   const { isDark } = useTheme();
 
   const { data: currentGame } = useGameQuery(route.query.pid as string);
-  const { data: currentWeek } = useWeekQuery(route.query.slug as string);
-  const { data: questions, isSuccess } = useQuestionsQuery(
-    route.query.slug as string
-  );
+  const { data: questions } = useQuestionsQuery(weekNumbers);
 
   const { onClose: closeAdd, onOpen: openAdd, isOpen: showAdd } = useModal();
   const { isOpen: showDetails, setIsOpen: setShowDetails } = useModal();
@@ -40,12 +39,6 @@ export default function Questions(): JSX.Element {
     {
       title: currentGame?.name,
       href: `/games/${currentGame?.id ?? 0}/weeks`
-    },
-    {
-      title: `Uke: ${currentWeek?.weekNumber ?? 0}`,
-      href: `/games/${currentGame?.id ?? 0}/weeks/${
-        currentWeek?.id ?? 0
-      }/questions`
     }
   ].map((item, index) => (
     <Anchor href={item.href} key={index} color="dimmed" size="sm">
@@ -72,13 +65,23 @@ export default function Questions(): JSX.Element {
       {showDetails && currentGame !== undefined && (
         <GameDetails game={currentGame} />
       )}
-      <SchmellButton onClick={openAdd} label="Opprett spørsmål" />
-      {currentGame !== undefined && currentWeek !== undefined && (
+      <Group position="apart">
+        <SchmellButton onClick={openAdd} label="Opprett spørsmål" />
+        <MultiSelect
+          clearable
+          size="md"
+          searchable
+          data={toWeekOptions()}
+          value={weekNumbers}
+          onChange={setWeekNumbers}
+          placeholder="Velg uke"
+        />
+      </Group>
+      {currentGame !== undefined && (
         <AddQuestion
           isOpen={showAdd}
           onClose={closeAdd}
           selectedGame={currentGame}
-          selectedWeek={currentWeek}
         />
       )}
       <SimpleGrid
@@ -103,11 +106,9 @@ export default function Questions(): JSX.Element {
           }
         ]}
       >
-        {questions !== undefined &&
-          isSuccess &&
-          questions.map((question) => (
-            <QuestionCard question={question} key={question.id} />
-          ))}
+        {questions?.map((question) => (
+          <QuestionCard question={question} key={question.id} />
+        ))}
       </SimpleGrid>
     </Wrapper>
   );

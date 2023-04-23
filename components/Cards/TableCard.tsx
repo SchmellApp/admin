@@ -82,7 +82,6 @@ const TableCard = ({
                     <td>{row.gameName}</td>
                     <td style={{ textAlign: "right" }}>{row.count}</td>
                     <td style={{ textAlign: "right" }}>{row.userCount}</td>
-                    <td style={{ textAlign: "right" }}>{row.income}</td>
                   </tr>
                 )
               )}

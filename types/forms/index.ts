@@ -5,3 +5,4 @@ export * from "./question";
 export * from "./task";
 export * from "./user";
 export * from "./file";
+export * from "./questionType";

@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { EditGame } from "@app/types";
+import { EditGame, Game, MutationObserverResult } from "@app/types";
 import axios from "axios";
 
-const useEditGameMutation = (id: string) => {
+const useEditGameMutation = (
+  id: string
+): MutationObserverResult<Game, EditGame> => {
   const queryClient = useQueryClient();
 
   return useMutation(

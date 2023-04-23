@@ -1,60 +1,34 @@
 import {
-  Week,
-  Game,
-  EmptyQuestionJson,
   CreateQuestionForm,
   CreateQuestion,
   EditQuestionForm,
   UpdateQuestion
 } from "@app/types";
-
-export const getEmptyJson = (
-  relatedWeek: Week["id"],
-  relatedGame: Game["id"]
-): EmptyQuestionJson[] => [
-  {
-    type: "",
-    questionDescription: "",
-    phase: 0,
-    function: {},
-    punishment: 0,
-    relatedWeek,
-    relatedGame
-  }
-];
+import { GroupSize } from "@app/enums";
 
 export const toCreateQuestion = (
   values: CreateQuestionForm
 ): CreateQuestion => {
   return {
-    type: values.type,
+    relatedQuestionType: values.relatedQuestionType,
+    activeWeeks: values.activeWeeks,
+    groupSize: values.groupSize,
     questionDescription: values.questionDescription,
     phase: values.phase,
-    function: {
-      questions: commaSeparatedToArray(values.questions),
-      options: commaSeparatedToArray(values.options),
-      answer: values.answer,
-      timer: values.timer,
-      challenges: commaSeparatedToArray(values.challenges)
-    },
+    function: functionValues(values),
     punishment: values.punishment,
-    relatedGame: values.relatedGame,
-    relatedWeek: values.relatedWeek
+    relatedGame: values.relatedGame
   };
 };
 
 export const toUpdateQuestion = (values: EditQuestionForm): UpdateQuestion => {
   return {
-    type: values.type,
+    relatedQuestionType: values.relatedQuestionType,
+    activeWeeks: values.activeWeeks,
+    groupSize: values.groupSize,
     questionDescription: values.questionDescription,
     phase: values.phase,
-    function: {
-      questions: commaSeparatedToArray(values.questions),
-      options: commaSeparatedToArray(values.options),
-      answer: values.answer,
-      timer: values.timer,
-      challenges: commaSeparatedToArray(values.challenges)
-    },
+    function: functionValues(values),
     punishment: values.punishment
   };
 };
@@ -64,3 +38,40 @@ const commaSeparatedToArray = (value?: string): string[] | undefined =>
 
 export const toCommaSeparatedString = (values: string[]): string =>
   values.join(", ");
+
+const assertSomeValuesDefined = (
+  values: CreateQuestionForm | EditQuestionForm
+): boolean => {
+  return (
+    values.questions !== undefined ||
+    values.options !== undefined ||
+    values.answer !== undefined ||
+    values.timer !== undefined ||
+    values.challenges !== undefined
+  );
+};
+
+const functionValues = (
+  values: CreateQuestionForm | EditQuestionForm
+): CreateQuestion["function"] | undefined => {
+  if (assertSomeValuesDefined(values)) {
+    return {
+      questions: commaSeparatedToArray(values.questions),
+      options: commaSeparatedToArray(values.options),
+      answer: values.answer,
+      timer: values.timer,
+      challenges: commaSeparatedToArray(values.challenges)
+    };
+  }
+};
+
+export const getWeekString = (weeks: number[]): string =>
+  weeks.length === 52
+    ? "Alle uker"
+    : weeks.map((week) => `Uke ${week}`).join(", ");
+export const toUnderstandableGroupSize = {
+  [GroupSize.All]: "Alle",
+  [GroupSize.S]: "Liten (0-8)",
+  [GroupSize.M]: "Middels (9-16)",
+  [GroupSize.L]: "Stor (17 og oppover)"
+};

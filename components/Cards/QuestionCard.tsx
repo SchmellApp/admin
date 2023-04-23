@@ -10,18 +10,17 @@ import {
   Image
 } from "@mantine/core";
 import { IconEdit, IconPhoto, IconTrash } from "@tabler/icons";
-import { ActionDialog } from "@app/components";
+import { ActionDialog, TextGroup } from "@app/components";
 import { EditQuestion } from "@app/modals";
 import { useDeleteQuestionMutation, useModal } from "@app/hooks";
-import { toCommaSeparatedString } from "@app/utils";
+import {
+  getWeekString,
+  toCommaSeparatedString,
+  toUnderstandableGroupSize
+} from "@app/utils";
 
 interface QuestionCardProps {
   question: Question;
-}
-
-interface TextGroupProps {
-  title: string;
-  text: string;
 }
 
 const QuestionCard = ({ question }: QuestionCardProps): JSX.Element => {
@@ -47,23 +46,6 @@ const QuestionCard = ({ question }: QuestionCardProps): JSX.Element => {
 
   const handleDelete = async (): Promise<void> =>
     await deleteQuestion.mutateAsync(question.id);
-
-  const TextGroup = ({ title, text }: TextGroupProps): JSX.Element => (
-    <Box
-      my="xs"
-      sx={{
-        display: "flex",
-        justifyContent: "space-between"
-      }}
-    >
-      <Text size="sm" weight={500}>
-        {title}
-      </Text>
-      <Text size="sm" align="right" ml="sm">
-        {text}
-      </Text>
-    </Box>
-  );
 
   return (
     <Card
@@ -93,12 +75,20 @@ const QuestionCard = ({ question }: QuestionCardProps): JSX.Element => {
               </ActionIcon>
             </Box>
           </Group>
-          <TextGroup title="Type:" text={question.type} />
+          <TextGroup title="Type:" text={question.questionType.name} />
           <TextGroup title="Spørsmål:" text={question.questionDescription} />
           <TextGroup title="Fase:" text={String(question.phase)} />
           {question.punishment != null && (
             <TextGroup title="Straff:" text={String(question.punishment)} />
           )}
+          <TextGroup
+            title="Gruppestørrelse:"
+            text={toUnderstandableGroupSize[question.groupSize]}
+          />
+          <TextGroup
+            title={"Aktive uker:"}
+            text={getWeekString(question.activeWeeks)}
+          />
           {question.function?.questions != null &&
             question.function.questions.length > 0 && (
               <TextGroup

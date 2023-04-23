@@ -47,7 +47,6 @@ const GameDetails = ({ game }: GameDetailsProps): JSX.Element => {
     }
   };
   const handleFamilyFriendlyChange = (value: boolean): void => {
-    console.log("newVal", value);
     editGame.mutate({ isFamilyFriendly: value });
     setIsFamilyFriendly(value);
   };

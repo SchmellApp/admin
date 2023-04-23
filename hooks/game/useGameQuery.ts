@@ -7,7 +7,7 @@ const useGameQuery = (id: string): QueryObserverResult<Game> =>
     ["game", id],
     async () => await axios.get(`/api/cms/game/${id}/`).then((res) => res.data),
     {
-      enabled: !(id === "")
+      enabled: !(id === "") && id !== undefined
     }
   );
 

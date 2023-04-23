@@ -1,18 +1,15 @@
 import React, { useState } from "react";
-import { Wrapper, GameCard, ActionDialog } from "@app/components";
 import {
-  MediaQuery,
-  SimpleGrid,
-  Title,
-  Card,
-  Center,
-  UnstyledButton,
-  Skeleton
-} from "@mantine/core";
-import { IconCirclePlus } from "@tabler/icons";
+  Wrapper,
+  GameCard,
+  ActionDialog,
+  SchmellButton
+} from "@app/components";
+import { MediaQuery, SimpleGrid, Title, Skeleton, Group } from "@mantine/core";
 import { AddGameModal } from "@app/modals";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useDeleteGameMutation, useGamesQuery, useModal } from "@app/hooks";
+import { IconExternalLink } from "@tabler/icons";
 
 export default withPageAuthRequired(function Games(): JSX.Element {
   const { data: games, isLoading } = useGamesQuery();
@@ -42,6 +39,16 @@ export default withPageAuthRequired(function Games(): JSX.Element {
           Spill
         </Title>
       </MediaQuery>
+      <Group my="md" position="apart">
+        <SchmellButton
+          label="Spørsmålstyper"
+          onClick={() => {}}
+          rightIcon={<IconExternalLink />}
+          variant="subtle"
+          href={"/games/types"}
+        />
+        <SchmellButton label="Nytt spill" onClick={openAdd} />
+      </Group>
       <SimpleGrid
         cols={4}
         spacing="md"
@@ -72,26 +79,6 @@ export default withPageAuthRequired(function Games(): JSX.Element {
             />
           ))
         )}
-        <UnstyledButton onClick={openAdd}>
-          <Card
-            shadow="md"
-            p="md"
-            radius="md"
-            sx={{
-              transition: "all 0.2s ease",
-              width: "100%",
-              height: "100%",
-              "&:hover": {
-                transform: "translateY(-5px)"
-              }
-            }}
-          >
-            <Center sx={{ flexDirection: "column", height: "100%" }}>
-              <Title order={1}>Legg til spill</Title>
-              <IconCirclePlus size={75} />
-            </Center>
-          </Card>
-        </UnstyledButton>
       </SimpleGrid>
       <ActionDialog
         title="Er du sikker på at du ønsker å slette?"

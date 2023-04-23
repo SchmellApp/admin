@@ -4,3 +4,4 @@ export * from "./idea";
 export * from "./question";
 export * from "./task";
 export * from "./user";
+export * from "./questionType";

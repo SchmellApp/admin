@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateQuestion } from "@app/types";
+import { CreateQuestion, MutationObserverResult, Question } from "@app/types";
 import axios from "axios";
 
-const useQuestionMutation = () => {
+const useQuestionMutation = (): MutationObserverResult<
+  Question,
+  CreateQuestion
+> => {
   const queryClient = useQueryClient();
 
   return useMutation(

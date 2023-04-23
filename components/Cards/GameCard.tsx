@@ -49,7 +49,7 @@ const GameCard = ({
             }
           }}
         >
-          <Box component={Link} href={`/games/${game.id}/weeks/`}>
+          <Box component={Link} href={`/games/${game.id}/questions/`}>
             <Title order={3} align="center">
               {game.name}
             </Title>

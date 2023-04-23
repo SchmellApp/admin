@@ -2,7 +2,6 @@ import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { NextApiResponse } from "next";
 import { Question } from "@app/types";
 import { axiosClient } from "@app/lib";
-import * as process from "process";
 
 export default withApiAuthRequired(async function handle(
   req,
@@ -18,13 +17,14 @@ export default withApiAuthRequired(async function handle(
 
   switch (req.method) {
     case "GET": {
-      const response = await axiosClient.get(
-        `/cms/question/?relatedWeek=${req.query.relatedWeek as string}`
-      );
+      const filters =
+        req.query.weekNumbers !== undefined
+          ? `?weekNumbers=${req.query.weekNumbers as string}`
+          : "";
+      const response = await axiosClient.get(`/cms/question/${filters}`);
       return res.status(200).json(response.data);
     }
     case "POST": {
-      console.log(process.env.NEXT_PUBLIC_BASE_URL);
       const response = await axiosClient.post(`/cms/question/`, req.body);
       return res.status(201).json(response.data);
     }

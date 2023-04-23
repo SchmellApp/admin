@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateTaskForm } from "@app/types";
+import { CreateTaskForm, MutationObserverResult, Task } from "@app/types";
 import axios from "axios";
 
-const useTaskMutation = () => {
+const useTaskMutation = (): MutationObserverResult<Task, CreateTaskForm> => {
   const queryClient = useQueryClient();
 
   return useMutation(

@@ -1,11 +1,11 @@
-import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { NextApiResponse } from "next";
-import { Week } from "@app/types";
+import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
+import { QuestionType } from "@app/types";
 import { axiosClient } from "@app/lib";
 
 export default withApiAuthRequired(async function handle(
   req,
-  res: NextApiResponse<Week[] | Week>
+  res: NextApiResponse<QuestionType[] | QuestionType>
 ) {
   const { accessToken } = await getAccessToken(req, res);
 
@@ -17,18 +17,19 @@ export default withApiAuthRequired(async function handle(
 
   switch (req.method) {
     case "GET": {
-      const response = await axiosClient.get(`/cms/week/`, {
+      const response = await axiosClient.get(`/cms/question/type/`, {
         params: {
-          relatedGame: req.query.relatedGame as string
+          name: req.query.name as string
         }
       });
       return res.status(200).json(response.data);
     }
     case "POST": {
-      const response = await axiosClient.post(`/cms/week/`, req.body);
+      const response = await axiosClient.post(`/cms/question/type/`, req.body);
       return res.status(201).json(response.data);
     }
-    default:
+    default: {
       return res.status(405).end();
+    }
   }
 });
