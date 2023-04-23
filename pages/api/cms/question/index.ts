@@ -17,11 +17,12 @@ export default withApiAuthRequired(async function handle(
 
   switch (req.method) {
     case "GET": {
-      const filters =
-        req.query.weekNumbers !== undefined
-          ? `?weekNumbers=${req.query.weekNumbers as string}`
-          : "";
-      const response = await axiosClient.get(`/cms/question/${filters}`);
+      const response = await axiosClient.get(`/cms/question/`, {
+        params: {
+          weekNumbers: req.query.weekNumbers,
+          relatedGame: req.query.relatedGame
+        }
+      });
       return res.status(200).json(response.data);
     }
     case "POST": {

@@ -26,7 +26,10 @@ export default function Questions(): JSX.Element {
   const { isDark } = useTheme();
 
   const { data: currentGame } = useGameQuery(route.query.pid as string);
-  const { data: questions } = useQuestionsQuery(weekNumbers);
+  const { data: questions } = useQuestionsQuery(
+    weekNumbers,
+    route.query.pid as string
+  );
 
   const { onClose: closeAdd, onOpen: openAdd, isOpen: showAdd } = useModal();
   const { isOpen: showDetails, setIsOpen: setShowDetails } = useModal();
