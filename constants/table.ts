@@ -4,8 +4,7 @@ import { DataTableHeader } from "@app/types";
 export const DAY_STATISTICS_HEADER = [
   "Spill",
   "Antall Spørsmål",
-  "Brukere (uke)",
-  "Inntekt (måned)"
+  "Brukere (uke)"
 ];
 
 export const DAY_STATISTICS_CARDS = [

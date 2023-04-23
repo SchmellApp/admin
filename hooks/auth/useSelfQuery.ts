@@ -11,7 +11,8 @@ const useSelfQuery = (): QueryObserverResult<User> => {
     queryFn: async () =>
       await axios
         .get(`/api/users/find/?auth0Id=${user?.sub}`)
-        .then((res) => res.data)
+        .then((res) => res.data),
+    enabled: !(user === null) && !(user?.sub == null)
   });
 };
 

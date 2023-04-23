@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { UpdateTaskParams } from "@app/types";
+import { MutationObserverResult, Task, UpdateTaskParams } from "@app/types";
 import axios from "axios";
 
-const useUpdateTaskMutation = (id: string) => {
+const useUpdateTaskMutation = (
+  id: string
+): MutationObserverResult<Task, UpdateTaskParams> => {
   const queryClient = useQueryClient();
 
   return useMutation(

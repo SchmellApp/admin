@@ -1,10 +1,16 @@
 import { Question, EditQuestionForm } from "@app/types";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "@mantine/form";
 import { ModalBase, SubmitButton } from "@app/components";
 import {
   FileInput,
+  Group,
+  MultiSelect,
   NumberInput,
+  SegmentedControl,
+  Select,
+  Switch,
+  Text,
   Textarea,
   TextInput,
   Title
@@ -13,9 +19,11 @@ import { editQuestionInitialValues, editQuestionValidator } from "@app/lib";
 import {
   useQuestionFileMutation,
   useEditQuestionMutation,
-  useTheme
+  useTheme,
+  useQuestionTypes
 } from "@app/hooks";
 import { toUpdateQuestion } from "@app/utils";
+import { GroupSizes, WeekNumbers } from "@app/constants";
 
 interface EditQuestionProps {
   question: Question;
@@ -23,10 +31,19 @@ interface EditQuestionProps {
   onClose: () => void;
 }
 
-const EditQuestion = (props: EditQuestionProps): JSX.Element => {
-  const { isOpen, onClose, question } = props;
-  const editQuestion = useEditQuestionMutation(question.id);
-  const addFile = useQuestionFileMutation();
+const EditQuestion = ({
+  isOpen,
+  onClose,
+  question
+}: EditQuestionProps): JSX.Element => {
+  const [showFunctionSettings, setShowFunctionSettings] = useState(false);
+
+  const { mutateAsync: editQuestion, isLoading: isEditing } =
+    useEditQuestionMutation(question.id);
+  const { mutateAsync: addFile, isLoading: isAddingFile } =
+    useQuestionFileMutation();
+
+  const { data: questionTypes } = useQuestionTypes();
   const { isDark } = useTheme();
 
   const form = useForm<EditQuestionForm>({
@@ -35,12 +52,12 @@ const EditQuestion = (props: EditQuestionProps): JSX.Element => {
   });
 
   const handleSubmit = async (values: EditQuestionForm): Promise<void> => {
-    await editQuestion.mutateAsync(toUpdateQuestion(values));
+    await editQuestion(toUpdateQuestion(values));
     if (values.file !== undefined) {
       const data = new FormData();
       data.append("file", values.file);
 
-      await addFile.mutateAsync({
+      await addFile({
         id: String(question.id),
         file: data
       });
@@ -55,12 +72,21 @@ const EditQuestion = (props: EditQuestionProps): JSX.Element => {
           void handleSubmit(values);
         })}
       >
-        <TextInput
+        <Select
           withAsterisk
-          label="Oppdater type"
+          label="Velg type"
           placeholder="Pekelek"
           my="md"
-          {...form.getInputProps("type")}
+          searchable
+          data={
+            questionTypes != null
+              ? questionTypes.map((type) => ({
+                  label: type.name,
+                  value: type.id
+                }))
+              : []
+          }
+          {...form.getInputProps("relatedQuestionType")}
         />
         <Textarea
           withAsterisk
@@ -83,48 +109,81 @@ const EditQuestion = (props: EditQuestionProps): JSX.Element => {
           my="md"
           {...form.getInputProps("punishment")}
         />
+        <MultiSelect
+          withAsterisk
+          data={WeekNumbers}
+          label="Velg uker"
+          my="md"
+          searchable
+          clearable
+          placeholder="Uke 1, Uke 2, Uke 3, ..., Uke 52"
+          {...form.getInputProps("activeWeeks")}
+        />
         <FileInput
           label="Oppdater bilde"
           placeholder={question.questionPicture ?? "EdSheeran.png"}
           my="md"
           {...form.getInputProps("file")}
         />
-        <Title order={4} color={isDark ? "white" : "dark"}>
-          Legg til funksjon
-        </Title>
-        <NumberInput
-          label="Skriv inn antall sekunder"
-          placeholder="Timer for et spørsmål"
-          {...form.getInputProps("timer")}
-          my="sm"
-        />
-        <TextInput
-          label="Skriv inn et svar"
-          placeholder="Eksempelvis svaret til Guess The Gibberish"
-          my="sm"
-          {...form.getInputProps("answer")}
-        />
-        <TextInput
-          label="Skriv inn utfordringer (separer med komma)"
-          placeholder="Eksempelvis: 'Skriv et dikt', 'Skriv en sang', 'Skriv en historie'"
-          my="sm"
-          {...form.getInputProps("challenges")}
-        />
-        <TextInput
-          label="Skriv inn spørsmål (separer med komma)"
-          placeholder="Eksempelvis: 'Hva er din favorittfarge?', 'Hva er din favorittmat?'"
-          my="sm"
-          {...form.getInputProps("questions")}
-        />
-        <TextInput
-          label="Skriv inn svaralternativer (separer med komma)"
-          placeholder="Eksempelvis: 'Rød', 'Blå', 'Grønn'"
-          my="sm"
-          {...form.getInputProps("options")}
-        />
+        <Group position="apart">
+          <Text size="sm" weight={500} color={isDark ? "white" : "dark"}>
+            Gruppestørrelse
+          </Text>
+          <SegmentedControl
+            data={GroupSizes}
+            {...form.getInputProps("groupSize")}
+          />
+        </Group>
+        <Group position="apart">
+          <Title order={4} color={isDark ? "white" : "dark"}>
+            Legg til funksjon
+          </Title>
+          <Switch
+            size="md"
+            checked={showFunctionSettings}
+            color={isDark ? "yellow" : "dark"}
+            onChange={(event) =>
+              setShowFunctionSettings(event.currentTarget.checked)
+            }
+          />
+        </Group>
+        {showFunctionSettings && (
+          <>
+            <NumberInput
+              label="Skriv inn antall sekunder"
+              placeholder="Timer for et spørsmål"
+              {...form.getInputProps("timer")}
+              my="sm"
+            />
+            <TextInput
+              label="Skriv inn et svar"
+              placeholder="Eksempelvis svaret til Guess The Gibberish"
+              my="sm"
+              {...form.getInputProps("answer")}
+            />
+            <TextInput
+              label="Skriv inn utfordringer (separer med komma)"
+              placeholder="Eksempelvis: 'Skriv et dikt', 'Skriv en sang', 'Skriv en historie'"
+              my="sm"
+              {...form.getInputProps("challenges")}
+            />
+            <TextInput
+              label="Skriv inn spørsmål (separer med komma)"
+              placeholder="Eksempelvis: 'Hva er din favorittfarge?', 'Hva er din favorittmat?'"
+              my="sm"
+              {...form.getInputProps("questions")}
+            />
+            <TextInput
+              label="Skriv inn svaralternativer (separer med komma)"
+              placeholder="Eksempelvis: 'Rød', 'Blå', 'Grønn'"
+              my="sm"
+              {...form.getInputProps("options")}
+            />
+          </>
+        )}
         <SubmitButton
           label="Oppdater spørsmål"
-          isLoading={editQuestion.isLoading || addFile.isLoading}
+          isLoading={isEditing || isAddingFile}
         />
       </form>
     </ModalBase>

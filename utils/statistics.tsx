@@ -15,7 +15,6 @@ export const toDayStatisticsRow = (
   countByGame.map((obj) => ({
     gameName: obj.gameName,
     count: obj.count,
-    income: obj.count,
     userCount: obj.count * 5
   }));
 

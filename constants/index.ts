@@ -4,3 +4,4 @@ export * from "./nav";
 export * from "./table";
 export * from "./task";
 export * from "./contact";
+export * from "./question";

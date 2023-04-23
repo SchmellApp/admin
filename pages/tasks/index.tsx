@@ -69,7 +69,6 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
   const handleFilter =
     (prop: keyof TaskFilterMenu) =>
     (values: string[] | string | number): void => {
-      console.log(prop, values);
       setFilters((prev) => ({ ...prev, [prop]: values }));
     };
   const handleRemove =

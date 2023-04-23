@@ -3,16 +3,29 @@ import { QueryObserverResult, Question } from "@app/types";
 import axios from "axios";
 
 const useQuestionsQuery = (
-  relatedWeek: string
+  weekNumbers: string[],
+  relatedGame?: string
 ): QueryObserverResult<Question[]> =>
   useQuery(
-    ["questions", relatedWeek],
-    async () =>
-      await axios
-        .get(`/api/cms/question/?relatedWeek=${relatedWeek}`)
-        .then((res) => res.data),
+    ["questions", weekNumbers],
+    async () => {
+      const weekNumbersFilter =
+        weekNumbers.length > 0
+          ? {
+              weekNumbers: weekNumbers.join(",")
+            }
+          : undefined;
+      return await axios
+        .get(`/api/cms/question/`, {
+          params: {
+            weekNumbersFilter,
+            relatedGame
+          }
+        })
+        .then((res) => res.data);
+    },
     {
-      enabled: !(relatedWeek === "")
+      enabled: relatedGame !== undefined
     }
   );
 
