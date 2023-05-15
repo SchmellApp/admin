@@ -1,22 +1,24 @@
-import { Task, EditTaskForm } from "@app/types";
+import { EditTaskForm, Task } from "@app/types";
 import React from "react";
 import { useForm } from "@mantine/form";
 import { Group, Select } from "@mantine/core";
 import { TASK_STATUS } from "@app/constants";
-import { DatePicker } from "@mantine/dates";
-import { TaskCategory } from "@app/enums";
+import { DateInput } from "@mantine/dates";
+import { TaskCategory, TaskStatus } from "@app/enums";
 import { toOptions } from "@app/utils";
 import { editTaskInitialValues } from "@app/lib";
 import { useGamesQuery, useUpdateTaskMutation } from "@app/hooks";
 import { SubmitButton } from "@app/components";
+import { useAppState } from "@app/hooks/state";
 
 interface EditTaskProps {
   task: Task;
 }
 
 const EditTask = ({ task }: EditTaskProps): JSX.Element => {
-  const updateTask = useUpdateTaskMutation(String(task.id));
+  const { mutateAsync, isLoading } = useUpdateTaskMutation(String(task.id));
   const { data: games } = useGamesQuery();
+  const { incrementSolvedTasks } = useAppState();
 
   const form = useForm<EditTaskForm>({
     initialValues: editTaskInitialValues(task)
@@ -25,7 +27,9 @@ const EditTask = ({ task }: EditTaskProps): JSX.Element => {
   const isTaskCategoryGame = task.category === TaskCategory.GAMES;
 
   const handleSubmit = async (values: EditTaskForm): Promise<void> => {
-    await updateTask.mutateAsync({
+    if (values.status === TaskStatus.DONE) incrementSolvedTasks();
+
+    await mutateAsync({
       ...values,
       relatedGame: Number(values.relatedGame)
     });
@@ -39,7 +43,7 @@ const EditTask = ({ task }: EditTaskProps): JSX.Element => {
     >
       {form.isDirty() && (
         <Group position="right" mt="md">
-          <SubmitButton label="Oppdater" isLoading={updateTask.isLoading} />
+          <SubmitButton label="Oppdater" isLoading={isLoading} />
         </Group>
       )}
       <Select
@@ -49,12 +53,12 @@ const EditTask = ({ task }: EditTaskProps): JSX.Element => {
         mt="sm"
         {...form.getInputProps("status")}
       />
-      <DatePicker
+      <DateInput
         label="Frist"
         size="md"
         mt="sm"
+        popoverProps={{ offset: -100 }}
         minDate={new Date()}
-        dropdownType="modal"
         {...form.getInputProps("deadline")}
       />
       {isTaskCategoryGame && games !== undefined && (

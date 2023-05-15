@@ -10,8 +10,8 @@ export const toCreateQuestion = (
   values: CreateQuestionForm
 ): CreateQuestion => {
   return {
-    relatedQuestionType: values.relatedQuestionType,
-    activeWeeks: values.activeWeeks,
+    relatedQuestionType: Number(values.relatedQuestionType),
+    activeWeeks: values.activeWeeks?.map((week) => Number(week)),
     groupSize: values.groupSize,
     questionDescription: values.questionDescription,
     phase: values.phase,
@@ -23,8 +23,8 @@ export const toCreateQuestion = (
 
 export const toUpdateQuestion = (values: EditQuestionForm): UpdateQuestion => {
   return {
-    relatedQuestionType: values.relatedQuestionType,
-    activeWeeks: values.activeWeeks,
+    relatedQuestionType: Number(values.relatedQuestionType),
+    activeWeeks: values.activeWeeks?.map((week) => Number(week)),
     groupSize: values.groupSize,
     questionDescription: values.questionDescription,
     phase: values.phase,

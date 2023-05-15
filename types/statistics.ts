@@ -1,9 +1,5 @@
 import { TaskCategory, TaskPriority } from "@app/enums";
 
-export interface UserCount {
-  count: number;
-}
-
 export interface GameCount {
   count: number;
 }
@@ -14,6 +10,7 @@ export interface QuestionsCount {
     gameId: number;
     gameName: string;
     count: number;
+    amountOfSessions: number;
   }>;
 }
 
@@ -24,6 +21,11 @@ export interface TaskCount {
     category: TaskCategory;
     count: number;
   }>;
+}
+
+export interface DayStatistics {
+  userCount: number;
+  gamesPlayed: number;
 }
 
 export interface TasksForToday {

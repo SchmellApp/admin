@@ -7,7 +7,8 @@ import {
   Table,
   SimpleGrid,
   Divider,
-  Skeleton
+  Skeleton,
+  Flex
 } from "@mantine/core";
 import { DayStatisticsRows, CardProps } from "@app/types";
 import { useTheme } from "@app/hooks";
@@ -90,17 +91,9 @@ const TableCard = ({
         </Grid.Col>
         {rightCards != null && (
           <Grid.Col span={3}>
-            <SimpleGrid
-              cols={1}
-              breakpoints={[
-                {
-                  maxWidth: 600,
-                  cols: 2
-                }
-              ]}
-            >
+            <SimpleGrid cols={1} sx={{ height: "100%" }}>
               {rightCards.map((card, index, array) => (
-                <div key={index}>
+                <Flex key={index} justify="space-between" direction="column">
                   <div
                     style={{
                       padding: 8,
@@ -111,7 +104,7 @@ const TableCard = ({
                     <Title order={4}>{card.title}</Title>
                   </div>
                   {index < array.length - 1 && <Divider />}
-                </div>
+                </Flex>
               ))}
             </SimpleGrid>
           </Grid.Col>

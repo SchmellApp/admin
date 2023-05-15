@@ -8,7 +8,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { TASK_CATEGORY, TASK_PRIORITY, TASK_STATUS } from "@app/constants";
-import { DatePicker } from "@mantine/dates";
+import { DateInput } from "@mantine/dates";
 import { toOptions, toUserControls } from "@app/utils";
 import { ModalBase, SubmitButton } from "@app/components";
 import { createTaskInitialValues, createTaskValidationSchema } from "@app/lib";
@@ -73,12 +73,11 @@ const AddTask = ({ isOpen, onClose }: AddTaskProps): JSX.Element => {
           color={isDark ? "yellow" : "dark"}
           {...form.getInputProps("status")}
         />
-        <DatePicker
+        <DateInput
           withAsterisk
           label="Velg frist"
           my="md"
           minDate={new Date()}
-          locale="nb"
           {...form.getInputProps("deadline")}
         />
         <Select

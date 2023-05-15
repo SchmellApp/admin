@@ -1,7 +1,7 @@
 import React from "react";
 import { Wrapper, ActionCard, TableCard, TextCard } from "@app/components";
 import { MediaQuery, SimpleGrid, Title } from "@mantine/core";
-import { DAY_STATISTICS_CARDS, DAY_STATISTICS_HEADER } from "@app/constants";
+import { DAY_STATISTICS_HEADER } from "@app/constants";
 import {
   toCategoryActions,
   toDayStatisticsRow,
@@ -13,6 +13,8 @@ import {
   useSelfQuery,
   useTodaysTasksQuery
 } from "@app/hooks";
+import packageJson from "../package.json";
+import { useAppState } from "@app/hooks/state";
 
 export default withPageAuthRequired(function Home(): JSX.Element {
   const { isLoading, data } = useGetStatisticsQuery();
@@ -20,6 +22,7 @@ export default withPageAuthRequired(function Home(): JSX.Element {
   const { data: todaysTasks } = useTodaysTasksQuery(
     activeUser !== undefined ? String(activeUser.id) : String(0)
   );
+  const { solvedTasks } = useAppState();
 
   return (
     <Wrapper>
@@ -67,7 +70,24 @@ export default withPageAuthRequired(function Home(): JSX.Element {
             ? toDayStatisticsRow(data?.questionsCount.countByGame)
             : []
         }
-        rightCards={DAY_STATISTICS_CARDS}
+        rightCards={[
+          {
+            title: "Løste oppgaver",
+            description: String(solvedTasks)
+          },
+          {
+            title: "Antall brukere",
+            description: String(data?.dayStatistics.userCount)
+          },
+          {
+            title: "Antall spill spilt",
+            description: String(data?.dayStatistics.gamesPlayed)
+          },
+          {
+            title: "Versjon",
+            description: packageJson.version
+          }
+        ]}
         isLoading={isLoading}
       />
       <SimpleGrid

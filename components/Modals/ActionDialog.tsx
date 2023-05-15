@@ -25,7 +25,7 @@ const ActionDialog = ({
     centered
     size="lg"
     radius="lg"
-    transition="slide-right"
+    transitionProps={{ transition: "slide-right" }}
     sx={{
       ".mantine-Modal-header": {
         marginBottom: 0

@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import "dayjs/locale/nb";
 import { UserProvider } from "@auth0/nextjs-auth0";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { StateProvider } from "@app/providers";
 
 const client = new QueryClient();
 
@@ -39,30 +40,32 @@ export default function App(props: AppProps): JSX.Element {
           toggleColorScheme={toggleColorScheme}
         >
           <UserProvider>
-            <MantineProvider
-              withGlobalStyles
-              withNormalizeCSS
-              theme={{
-                colorScheme,
-                fontFamily: "Montserrat, sans-serif",
-                headings: {
-                  fontFamily: "Montserrat, sans-serif"
-                },
-                colors: {
-                  white: [
-                    "#FFFFFF",
-                    "#E6E6E6",
-                    "#CFCFCF",
-                    "#BABABA",
-                    "#A7A7A7",
-                    "#979797",
-                    "#888888"
-                  ]
-                }
-              }}
-            >
-              <Component {...pageProps} />
-            </MantineProvider>
+            <StateProvider>
+              <MantineProvider
+                withGlobalStyles
+                withNormalizeCSS
+                theme={{
+                  colorScheme,
+                  fontFamily: "Montserrat, sans-serif",
+                  headings: {
+                    fontFamily: "Montserrat, sans-serif"
+                  },
+                  colors: {
+                    white: [
+                      "#FFFFFF",
+                      "#E6E6E6",
+                      "#CFCFCF",
+                      "#BABABA",
+                      "#A7A7A7",
+                      "#979797",
+                      "#888888"
+                    ]
+                  }
+                }}
+              >
+                <Component {...pageProps} />
+              </MantineProvider>
+            </StateProvider>
           </UserProvider>
         </ColorSchemeProvider>
       </QueryClientProvider>

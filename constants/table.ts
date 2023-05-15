@@ -1,30 +1,9 @@
-import packageJson from "../package.json";
 import { DataTableHeader } from "@app/types";
 
 export const DAY_STATISTICS_HEADER = [
   "Spill",
   "Antall Spørsmål",
   "Brukere (uke)"
-];
-
-export const DAY_STATISTICS_CARDS = [
-  { title: "Løste oppgaver", description: 0 },
-  {
-    title: "Antall brukere",
-    description: 20
-  },
-  {
-    title: "Antall spill spilt",
-    description: 12
-  },
-  {
-    title: "Inntekt",
-    description: "100kr"
-  },
-  {
-    title: "Versjon",
-    description: packageJson.version
-  }
 ];
 
 export const TASKS_HEADER: DataTableHeader[] = [
