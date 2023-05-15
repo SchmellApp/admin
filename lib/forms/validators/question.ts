@@ -6,7 +6,7 @@ export const createQuestionValidator: FormRulesRecord<CreateQuestionForm> = {
   questionDescription: (value) =>
     !(value.length > 0) && "Må skrive inn en beskrivelse",
   phase: (value) => value === 0 && "Må skrive inn en fase",
-  activeWeeks: (value: number[] | undefined) =>
+  activeWeeks: (value: string[] | undefined) =>
     (value === undefined || value?.length === 0) && "Må velge minst én uke"
 };
 

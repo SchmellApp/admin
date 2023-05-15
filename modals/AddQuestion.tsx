@@ -81,7 +81,7 @@ const AddQuestion = ({
             questionTypes != null
               ? questionTypes.map((type) => ({
                   label: type.name,
-                  value: type.id
+                  value: String(type.id)
                 }))
               : []
           }

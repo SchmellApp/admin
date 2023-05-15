@@ -11,7 +11,7 @@ import { WeekNumbers } from "@app/constants";
 export const createQuestionInitialValues = (
   relatedGame: Game["id"]
 ): CreateQuestionForm => ({
-  relatedQuestionType: 0,
+  relatedQuestionType: "0",
   questionDescription: "",
   phase: 0,
   punishment: undefined,

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { QueryObserverResult, TaskPaginatedResponse } from "@app/types";
+import { TaskStatus } from "@app/enums";
 
 const useTodaysTasksQuery = (
   responsibleId: string
@@ -15,7 +16,8 @@ const useTodaysTasksQuery = (
         .get("/api/crm/tasks", {
           params: {
             responsibleUser: responsibleId,
-            toDate
+            toDate,
+            status: `${TaskStatus.PENDING}+${TaskStatus.DOING}`
           }
         })
         .then((res) => res.data)

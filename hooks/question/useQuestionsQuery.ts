@@ -18,8 +18,8 @@ const useQuestionsQuery = (
       return await axios
         .get(`/api/cms/question/`, {
           params: {
-            weekNumbersFilter,
-            relatedGame
+            relatedGame,
+            ...weekNumbersFilter
           }
         })
         .then((res) => res.data);

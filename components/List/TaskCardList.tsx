@@ -79,7 +79,7 @@ const TaskCardList: FC<TaskCardListProps> = ({
         total={maxPage}
         color={isDark ? "yellow" : "dark"}
         mt="md"
-        page={currentPage}
+        value={currentPage}
         onChange={(page) => onChangePage(page)}
         grow
       />

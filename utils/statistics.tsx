@@ -1,8 +1,9 @@
 import {
-  StatisticsResponse,
   ActionElement,
   DayStatisticsRows,
-  Task
+  Task,
+  StatisticsGeneralResponse,
+  DayStatistics
 } from "@app/types";
 import { Badge } from "@mantine/core";
 import React from "react";
@@ -10,16 +11,16 @@ import { getColor } from "./color";
 import { toCategoryString, toPriorityString } from "@app/utils/task";
 
 export const toDayStatisticsRow = (
-  countByGame: StatisticsResponse["questionsCount"]["countByGame"]
+  countByGame: StatisticsGeneralResponse["questionsCount"]["countByGame"]
 ): DayStatisticsRows[] =>
   countByGame.map((obj) => ({
     gameName: obj.gameName,
     count: obj.count,
-    userCount: obj.count * 5
+    userCount: obj.amountOfSessions
   }));
 
 export const toCategoryActions = (
-  countByCategory: StatisticsResponse["taskCount"]["countByCategory"]
+  countByCategory: StatisticsGeneralResponse["taskCount"]["countByCategory"]
 ): ActionElement[] =>
   countByCategory.map((obj) => ({
     name: toCategoryString(obj.category),
@@ -37,3 +38,5 @@ export const toTodayActions = (tasksForToday: Task[]): ActionElement[] =>
     ),
     href: `/tasks/${obj.id}`
   }));
+
+export const toDayStatisticsCards = (dayStatistics: DayStatistics) => {};

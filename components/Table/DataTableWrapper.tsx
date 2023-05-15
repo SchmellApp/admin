@@ -83,7 +83,7 @@ const DataTableWrapper = ({
         color={isDark ? "yellow" : "dark"}
         mt="md"
         position="right"
-        page={currentPage}
+        value={currentPage}
         onChange={(page) => onChangePage(page)}
       />
     </div>
