@@ -16,3 +16,12 @@ export interface ContactFormFilters {
   page?: number;
   pageSize?: number;
 }
+
+export interface QuestionFilters {
+  weekNumbers: string[];
+  relatedGame: string;
+  page?: number;
+  pageSize?: number;
+  questionType?: string;
+  questionSearch?: string;
+}

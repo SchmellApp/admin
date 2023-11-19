@@ -1,14 +1,14 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Wrapper,
   SchmellButton,
   TaskMenu,
   DataTableWrapper,
   TaskTableBody,
-  TaskCardList
+  TaskCardList,
+  RemoveButton
 } from "@app/components";
-import { Group, MediaQuery, Title, Badge, ActionIcon } from "@mantine/core";
-import { IconX } from "@tabler/icons";
+import { Group, MediaQuery, Title, Badge } from "@mantine/core";
 import { AddTask } from "@app/modals";
 import { TASKS_HEADER } from "@app/constants";
 import { useMediaQuery } from "@mantine/hooks";
@@ -88,18 +88,6 @@ export default withPageAuthRequired(function Tasks(): JSX.Element {
   const handleRowClick = async (id: number): Promise<void> => {
     await router.push(`/tasks/${id}`);
   };
-
-  const RemoveButton = (onClick: () => void): ReactNode => (
-    <ActionIcon
-      size={"sm"}
-      color={isDark ? "yellow" : "dark"}
-      radius={"xl"}
-      variant={"transparent"}
-      onClick={onClick}
-    >
-      <IconX size={20} />
-    </ActionIcon>
-  );
 
   return (
     <Wrapper>
