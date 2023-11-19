@@ -1,11 +1,19 @@
-import { QuestionCard, SchmellButton, Wrapper } from "@app/components";
+import {
+  QuestionCard,
+  QuestionMenu,
+  RemoveButton,
+  SchmellButton,
+  Wrapper
+} from "@app/components";
 import {
   Anchor,
+  Badge,
   Breadcrumbs,
   Group,
-  MultiSelect,
+  Pagination,
   SimpleGrid,
   Switch,
+  TextInput,
   Title
 } from "@mantine/core";
 import React, { useState } from "react";
@@ -14,26 +22,39 @@ import {
   useGameQuery,
   useModal,
   useQuestionsQuery,
+  useQuestionTypes,
   useTheme
 } from "@app/hooks";
 import { GameDetails } from "@app/views";
 import { AddQuestion } from "@app/modals";
-import { toWeekOptions } from "@app/utils";
+import { QuestionFilterMenu } from "@app/types";
 
 export default function Questions(): JSX.Element {
-  const [weekNumbers, setWeekNumbers] = useState<string[]>([]);
+  const [filters, setFilters] = useState<QuestionFilterMenu>({
+    page: 1,
+    questionSearch: "",
+    questionType: "",
+    weekNumbers: []
+  });
   const route = useRouter();
   const { isDark } = useTheme();
 
   const { data: currentGame } = useGameQuery(route.query.pid as string);
-  const { data: questions } = useQuestionsQuery(
-    weekNumbers,
-    route.query.pid as string
-  );
+  const { data: res } = useQuestionsQuery({
+    weekNumbers: filters.weekNumbers,
+    relatedGame: route.query.pid as string,
+    page: filters.page,
+    questionSearch: filters.questionSearch,
+    questionType: filters.questionType
+  });
+  const { data: types } = useQuestionTypes();
 
   const { onClose: closeAdd, onOpen: openAdd, isOpen: showAdd } = useModal();
   const { isOpen: showDetails, setIsOpen: setShowDetails } = useModal();
 
+  const activeType = types?.find(
+    (type) => type.id === Number(filters.questionType)
+  );
   const items = [
     {
       title: "Spill",
@@ -48,6 +69,27 @@ export default function Questions(): JSX.Element {
       {item.title}
     </Anchor>
   ));
+
+  const handleFilter =
+    (prop: keyof QuestionFilterMenu) =>
+    (values: string[] | string | number) => {
+      setFilters((prev) => ({
+        ...prev,
+        [prop]: values
+      }));
+    };
+  const handleRemove =
+    (prop: keyof QuestionFilterMenu) =>
+    (value: string | number): void => {
+      if (prop === "questionType") {
+        setFilters((prev) => ({ ...prev, questionType: "" }));
+      } else {
+        setFilters((prev) => ({
+          ...prev,
+          [prop]: (prev[prop] as string[]).filter((item) => item !== value)
+        }));
+      }
+    };
 
   return (
     <Wrapper>
@@ -70,15 +112,49 @@ export default function Questions(): JSX.Element {
       )}
       <Group position="apart">
         <SchmellButton onClick={openAdd} label="Opprett spørsmål" />
-        <MultiSelect
-          clearable
-          size="md"
-          searchable
-          data={toWeekOptions()}
-          value={weekNumbers}
-          onChange={setWeekNumbers}
-          placeholder="Velg uke"
-        />
+        <Group>
+          <TextInput
+            value={filters.questionSearch}
+            onChange={(event) =>
+              handleFilter("questionSearch")(event.currentTarget.value)
+            }
+            placeholder="Søk etter spørsmål"
+            size="lg"
+          />
+          <QuestionMenu
+            filters={filters}
+            handleFilter={handleFilter}
+            types={types ?? []}
+          />
+        </Group>
+      </Group>
+      <Group position="left" mt="sm" mb="sm">
+        {filters.weekNumbers.length > 0 &&
+          filters.weekNumbers.map((filter, idx) => (
+            <Badge
+              variant="outline"
+              size="lg"
+              key={idx}
+              rightSection={RemoveButton(() =>
+                handleRemove("weekNumbers")(filter)
+              )}
+              color={isDark ? "yellow" : "white"}
+            >
+              Uke {filter}
+            </Badge>
+          ))}
+        {filters.questionType !== "" && (
+          <Badge
+            variant="outline"
+            size="lg"
+            rightSection={RemoveButton(() =>
+              handleRemove("questionType")(filters.questionType)
+            )}
+            color={isDark ? "yellow" : "white"}
+          >
+            {activeType?.name}
+          </Badge>
+        )}
       </Group>
       {currentGame !== undefined && (
         <AddQuestion
@@ -109,10 +185,18 @@ export default function Questions(): JSX.Element {
           }
         ]}
       >
-        {questions?.map((question) => (
+        {res?.questions?.map((question) => (
           <QuestionCard question={question} key={question.id} />
         ))}
       </SimpleGrid>
+      <Pagination
+        total={res?.lastPage ?? 1}
+        color={isDark ? "yellow" : "dark"}
+        mt="md"
+        position="right"
+        value={filters.page}
+        onChange={handleFilter("page")}
+      />
     </Wrapper>
   );
 }

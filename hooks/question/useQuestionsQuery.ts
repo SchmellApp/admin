@@ -1,13 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import { QueryObserverResult, Question } from "@app/types";
+import {
+  QueryObserverResult,
+  QuestionFilters,
+  QuestionPaginatedResponse
+} from "@app/types";
 import axios from "axios";
 
-const useQuestionsQuery = (
-  weekNumbers: string[],
-  relatedGame?: string
-): QueryObserverResult<Question[]> =>
+const useQuestionsQuery = ({
+  questionSearch,
+  weekNumbers,
+  questionType,
+  pageSize = 50,
+  page,
+  relatedGame
+}: QuestionFilters): QueryObserverResult<QuestionPaginatedResponse> =>
   useQuery(
-    ["questions", weekNumbers],
+    ["questions", weekNumbers, questionType, questionSearch, pageSize, page],
     async () => {
       const weekNumbersFilter =
         weekNumbers.length > 0
@@ -15,11 +23,27 @@ const useQuestionsQuery = (
               weekNumbers: weekNumbers.join(",")
             }
           : undefined;
+      const questionTypeFilter =
+        questionType !== ""
+          ? {
+              questionType
+            }
+          : undefined;
+      const questionSearchFilter =
+        questionSearch !== ""
+          ? {
+              questionSearch
+            }
+          : undefined;
       return await axios
         .get(`/api/cms/question/`, {
           params: {
             relatedGame,
-            ...weekNumbersFilter
+            page,
+            pageSize: 50,
+            ...weekNumbersFilter,
+            ...questionTypeFilter,
+            ...questionSearchFilter
           }
         })
         .then((res) => res.data);

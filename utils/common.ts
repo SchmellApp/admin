@@ -1,4 +1,4 @@
-import { Game } from "@app/types";
+import { Game, QuestionType } from "@app/types";
 import { SelectItem } from "@mantine/core";
 import { WeekNumbers } from "@app/constants";
 import { ContactFormType } from "@app/enums";
@@ -13,6 +13,12 @@ export const toWeekOptions = (): SelectItem[] =>
   WeekNumbers.map((week) => ({
     label: week.label,
     value: String(week.value)
+  }));
+
+export const toQuestionTypeOptions = (types: QuestionType[]): SelectItem[] =>
+  types.map((type) => ({
+    label: type.name,
+    value: String(type.id)
   }));
 
 export const toContactTypeString = (contactType: ContactFormType): string => {

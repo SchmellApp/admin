@@ -20,7 +20,11 @@ export default withApiAuthRequired(async function handle(
       const response = await axiosClient.get(`/cms/question/`, {
         params: {
           weekNumbers: req.query.weekNumbers,
-          relatedGame: req.query.relatedGame
+          relatedGame: req.query.relatedGame,
+          page: req.query.page,
+          pageSize: req.query.pageSize,
+          questionType: req.query.questionType,
+          questionSearch: req.query.questionSearch
         }
       });
       return res.status(200).json(response.data);

@@ -16,6 +16,13 @@ export interface Question {
   groupSize: GroupSize;
 }
 
+export interface QuestionPaginatedResponse {
+  questions: Question[];
+  total: number;
+  page: number;
+  lastPage: number;
+}
+
 export interface CreateQuestion
   extends Omit<
     Question,
