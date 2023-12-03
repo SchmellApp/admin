@@ -89,6 +89,14 @@ const QuestionCard = ({ question }: QuestionCardProps): JSX.Element => {
             title={"Aktive uker:"}
             text={getWeekString(question.activeWeeks)}
           />
+          <TextGroup
+            title={"Mislikt antall:"}
+            text={
+              question.dislikesCount === 0
+                ? "Ingen 🤩"
+                : String(question.dislikesCount) + " 👎🏽"
+            }
+          />
           {question.function?.questions != null &&
             question.function.questions.length > 0 && (
               <TextGroup

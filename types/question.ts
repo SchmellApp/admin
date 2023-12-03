@@ -14,6 +14,7 @@ export interface Question {
   questionPictureUrl?: string;
   questionType: QuestionType;
   groupSize: GroupSize;
+  dislikesCount: number;
 }
 
 export interface QuestionPaginatedResponse {
@@ -33,6 +34,7 @@ export interface CreateQuestion
     | "questionType"
     | "activeWeeks"
     | "groupSize"
+    | "dislikesCount"
   > {
   function?: Omit<QuestionFunction, "id">;
   relatedQuestionType: QuestionType["id"];
