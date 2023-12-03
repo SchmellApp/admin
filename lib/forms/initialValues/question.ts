@@ -36,7 +36,7 @@ export const editQuestionInitialValues = (
   phase: question.phase,
   punishment: question.punishment,
   file: undefined,
-  timer: question.function?.timer,
+  timer: question.function?.timer ?? undefined,
   answer: question.function?.answer,
   questions:
     question.function?.questions != null &&
