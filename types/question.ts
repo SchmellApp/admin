@@ -34,6 +34,7 @@ export interface CreateQuestion
     | "questionType"
     | "activeWeeks"
     | "groupSize"
+    | "dislikesCount"
   > {
   function?: Omit<QuestionFunction, "id">;
   relatedQuestionType: QuestionType["id"];
