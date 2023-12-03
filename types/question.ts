@@ -14,6 +14,7 @@ export interface Question {
   questionPictureUrl?: string;
   questionType: QuestionType;
   groupSize: GroupSize;
+  dislikesCount: number;
 }
 
 export interface QuestionPaginatedResponse {
