@@ -24,4 +24,6 @@ export interface QuestionFilters {
   pageSize?: number;
   questionType?: string;
   questionSearch?: string;
+  hasDislikes?: boolean;
+  dislikesGreaterThan?: number;
 }

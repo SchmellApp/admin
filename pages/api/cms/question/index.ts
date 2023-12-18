@@ -24,7 +24,9 @@ export default withApiAuthRequired(async function handle(
           page: req.query.page,
           pageSize: req.query.pageSize,
           questionType: req.query.questionType,
-          questionSearch: req.query.questionSearch
+          questionSearch: req.query.questionSearch,
+          hasDislikes: req.query.hasDislikes,
+          dislikesGreaterThan: req.query.dislikesGreaterThan
         }
       });
       return res.status(200).json(response.data);

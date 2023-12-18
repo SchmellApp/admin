@@ -12,10 +12,21 @@ const useQuestionsQuery = ({
   questionType,
   pageSize = 50,
   page,
-  relatedGame
+  relatedGame,
+  hasDislikes,
+  dislikesGreaterThan
 }: QuestionFilters): QueryObserverResult<QuestionPaginatedResponse> =>
   useQuery(
-    ["questions", weekNumbers, questionType, questionSearch, pageSize, page],
+    [
+      "questions",
+      weekNumbers,
+      questionType,
+      questionSearch,
+      pageSize,
+      page,
+      hasDislikes,
+      dislikesGreaterThan
+    ],
     async () => {
       const weekNumbersFilter =
         weekNumbers.length > 0
@@ -23,27 +34,18 @@ const useQuestionsQuery = ({
               weekNumbers: weekNumbers.join(",")
             }
           : undefined;
-      const questionTypeFilter =
-        questionType !== ""
-          ? {
-              questionType
-            }
-          : undefined;
-      const questionSearchFilter =
-        questionSearch !== ""
-          ? {
-              questionSearch
-            }
-          : undefined;
+
       return await axios
         .get(`/api/cms/question/`, {
           params: {
             relatedGame,
             page,
             pageSize: 50,
-            ...weekNumbersFilter,
-            ...questionTypeFilter,
-            ...questionSearchFilter
+            hasDislikes,
+            dislikesGreaterThan,
+            questionSearch,
+            questionType,
+            ...weekNumbersFilter
           }
         })
         .then((res) => res.data);

@@ -6,17 +6,20 @@ import {
   Title,
   Text,
   MultiSelect,
-  Select
+  Select,
+  SegmentedControl,
+  NumberInput
 } from "@mantine/core";
 import { IconFilter } from "@tabler/icons";
 import React from "react";
 import { toQuestionTypeOptions, toWeekOptions } from "@app/utils";
+import { QuestionHasDislikes } from "@app/constants";
 
 interface QuestionMenuProps {
   filters: QuestionFilterMenu;
   handleFilter: (
     prop: keyof QuestionFilterMenu
-  ) => (values: string[] | string) => void;
+  ) => (values: string[] | string | number) => void;
   types: QuestionType[];
 }
 
@@ -70,6 +73,25 @@ const QuestionMenu = ({
           />
         </Menu.Label>
         <Menu.Divider />
+        <Menu.Label>
+          <Text size="md" color={isDark ? "white" : "dark"}>
+            Dislikes
+          </Text>
+          <SegmentedControl
+            data={QuestionHasDislikes}
+            value={filters.hasDislikes}
+            onChange={(value) => handleFilter("hasDislikes")(value)}
+            mt="sm"
+            fullWidth
+          />
+          <NumberInput
+            label="Antall dislikes"
+            placeholder="0"
+            mt="sm"
+            value={filters.dislikesGreaterThan}
+            onChange={(value) => handleFilter("dislikesGreaterThan")(value)}
+          />
+        </Menu.Label>
       </Menu.Dropdown>
     </Menu>
   );
