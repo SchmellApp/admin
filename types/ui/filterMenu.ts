@@ -1,3 +1,5 @@
+import { QuestionDislikeGroup } from "@app/enums";
+
 export interface TaskFilterMenu {
   priority: string[];
   status: string[];
@@ -15,7 +17,9 @@ export interface ContactFilterMenu {
 
 export interface QuestionFilterMenu {
   weekNumbers: string[];
-  questionSearch: string;
-  questionType: string;
+  questionSearch?: string;
+  questionType?: string;
   page: number;
+  hasDislikes: QuestionDislikeGroup;
+  dislikesGreaterThan?: number;
 }

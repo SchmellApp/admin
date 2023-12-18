@@ -1,4 +1,4 @@
-import { GroupSize } from "@app/enums";
+import { GroupSize, QuestionDislikeGroup } from "@app/enums";
 import { SelectItem } from "@mantine/core";
 
 export const GroupSizes = [
@@ -62,3 +62,24 @@ export const WeekNumbers: SelectItem[] = [
   { label: "Uke 51", value: "51" },
   { label: "Uke 52", value: "52" }
 ];
+
+export const QuestionHasDislikes = [
+  {
+    label: "Vis alle",
+    value: QuestionDislikeGroup.All
+  },
+  {
+    label: "Med dislikes",
+    value: QuestionDislikeGroup.Dislikes
+  },
+  {
+    label: "Uten dislikes",
+    value: QuestionDislikeGroup.NoDislikes
+  }
+];
+
+export const fromDislikeGroupToBoolean = {
+  [QuestionDislikeGroup.All]: undefined,
+  [QuestionDislikeGroup.Dislikes]: true,
+  [QuestionDislikeGroup.NoDislikes]: false
+};

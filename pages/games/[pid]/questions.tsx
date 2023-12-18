@@ -28,13 +28,17 @@ import {
 import { GameDetails } from "@app/views";
 import { AddQuestion } from "@app/modals";
 import { QuestionFilterMenu } from "@app/types";
+import { QuestionDislikeGroup } from "@app/enums";
+import { fromDislikeGroupToBoolean } from "@app/constants";
 
 export default function Questions(): JSX.Element {
   const [filters, setFilters] = useState<QuestionFilterMenu>({
     page: 1,
-    questionSearch: "",
-    questionType: "",
-    weekNumbers: []
+    questionSearch: undefined,
+    questionType: undefined,
+    weekNumbers: [],
+    hasDislikes: QuestionDislikeGroup.All,
+    dislikesGreaterThan: undefined
   });
   const route = useRouter();
   const { isDark } = useTheme();
@@ -45,7 +49,9 @@ export default function Questions(): JSX.Element {
     relatedGame: route.query.pid as string,
     page: filters.page,
     questionSearch: filters.questionSearch,
-    questionType: filters.questionType
+    questionType: filters.questionType,
+    hasDislikes: fromDislikeGroupToBoolean[filters.hasDislikes],
+    dislikesGreaterThan: filters.dislikesGreaterThan
   });
   const { data: types } = useQuestionTypes();
 
@@ -69,20 +75,27 @@ export default function Questions(): JSX.Element {
       {item.title}
     </Anchor>
   ));
+  const showQuestionDislike = filters.hasDislikes !== QuestionDislikeGroup.All;
 
   const handleFilter =
-    (prop: keyof QuestionFilterMenu) =>
-    (values: string[] | string | number) => {
+    (prop: keyof QuestionFilterMenu) => (value: string[] | string | number) => {
+      const valueToSet = value === "" ? undefined : value;
+
       setFilters((prev) => ({
         ...prev,
-        [prop]: values
+        [prop]: valueToSet
       }));
     };
   const handleRemove =
     (prop: keyof QuestionFilterMenu) =>
-    (value: string | number): void => {
-      if (prop === "questionType") {
-        setFilters((prev) => ({ ...prev, questionType: "" }));
+    (value: string | number | undefined): void => {
+      if (prop === "questionType" || prop === "dislikesGreaterThan") {
+        setFilters((prev) => ({ ...prev, questionType: undefined }));
+      } else if (prop === "hasDislikes") {
+        setFilters((prev) => ({
+          ...prev,
+          hasDislikes: QuestionDislikeGroup.All
+        }));
       } else {
         setFilters((prev) => ({
           ...prev,
@@ -143,7 +156,7 @@ export default function Questions(): JSX.Element {
               Uke {filter}
             </Badge>
           ))}
-        {filters.questionType !== "" && (
+        {filters.questionType !== undefined && (
           <Badge
             variant="outline"
             size="lg"
@@ -153,6 +166,32 @@ export default function Questions(): JSX.Element {
             color={isDark ? "yellow" : "white"}
           >
             {activeType?.name}
+          </Badge>
+        )}
+        {filters.dislikesGreaterThan !== undefined && (
+          <Badge
+            variant="outline"
+            size="lg"
+            rightSection={RemoveButton(() =>
+              handleRemove("dislikesGreaterThan")(filters.dislikesGreaterThan)
+            )}
+            color={isDark ? "yellow" : "white"}
+          >
+            Fler enn {filters.dislikesGreaterThan} dislikes
+          </Badge>
+        )}
+        {showQuestionDislike && (
+          <Badge
+            variant="outline"
+            size="lg"
+            rightSection={RemoveButton(() =>
+              handleRemove("hasDislikes")(filters.hasDislikes)
+            )}
+            color={isDark ? "yellow" : "white"}
+          >
+            {filters.hasDislikes === QuestionDislikeGroup.Dislikes
+              ? "Har dislikes"
+              : "Har ikke dislikes"}
           </Badge>
         )}
       </Group>
