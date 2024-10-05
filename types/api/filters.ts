@@ -18,7 +18,6 @@ export interface ContactFormFilters {
 }
 
 export interface QuestionFilters {
-  weekNumbers: string[];
   relatedGame: string;
   page?: number;
   pageSize?: number;

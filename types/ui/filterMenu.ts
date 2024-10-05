@@ -16,7 +16,6 @@ export interface ContactFilterMenu {
 }
 
 export interface QuestionFilterMenu {
-  weekNumbers: string[];
   questionSearch?: string;
   questionType?: string;
   page: number;

@@ -5,14 +5,13 @@ import {
   Menu,
   Title,
   Text,
-  MultiSelect,
   Select,
   SegmentedControl,
   NumberInput
 } from "@mantine/core";
 import { IconFilter } from "@tabler/icons";
 import React from "react";
-import { toQuestionTypeOptions, toWeekOptions } from "@app/utils";
+import { toQuestionTypeOptions } from "@app/utils";
 import { QuestionHasDislikes } from "@app/constants";
 
 interface QuestionMenuProps {
@@ -42,21 +41,6 @@ const QuestionMenu = ({
           <Title order={4} color={isDark ? "white" : "dark"}>
             Filter
           </Title>
-        </Menu.Label>
-        <Menu.Divider />
-        <Menu.Label>
-          <Text size="md" color={isDark ? "white" : "dark"}>
-            Uke
-          </Text>
-          <MultiSelect
-            clearable
-            size="md"
-            searchable
-            data={toWeekOptions()}
-            value={filters.weekNumbers}
-            onChange={(value) => handleFilter("weekNumbers")(value)}
-            placeholder="Velg uke"
-          />
         </Menu.Label>
         <Menu.Divider />
         <Menu.Label>

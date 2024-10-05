@@ -5,8 +5,6 @@ import {
   Question
 } from "@app/types";
 import { toCommaSeparatedString } from "@app/utils";
-import { GroupSize } from "@app/enums";
-import { WeekNumbers } from "@app/constants";
 
 export const createQuestionInitialValues = (
   relatedGame: Game["id"]
@@ -21,17 +19,13 @@ export const createQuestionInitialValues = (
   questions: undefined,
   answer: undefined,
   options: undefined,
-  challenges: undefined,
-  activeWeeks: WeekNumbers.map((week) => week.value),
-  groupSize: GroupSize.All
+  challenges: undefined
 });
 
 export const editQuestionInitialValues = (
   question: Question
 ): EditQuestionForm => ({
   relatedQuestionType: question.questionType.id,
-  activeWeeks: question.activeWeeks,
-  groupSize: question.groupSize,
   questionDescription: question.questionDescription,
   phase: question.phase,
   punishment: question.punishment,

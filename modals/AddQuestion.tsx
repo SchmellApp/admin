@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import {
   FileInput,
   Group,
-  MultiSelect,
   NumberInput,
-  SegmentedControl,
   Select,
   Switch,
-  Text,
   Textarea,
   TextInput,
   Title
@@ -23,7 +20,6 @@ import {
 import { useForm } from "@mantine/form";
 import { createQuestionInitialValues, createQuestionValidator } from "@app/lib";
 import { toCreateQuestion } from "@app/utils";
-import { GroupSizes, WeekNumbers } from "@app/constants";
 
 interface AddQuestionProps {
   isOpen: boolean;
@@ -107,31 +103,12 @@ const AddQuestion = ({
           my="md"
           {...form.getInputProps("punishment")}
         />
-        <MultiSelect
-          withAsterisk
-          data={WeekNumbers}
-          label="Velg uker"
-          my="md"
-          searchable
-          clearable
-          placeholder="Uke 1, Uke 2, Uke 3, ..., Uke 52"
-          {...form.getInputProps("activeWeeks")}
-        />
         <FileInput
           label="Last opp bilde"
           placeholder="EdSheeran.png"
           my="md"
           {...form.getInputProps("file")}
         />
-        <Group position="apart">
-          <Text size="sm" weight={500} color={isDark ? "white" : "dark"}>
-            Gruppestørrelse
-          </Text>
-          <SegmentedControl
-            data={GroupSizes}
-            {...form.getInputProps("groupSize")}
-          />
-        </Group>
         <Group position="apart">
           <Title order={4} color={isDark ? "white" : "dark"}>
             Legg til funksjon

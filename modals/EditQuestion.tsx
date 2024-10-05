@@ -5,12 +5,9 @@ import { ModalBase, SubmitButton } from "@app/components";
 import {
   FileInput,
   Group,
-  MultiSelect,
   NumberInput,
-  SegmentedControl,
   Select,
   Switch,
-  Text,
   Textarea,
   TextInput,
   Title
@@ -23,7 +20,6 @@ import {
   useQuestionTypes
 } from "@app/hooks";
 import { toUpdateQuestion } from "@app/utils";
-import { GroupSizes, WeekNumbers } from "@app/constants";
 
 interface EditQuestionProps {
   question: Question;
@@ -109,31 +105,12 @@ const EditQuestion = ({
           my="md"
           {...form.getInputProps("punishment")}
         />
-        <MultiSelect
-          withAsterisk
-          data={WeekNumbers}
-          label="Velg uker"
-          my="md"
-          searchable
-          clearable
-          placeholder="Uke 1, Uke 2, Uke 3, ..., Uke 52"
-          {...form.getInputProps("activeWeeks")}
-        />
         <FileInput
           label="Oppdater bilde"
           placeholder={question.questionPicture ?? "EdSheeran.png"}
           my="md"
           {...form.getInputProps("file")}
         />
-        <Group position="apart">
-          <Text size="sm" weight={500} color={isDark ? "white" : "dark"}>
-            Gruppestørrelse
-          </Text>
-          <SegmentedControl
-            data={GroupSizes}
-            {...form.getInputProps("groupSize")}
-          />
-        </Group>
         <Group position="apart">
           <Title order={4} color={isDark ? "white" : "dark"}>
             Legg til funksjon

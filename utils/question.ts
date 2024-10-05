@@ -4,15 +4,12 @@ import {
   EditQuestionForm,
   UpdateQuestion
 } from "@app/types";
-import { GroupSize } from "@app/enums";
 
 export const toCreateQuestion = (
   values: CreateQuestionForm
 ): CreateQuestion => {
   return {
     relatedQuestionType: Number(values.relatedQuestionType),
-    activeWeeks: values.activeWeeks?.map((week) => Number(week)),
-    groupSize: values.groupSize,
     questionDescription: values.questionDescription,
     phase: values.phase,
     function: functionValues(values),
@@ -24,8 +21,6 @@ export const toCreateQuestion = (
 export const toUpdateQuestion = (values: EditQuestionForm): UpdateQuestion => {
   return {
     relatedQuestionType: Number(values.relatedQuestionType),
-    activeWeeks: values.activeWeeks?.map((week) => Number(week)),
-    groupSize: values.groupSize,
     questionDescription: values.questionDescription,
     phase: values.phase,
     function: functionValues(values),
@@ -63,15 +58,4 @@ const functionValues = (
       challenges: commaSeparatedToArray(values.challenges)
     };
   }
-};
-
-export const getWeekString = (weeks: number[]): string =>
-  weeks.length === 52
-    ? "Alle uker"
-    : weeks.map((week) => `Uke ${week}`).join(", ");
-export const toUnderstandableGroupSize = {
-  [GroupSize.All]: "Alle",
-  [GroupSize.S]: "Liten (0-8)",
-  [GroupSize.M]: "Middels (9-16)",
-  [GroupSize.L]: "Stor (17 og oppover)"
 };

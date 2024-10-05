@@ -1,9 +1,7 @@
 import { Question, CreateQuestionFunction } from "@app/types";
 
 export interface CreateQuestionForm {
-  activeWeeks?: string[];
   relatedQuestionType: string;
-  groupSize?: Question["groupSize"];
   questionDescription: Question["questionDescription"];
   phase: Question["phase"];
   punishment?: Question["punishment"];
@@ -18,8 +16,6 @@ export interface CreateQuestionForm {
 
 export interface EditQuestionForm {
   relatedQuestionType: Question["questionType"]["id"];
-  groupSize?: Question["groupSize"];
-  activeWeeks?: Question["activeWeeks"];
   questionDescription: Question["questionDescription"];
   phase: Question["phase"];
   punishment: Question["punishment"];

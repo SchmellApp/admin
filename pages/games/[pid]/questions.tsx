@@ -36,7 +36,6 @@ export default function Questions(): JSX.Element {
     page: 1,
     questionSearch: undefined,
     questionType: undefined,
-    weekNumbers: [],
     hasDislikes: QuestionDislikeGroup.All,
     dislikesGreaterThan: undefined
   });
@@ -45,7 +44,6 @@ export default function Questions(): JSX.Element {
 
   const { data: currentGame } = useGameQuery(route.query.pid as string);
   const { data: res } = useQuestionsQuery({
-    weekNumbers: filters.weekNumbers,
     relatedGame: route.query.pid as string,
     page: filters.page,
     questionSearch: filters.questionSearch,
@@ -68,7 +66,7 @@ export default function Questions(): JSX.Element {
     },
     {
       title: currentGame?.name,
-      href: `/games/${currentGame?.id ?? 0}/weeks`
+      href: `/games/${currentGame?.id ?? 0}`
     }
   ].map((item, index) => (
     <Anchor href={item.href} key={index} color="dimmed" size="sm">
@@ -86,23 +84,16 @@ export default function Questions(): JSX.Element {
         [prop]: valueToSet
       }));
     };
-  const handleRemove =
-    (prop: keyof QuestionFilterMenu) =>
-    (value: string | number | undefined): void => {
-      if (prop === "questionType" || prop === "dislikesGreaterThan") {
-        setFilters((prev) => ({ ...prev, questionType: undefined }));
-      } else if (prop === "hasDislikes") {
-        setFilters((prev) => ({
-          ...prev,
-          hasDislikes: QuestionDislikeGroup.All
-        }));
-      } else {
-        setFilters((prev) => ({
-          ...prev,
-          [prop]: (prev[prop] as string[]).filter((item) => item !== value)
-        }));
-      }
-    };
+  const handleRemove = (prop: keyof QuestionFilterMenu): void => {
+    if (prop === "hasDislikes") {
+      setFilters((prev) => ({
+        ...prev,
+        hasDislikes: QuestionDislikeGroup.All
+      }));
+    } else {
+      setFilters((prev) => ({ ...prev, [prop]: undefined }));
+    }
+  };
 
   return (
     <Wrapper>
@@ -142,27 +133,11 @@ export default function Questions(): JSX.Element {
         </Group>
       </Group>
       <Group position="left" mt="sm" mb="sm">
-        {filters.weekNumbers.length > 0 &&
-          filters.weekNumbers.map((filter, idx) => (
-            <Badge
-              variant="outline"
-              size="lg"
-              key={idx}
-              rightSection={RemoveButton(() =>
-                handleRemove("weekNumbers")(filter)
-              )}
-              color={isDark ? "yellow" : "white"}
-            >
-              Uke {filter}
-            </Badge>
-          ))}
         {filters.questionType !== undefined && (
           <Badge
             variant="outline"
             size="lg"
-            rightSection={RemoveButton(() =>
-              handleRemove("questionType")(filters.questionType)
-            )}
+            rightSection={RemoveButton(() => handleRemove("questionType"))}
             color={isDark ? "yellow" : "white"}
           >
             {activeType?.name}
@@ -173,7 +148,7 @@ export default function Questions(): JSX.Element {
             variant="outline"
             size="lg"
             rightSection={RemoveButton(() =>
-              handleRemove("dislikesGreaterThan")(filters.dislikesGreaterThan)
+              handleRemove("dislikesGreaterThan")
             )}
             color={isDark ? "yellow" : "white"}
           >
@@ -184,9 +159,7 @@ export default function Questions(): JSX.Element {
           <Badge
             variant="outline"
             size="lg"
-            rightSection={RemoveButton(() =>
-              handleRemove("hasDislikes")(filters.hasDislikes)
-            )}
+            rightSection={RemoveButton(() => handleRemove("hasDislikes"))}
             color={isDark ? "yellow" : "white"}
           >
             {filters.hasDislikes === QuestionDislikeGroup.Dislikes

@@ -19,7 +19,6 @@ export default withApiAuthRequired(async function handle(
     case "GET": {
       const response = await axiosClient.get(`/cms/question/`, {
         params: {
-          weekNumbers: req.query.weekNumbers,
           relatedGame: req.query.relatedGame,
           page: req.query.page,
           pageSize: req.query.pageSize,

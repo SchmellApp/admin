@@ -13,11 +13,7 @@ import { IconEdit, IconPhoto, IconTrash } from "@tabler/icons";
 import { ActionDialog, TextGroup } from "@app/components";
 import { EditQuestion } from "@app/modals";
 import { useDeleteQuestionMutation, useModal } from "@app/hooks";
-import {
-  getWeekString,
-  toCommaSeparatedString,
-  toUnderstandableGroupSize
-} from "@app/utils";
+import { toCommaSeparatedString } from "@app/utils";
 
 interface QuestionCardProps {
   question: Question;
@@ -81,14 +77,6 @@ const QuestionCard = ({ question }: QuestionCardProps): JSX.Element => {
           {question.punishment != null && (
             <TextGroup title="Straff:" text={String(question.punishment)} />
           )}
-          <TextGroup
-            title="Gruppestørrelse:"
-            text={toUnderstandableGroupSize[question.groupSize]}
-          />
-          <TextGroup
-            title={"Aktive uker:"}
-            text={getWeekString(question.activeWeeks)}
-          />
           <TextGroup
             title={"Mislikt antall:"}
             text={

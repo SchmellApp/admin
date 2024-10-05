@@ -8,7 +8,6 @@ import axios from "axios";
 
 const useQuestionsQuery = ({
   questionSearch,
-  weekNumbers,
   questionType,
   pageSize = 50,
   page,
@@ -19,7 +18,6 @@ const useQuestionsQuery = ({
   useQuery(
     [
       "questions",
-      weekNumbers,
       questionType,
       questionSearch,
       pageSize,
@@ -28,13 +26,6 @@ const useQuestionsQuery = ({
       dislikesGreaterThan
     ],
     async () => {
-      const weekNumbersFilter =
-        weekNumbers.length > 0
-          ? {
-              weekNumbers: weekNumbers.join(",")
-            }
-          : undefined;
-
       return await axios
         .get(`/api/cms/question/`, {
           params: {
@@ -44,8 +35,7 @@ const useQuestionsQuery = ({
             hasDislikes,
             dislikesGreaterThan,
             questionSearch,
-            questionType,
-            ...weekNumbersFilter
+            questionType
           }
         })
         .then((res) => res.data);
